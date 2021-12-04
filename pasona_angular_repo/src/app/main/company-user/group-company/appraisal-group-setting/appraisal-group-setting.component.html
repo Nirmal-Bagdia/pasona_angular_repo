@@ -1,0 +1,775 @@
+<div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-100" fxLayout="row" fxLayoutAlign="start center">
+        <div fxLayout="row" fxLayoutAlign="center start">
+            <button mat-icon-button class="mr-0 backbutton" [routerLink]="urlCurrent">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <div class="h1 head-icon">
+                <mat-icon aria-hidden="true">group</mat-icon>{{'NAV.appraisalGroup.groupSetting' | translate}}
+                <div class="state_name-set">{{stateName}}</div>
+            </div>
+
+        </div>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+    <div class="content p-24">
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
+            <form class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                name="form" [formGroup]="groupForm" (ngSubmit)="submitGroupSetting()">
+                <div class="group-setting-subbox mb-20 mat-card">
+
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="mb-0">
+
+                        <mat-checkbox fxFlex="33" formControlName="objective" name="setobj"
+                            (change)="objectiveChange($event)">
+                            {{'NAV.appraisalGroupFrom.objective' | translate}}
+                        </mat-checkbox>
+
+                        <mat-checkbox fxFlex="33" formControlName="competencyParameter" name="Competency"
+                            (change)="competencyChange($event)">{{'NAV.appraisalGroupFrom.competencyParameter' |
+                            translate}}
+                        </mat-checkbox>
+
+                        <mat-checkbox fxFlex="34" formControlName="companyParameter" name="Company"
+                            (change)="companyChange($event)">{{'NAV.appraisalGroupFrom.companyParameter' | translate}}
+                        </mat-checkbox>
+                    </div>
+                </div>
+
+                <div class="group-setting-subbox mb-20 mat-card" *ngIf="groupForm.get('objective').value">
+                    <div class="heading-all-card">{{'NAV.appraisalGroupFrom.objectiveType' | translate}}</div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="">
+                        <mat-checkbox fxFlex="33" [(ngModel)]="objectiveType.performanceObjective"
+                            [ngModelOptions]="{standalone: true}" (change)="objectiveTypeChange($event,1)"
+                            aria-label="check-performance" name="check-performance">
+                            {{'NAV.appraisalGroupFrom.performanceObjective' | translate}}</mat-checkbox>
+
+                        <mat-checkbox fxFlex="33" [(ngModel)]="objectiveType.developmentObjective"
+                            [ngModelOptions]="{standalone: true}" (change)="objectiveTypeChange($event,2)"
+                            aria-label="check-development" name="check-development">
+                            {{'NAV.appraisalGroupFrom.developmentObjective' | translate}} </mat-checkbox>
+                    </div>
+                </div>
+
+                <div class="group-setting-subbox mb-20 mat-card">
+                    <div class="heading-all-card">{{'NAV.appraisalGroupFrom.termType' | translate}}<span
+                            [ngClass]="(termType.totalWeightage==100)?'complete':'pending'">({{termType.totalWeightage}}%)</span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="mt-20 mb-16">
+                        <div fxFlex="33">
+                            <mat-checkbox [(ngModel)]="termType.midterm" [ngModelOptions]="{standalone: true}"
+                                (change)="midtermChange($event)" aria-label="check-midterm" name="check-midterm">
+                                {{'NAV.appraisalGroupFrom.midTerm' | translate}}</mat-checkbox>
+                            <mat-form-field appearance="outline" class="pl-8 mat-select-height-reduce"
+                                *ngIf="termType.midterm">
+                                <mat-label class="required-astrick">{{'NAV.appraisalGroupFrom.weightage' | translate}}
+                                    (%)</mat-label>
+                                <mat-select [(ngModel)]="termType.midtermWeightage"
+                                    [ngModelOptions]="{standalone: true}" panelClass="mat-select-height-reduce"
+                                    (selectionChange)="totalWeightageCountTerm()">
+                                    <ng-container *ngFor="let weight of arrayOne(101);let i = index">
+                                        <mat-option
+                                            [ngStyle]="{'display': ((100-(termType.totalWeightage - termType.midtermWeightage) < i) && (100-(termType.totalWeightage || 0) < i)) ? 'none' : 'block'}"
+                                            [value]="i">
+                                            {{i}} %
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                                <mat-error>{{'NAV.appraisalGroupFromValidation.weightageRequired' | translate}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="33">
+                            <mat-checkbox [(ngModel)]="termType.endterm" [ngModelOptions]="{standalone: true}"
+                                [disabled]="true" aria-label="check-endterm" name="check-endterm">End-term
+                            </mat-checkbox>
+                            <mat-form-field appearance="outline" class="pl-8 mat-select-height-reduce"
+                                *ngIf="termType.endterm">
+                                <mat-label class="required-astrick">{{'NAV.appraisalGroupFrom.weightage' | translate}}
+                                    (%)</mat-label>
+                                <mat-select [(ngModel)]="termType.endtermWeightage"
+                                    [ngModelOptions]="{standalone: true}" panelClass="mat-select-height-reduce"
+                                    (selectionChange)="totalWeightageCountTerm()">
+                                    <ng-container *ngFor="let weight of arrayOne(101);let i = index">
+                                        <mat-option
+                                            [ngStyle]="{'display': ((100-(termType.totalWeightage - termType.endtermWeightage) < i) && (100-(termType.totalWeightage || 0) < i)) ? 'none' : 'block'}"
+                                            [value]="i">
+                                            {{i}} %
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-select>
+                                <mat-error>{{'NAV.appraisalGroupFromValidation.weightageRequired' | translate}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group-setting-subbox mb-20 mat-card">
+                    <div class="heading-all-card">{{'NAV.appraisalGroupFrom.evaluationMatrix' | translate}}</div>
+                    <table mat-table [dataSource]="evalutionDataSource"
+                        class="mat-elevation-z8 group-setting-table-plan table_setting mb-20">
+                        <ng-container matColumnDef="sNo">
+                            <th mat-header-cell *matHeaderCellDef>{{'NAV.appraisalGroupFrom.term' | translate}}</th>
+                            <td mat-cell *matCellDef="let element; let i = index;">{{ element.name }} <span
+                                    [ngClass]="(element.totalWeightage==100)?'complete':'pending'">({{element.totalWeightage}}%)</span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="perObj">
+                            <th mat-header-cell *matHeaderCellDef>{{'NAV.appraisalGroupFrom.performanceObjective' |
+                                translate}}
+
+                            </th>
+                            <td mat-cell *matCellDef="let element;let j=index;">
+                                <div>
+                                    <mat-checkbox [(ngModel)]="element.performanceObj"
+                                        [ngModelOptions]="{standalone: true}" aria-label="check11{{j}}"
+                                        name="check11{{j}}" (change)="changeTermWeigthage(j,'performanceObjWeightage')">
+                                    </mat-checkbox>
+                                    <mat-form-field appearance="outline" class="pl-8 mat-select-height-reduce"
+                                        *ngIf="element.performanceObj">
+                                        <mat-label class="required-astrick">{{'NAV.appraisalGroupFrom.weightage' |
+                                            translate}} (%)</mat-label>
+                                        <mat-select [(ngModel)]="element.performanceObjWeightage"
+                                            [ngModelOptions]="{standalone: true}" panelClass="mat-select-height-reduce"
+                                            (selectionChange)="errorCheckingWeightageEvalution('performanceObjWeightage',j)">
+                                            <ng-container *ngFor="let weight of arrayOne(101);let i = index">
+                                                <mat-option
+                                                    [ngStyle]="{'display': ((100-(element.totalWeightage - element.performanceObjWeightage ) < i) && (100-(element.totalWeightage || 0) < i)) ? 'none' : 'block'}"
+                                                    [value]="i">
+                                                    {{i}} %
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                        <mat-error>{{'NAV.appraisalGroupFromValidation.weightageRequired' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="devObj">
+                            <th mat-header-cell *matHeaderCellDef>{{'NAV.appraisalGroupFrom.developmentObjective' |
+                                translate}}
+                            </th>
+                            <td mat-cell *matCellDef="let element;let j=index;">
+                                <div>
+                                    <mat-checkbox [(ngModel)]="element.developmentObj"
+                                        [ngModelOptions]="{standalone: true}" aria-label="check21{{j}}"
+                                        name="check21{{j}}" (change)="changeTermWeigthage(j,'developmentObjWeightage')">
+                                    </mat-checkbox>
+                                    <mat-form-field appearance="outline" class="pl-8 mat-select-height-reduce"
+                                        *ngIf="element.developmentObj">
+                                        <mat-label class="required-astrick">{{'NAV.appraisalGroupFrom.weightage' |
+                                            translate}} (%)</mat-label>
+                                        <mat-select [(ngModel)]="element.developmentObjWeightage"
+                                            [ngModelOptions]="{standalone: true}" panelClass="mat-select-height-reduce"
+                                            (selectionChange)="errorCheckingWeightageEvalution('developmentObjWeightage',j)">
+                                            <ng-container *ngFor="let weight of arrayOne(101);let i = index">
+                                                <mat-option
+                                                    [ngStyle]="{'display': ((100-(element.totalWeightage - element.developmentObjWeightage ) < i) && (100-(element.totalWeightage || 0) < i)) ? 'none' : 'block'}"
+                                                    [value]="i">
+                                                    {{i}} %
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                        <mat-error>{{'NAV.appraisalGroupFromValidation.weightageRequired' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="competency">
+                            <th mat-header-cell *matHeaderCellDef>
+                                {{'NAV.appraisalGroupFrom.competencyParameter' | translate}}
+                            </th>
+                            <td mat-cell *matCellDef="let element;let j=index;">
+                                <div>
+                                    <mat-checkbox [(ngModel)]="element.competencyPara"
+                                        (change)="changeTermWeigthage(j,'competencyParaWeightage')"
+                                        [ngModelOptions]="{standalone: true}" aria-label="check31{{j}}"
+                                        name="check31{{j}}"></mat-checkbox>
+                                    <mat-form-field appearance="outline" class="pl-8 mat-select-height-reduce"
+                                        *ngIf="element.competencyPara">
+                                        <mat-label class="required-astrick">{{'NAV.appraisalGroupFrom.weightage' |
+                                            translate}} (%)</mat-label>
+                                        <mat-select [(ngModel)]="element.competencyParaWeightage"
+                                            [ngModelOptions]="{standalone: true}" panelClass="mat-select-height-reduce"
+                                            (selectionChange)="errorCheckingWeightageEvalution('competencyParaWeightage',j)">
+                                            <ng-container *ngFor="let weight of arrayOne(101);let i = index">
+                                                <mat-option
+                                                    [ngStyle]="{'display': ( (100-(element.totalWeightage - element.competencyParaWeightage ) < i) && (100-(element.totalWeightage || 0) < i)) ? 'none' : 'block'}"
+                                                    [value]="i">
+                                                    {{i}} %
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                        <mat-error>{{'NAV.appraisalGroupFromValidation.weightageRequired' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="companyPara">
+                            <th mat-header-cell *matHeaderCellDef>{{'NAV.appraisalGroupFrom.companyParameter' |
+                                translate}}
+                            </th>
+                            <td mat-cell *matCellDef="let element;let j=index;">
+                                <div>
+                                    <mat-checkbox [(ngModel)]="element.companyPara"
+                                        (change)="changeTermWeigthage(j,'companyParaWeightage')"
+                                        [ngModelOptions]="{standalone: true}" aria-label="check44{{j}}"
+                                        name="check44{{j}}"></mat-checkbox>
+                                    <mat-form-field appearance="outline" class="pl-8 mat-select-height-reduce"
+                                        *ngIf="element.companyPara">
+                                        <mat-label class="required-astrick">{{'NAV.appraisalGroupFrom.weightage' |
+                                            translate}} (%)</mat-label>
+                                        <mat-select [(ngModel)]="element.companyParaWeightage"
+                                            [ngModelOptions]="{standalone: true}" panelClass="mat-select-height-reduce"
+                                            (selectionChange)="errorCheckingWeightageEvalution('companyParaWeightage',j)">
+                                            <ng-container *ngFor="let weight of arrayOne(101);let i = index">
+                                                <mat-option
+                                                    [ngStyle]="{'display': ( (100-(element.totalWeightage - element.companyParaWeightage ) < i) && (100-(element.totalWeightage || 0) < i)) ? 'none' : 'block'}"
+                                                    [value]="i"> {{i}} %
+                                                </mat-option>
+                                            </ng-container>
+                                        </mat-select>
+                                        <mat-error>{{'NAV.appraisalGroupFromValidation.weightageRequired' | translate}}
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
+                        <tr mat-row *matRowDef="let row; columns: getDisplayedColumns();let i=index"
+                            [hidden]="!row.show"></tr>
+                    </table>
+                </div>
+
+                <div class="group-setting-subbox mb-20 mat-card"
+                    *ngIf="groupForm.get('competencyParameter').value==true">
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <mat-form-field appearance="outline" fxFlex="100" class="input-appraisal-setting">
+                            <mat-label class="required-astrick">{{'NAV.appraisalGroupFrom.competencyParameter' |
+                                translate}}</mat-label>
+                            <mat-select formControlName="competencyGroupIdsTemp" multiple>
+
+                                <mat-option *ngFor="let appData of appraisalParameterData" #matOption
+                                    (click)="setCompetency(matOption.selected,appData)" [value]="appData">
+                                    {{appData.name | decryption}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>{{'NAV.appraisalGroupFromValidation.competencyParameterRequired' | translate}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                        *ngIf="groupForm.get('competencyParameter').value==true">
+                        <div fxFlex="100" class="card-scroll-view">
+                            <div class="widget-group  pb-0" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
+                                [@animateStagger]="{value:'50'}">
+                                <ng-container formArrayName="competencyParameterWeightage">
+                                    <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget "
+                                        fxLayout="column" fxFlex="100" fxFlex.gt-xs="50" fxFlex.gt-md="50"
+                                        *ngFor="let widget of groupForm.get('competencyParameterWeightage').controls; let i=index">
+                                        <div class="fuse-widget-front" [formGroupName]="i">
+                                            <div class="px-16 py-16 h-52 blue-grey widget-header-color" fxLayout="row"
+                                                fxLayoutAlign="space-between center">
+                                                <div class="h3 overflow-ellipsis "
+                                                    [appEllipsifyMe]="widget.get('name').value | decryption">
+                                                    {{widget.get('name').value | decryption}}
+                                                </div>
+                                                <select class="select-weightage" formControlName="weightage"
+                                                    (change)="checkTotal100Evalution(groupForm.get('competencyParameterWeightage').value,1)">
+                                                    <option *ngFor="let weight of arrayOne(101);let i = index"
+                                                        [value]="i"
+                                                        [hidden]="(100-(evalutionCompetencyWeightageTotal-widget.get('weightage').value) < i && (100-evalutionCompetencyWeightageTotal<(i)) )">
+                                                        {{i}}%</option>
+                                                </select>
+                                            </div>
+                                            <div class="" fxLayout="column" fxLayoutAlign="center start"
+                                                style="background-color: #f5f5f5;" formArrayName="parameters">
+                                                <div
+                                                    class="p-8 font-size-16  blue-grey-fg widget-height-set-scroll width-100">
+                                                    <div
+                                                        *ngFor="let para of widget.get('parameters').controls;let j=index; ">
+                                                        <div [formGroupName]="j" class="pb-8 set-row-parameter">
+                                                            <div class="overflow-ellipsis"
+                                                                [appEllipsifyMe]="para.get('parameterName').value | decryption">
+                                                                {{j+1}})
+                                                                {{para.get('parameterName').value | decryption}}
+                                                            </div>
+                                                            <div>
+                                                                <select class="select-weightage"
+                                                                    formControlName="parameterWeightage"
+                                                                    [ngClass]="(widget.get('defaultGroup').value) ? 'disabled-checklist' :''"
+                                                                    (change)="checkTotal100(widget.get('parameters').value,i,'competencyParameterWeightage')">
+                                                                    <option
+                                                                        *ngFor="let weight of arrayOne(101);let i = index"
+                                                                        [value]="i"
+                                                                        [hidden]="(100-(widget.get('totalWeightage').value - para.get('parameterWeightage').value ) < i && (100-(widget.get('totalWeightage').value)<(i)))">
+                                                                        {{i}}%</option>
+                                                                </select>
+                                                                <div *ngIf="para.get('parameterWeightage').invalid && (para.get('parameterWeightage').dirty ||para.get('parameterWeightage').touched)"
+                                                                    class="error-class-red">
+                                                                    {{'NAV.appraisalGroupFromValidation.fieldRequired' |
+                                                                    translate}}
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="p-4 border-top width-100 pr-8" fxLayout="row"
+                                                fxLayoutAlign="space-between center">
+                                                <div> <span
+                                                        *ngIf="widget.get('defaultGroup').value==true">{{'NAV.appraisalGroupFrom.personalGroup'
+                                                        | translate}}</span></div>
+
+                                                <div style="display: inline-flex;">
+                                                    <span class="h5 secondary-text text-truncate">
+                                                        {{'NAV.appraisalGroupFrom.totalWeightage' | translate}}
+                                                    </span>
+                                                    <span class="h4 ml-8"
+                                                        [ngClass]="(widget.get('totalWeightage').value==100)?'complete':'pending'">{{widget.get('totalWeightage').value}}%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- / Front -->
+                                        <!-- Back -->
+                                        <div class="fuse-widget-back p-16 pt-32">
+                                            <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button"
+                                                aria-label="Flip widget">
+                                                <mat-icon class="s-16">close</mat-icon>
+                                            </button>
+                                            <div>
+                                                {{widget.detail}}
+                                            </div>
+                                        </div>
+                                        <!-- / Back -->
+                                    </fuse-widget>
+
+                                </ng-container>
+                                <!-- WIDGET 5 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group-setting-subbox mb-20 mat-card" *ngIf="groupForm.get('companyParameter').value==true">
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <mat-form-field appearance="outline" fxFlex="100" class="input-appraisal-setting">
+                            <mat-label class="required-astrick">{{'NAV.appraisalGroupFrom.companyParameter' |
+                                translate}}</mat-label>
+                            <mat-select formControlName="companyGroupIdsTemp" multiple>
+                                <mat-option *ngFor="let companyPara of companyParameterData" #matOptionCom
+                                    (click)="setcompanyParameterWeightage(matOptionCom.selected,companyPara)"
+                                    [value]="companyPara">
+                                    {{companyPara.name | decryption}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error> {{'NAV.appraisalGroupFromValidation.companyParameter' | translate}}</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                        *ngIf="groupForm.get('companyParameter').value==true">
+                        <div fxFlex="100" class="card-scroll-view">
+                            <div class="widget-group  pb-0" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
+                                [@animateStagger]="{value:'50'}">
+
+                                <ng-container formArrayName="companyParameterWeightage">
+                                    <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget "
+                                        fxLayout="column" fxFlex="100" fxFlex.gt-xs="50" fxFlex.gt-md="50"
+                                        *ngFor="let widget of groupForm.get('companyParameterWeightage').controls; let i=index">
+                                        <!-- Front -->
+                                        <div class="fuse-widget-front" [formGroupName]="i">
+                                            <div class="px-16 py-16 h-52 blue-grey widget-header-color" fxLayout="row"
+                                                fxLayoutAlign="space-between center">
+                                                <div class="h3 overflow-ellipsis "
+                                                    [appEllipsifyMe]="widget.get('name').value | decryption">
+                                                    {{widget.get('name').value | decryption}}
+                                                </div>
+
+                                                <select class="select-weightage" formControlName="weightage"
+                                                    (change)="checkTotal100Evalution(groupForm.get('companyParameterWeightage').value,2)">
+                                                    <option *ngFor="let weight of arrayOne(101);let i = index"
+                                                        [value]="i"
+                                                        [hidden]="(100-(evalutionCompanyWeightageTotal-widget.get('weightage').value) < i && 100-evalutionCompanyWeightageTotal<(i))">
+                                                        {{i}}%</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="" fxLayout="column" fxLayoutAlign="center start"
+                                                style="background-color: #f5f5f5;" formArrayName="parameters">
+
+                                                <div
+                                                    class="p-8 font-size-16  blue-grey-fg widget-height-set-scroll width-100">
+                                                    <div
+                                                        *ngFor="let para of widget.get('parameters').controls;let j=index; ">
+                                                        <div [formGroupName]="j" class="pb-8 set-row-parameter">
+                                                            <div class="overflow-ellipsis"
+                                                                [appEllipsifyMe]="para.get('parameterName').value | decryption">
+                                                                {{j+1}})
+                                                                {{para.get('parameterName').value | decryption}}
+                                                            </div>
+                                                            <div>
+                                                                <select class="select-weightage"
+                                                                    formControlName="parameterWeightage"
+                                                                    (change)="checkTotal100(widget.get('parameters').value,i,'companyParameterWeightage')">
+                                                                    <option
+                                                                        *ngFor="let weight of arrayOne(101);let i = index"
+                                                                        [value]="i"
+                                                                        [hidden]="(100-(widget.get('totalWeightage').value - para.get('parameterWeightage').value ) < i && (100-(widget.get('totalWeightage').value)<(i)))">
+                                                                        {{i}}%</option>
+                                                                </select>
+                                                                <div *ngIf="para.get('parameterWeightage').invalid && (para.get('parameterWeightage').dirty ||para.get('parameterWeightage').touched)"
+                                                                    class="error-class-red">
+                                                                    {{'NAV.appraisalGroupFromValidation.fieldRequired' |
+                                                                    translate}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="p-4 border-top width-100 pr-8" fxLayout="row"
+                                                    fxLayoutAlign="end center">
+                                                    <span class="h5 secondary-text text-truncate">
+                                                        {{'NAV.appraisalGroupFrom.weightage' | translate}}
+                                                    </span>
+                                                    <span class="h4 ml-8"
+                                                        [ngClass]="(widget.get('totalWeightage').value==100)?'complete':'pending'">{{widget.get('totalWeightage').value}}%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- / Front -->
+                                        <!-- Back -->
+                                        <div class="fuse-widget-back p-16 pt-32">
+                                            <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button"
+                                                aria-label="Flip widget">
+                                                <mat-icon class="s-16">close</mat-icon>
+                                            </button>
+                                            <div>
+                                                {{widget.detail}}
+                                            </div>
+                                        </div>
+                                        <!-- / Back -->
+                                    </fuse-widget>
+                                </ng-container>
+                                <!-- WIDGET 5 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group-setting-subbox mb-20 mat-card">
+                    <div class="heading-all-card"> {{'NAV.appraisalGroupFrom.defineAppraiser' | translate}}<span
+                            [ngClass]="(appraiserWeightageTotal==100)?'complete':'pending'">({{appraiserWeightageTotal}}%)</span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="">
+                        <mat-radio-group aria-label="Select an option" formControlName="appraiser" fxFlex="100">
+                            <mat-radio-button [value]="1" (change)="radioChange($event)">
+                                {{'NAV.appraisalGroupFrom.firstAppraiser' | translate}}
+                            </mat-radio-button>
+                            <mat-radio-button style="margin-left: 10px;" [value]="2" (change)="radioChange($event)">
+                                {{'NAV.appraisalGroupFrom.firstAppraiser&SecondAppraiser' | translate}}
+                            </mat-radio-button>
+                            <mat-radio-button style="margin-left: 10px;" [value]="3" (change)="radioChange($event)">
+                                {{'NAV.appraisalGroupFrom.firstAppraiserSecondAppraiser&ThirdAppraiser' | translate}}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <mat-form-field appearance="outline" fxFlex="33" class="pl-8 input-appraisal-setting">
+                            <mat-label class="required-astrick">{{'NAV.appraisalGroupFrom.weightage' | translate}} (%)
+                            </mat-label>
+                            <mat-select formControlName="appraiser1weightage"
+                                (selectionChange)="errorCheckingWeightage('appraiser1weightage')">
+                                <mat-option *ngFor="let weight of arrayOne(101);let i = index"
+                                    [ngStyle]="{'display': ((100-(appraiserWeightageTotal - groupForm.get('appraiser1weightage').value ) < i) && (100-(appraiserWeightageTotal || 0) < i)) ? 'none' : 'block'}"
+                                    [value]="i">
+                                    {{i}} %
+                                </mat-option>
+                            </mat-select>
+                            <mat-error> {{'NAV.appraisalGroupFromValidation.weightageRequired' | translate}}</mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="33" class="pl-8 input-appraisal-setting"
+                            *ngIf="groupForm.get('appraiser').value!=1">
+                            <mat-label class="required-astrick">{{'NAV.appraisalGroupFrom.weightage' | translate}} (%)
+                            </mat-label>
+                            <mat-select formControlName="appraiser2weightage"
+                                (selectionChange)="errorCheckingWeightage('appraiser2weightage')">
+                                <mat-option *ngFor="let weight of arrayOne(101);let i = index"
+                                    [ngStyle]="{'display': ((100-(appraiserWeightageTotal - groupForm.get('appraiser2weightage').value ) < i) && (100-(appraiserWeightageTotal || 0) < i)) ? 'none' : 'block'}"
+                                    [value]="i">
+                                    {{i}} %
+                                </mat-option>
+                            </mat-select>
+                            <mat-error> {{'NAV.appraisalGroupFromValidation.weightageRequired' | translate}}</mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="33" class="pl-8 input-appraisal-setting"
+                            *ngIf="groupForm.get('appraiser').value==3">
+                            <mat-label class="required-astrick">{{'NAV.appraisalGroupFrom.weightage' | translate}} (%)
+                            </mat-label>
+                            <mat-select formControlName="appraiser3weightage" [disabled]="true"
+                                (selectionChange)="errorCheckingWeightage('appraiser3weightage')">
+                                <mat-option *ngFor="let weight of arrayOne(101);let i = index"
+                                    [ngStyle]="{'display': ((100-(appraiserWeightageTotal - groupForm.get('appraiser3weightage').value ) < i) && (100-(appraiserWeightageTotal || 0) < i)) ? 'none' : 'block'}"
+                                    [value]="i">
+                                    {{i}} %
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>{{'NAV.appraisalGroupFromValidation.weightageRequired' | translate}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="group-setting-subbox mb-20 mat-card">
+                    <mat-tab-group class="group_setting_tab" [selectedIndex]="activatedStep">
+                        <mat-tab label="Mid-term" [disabled]="!termType.midterm">
+
+                            <div class="scrolling-table-container mat-elevation-z8 mb-20">
+                                <table mat-table [dataSource]="midtermDataSource"
+                                    class="group-setting-table-plan mb-20">
+                                    <ng-container matColumnDef="sNo" sticky>
+                                        <th mat-header-cell *matHeaderCellDef>{{headerTable[7]}}</th>
+                                        <td mat-cell *matCellDef="let element; let i = index;">{{ element.name }}
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="appraisee">
+                                        <th mat-header-cell *matHeaderCellDef>{{headerTable[0]}}
+
+                                        </th>
+                                        <td mat-cell *matCellDef="let element" class="text-center">
+                                            <mat-checkbox [(ngModel)]="element.appraisee"
+                                                [ngModelOptions]="{standalone: true}" aria-label="check1{{i}}"
+                                                name="check1{{i}}"></mat-checkbox>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="ap1">
+                                        <th mat-header-cell *matHeaderCellDef>{{headerTable[1]}}
+
+                                        </th>
+                                        <td mat-cell *matCellDef="let element" class="text-center">
+                                            <mat-checkbox [(ngModel)]="element.appraiser1"
+                                                [ngModelOptions]="{standalone: true}" aria-label="check2{{i}}"
+                                                name="check2{{i}}"></mat-checkbox>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="ap2">
+                                        <th mat-header-cell *matHeaderCellDef>{{headerTable[2]}}
+
+                                        </th>
+                                        <td mat-cell *matCellDef="let element" class="text-center">
+                                            <mat-checkbox [(ngModel)]="element.appraiser2"
+                                                [disabled]="groupForm.get('appraiser').value<2"
+                                                [ngModelOptions]="{standalone: true}" aria-label="check3{{i}}"
+                                                name="check3{{i}}"></mat-checkbox>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="ap3">
+                                        <th mat-header-cell *matHeaderCellDef>{{headerTable[3]}}
+
+                                        </th>
+                                        <td mat-cell *matCellDef="let element" class="text-center">
+                                            <mat-checkbox [(ngModel)]="element.appraiser3"
+                                                [disabled]="groupForm.get('appraiser').value<3"
+                                                [ngModelOptions]="{standalone: true}" aria-label="check4{{i}}"
+                                                name="check4{{i}}"></mat-checkbox>
+                                        </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumns2" [hidden]="!row.show">
+                                    </tr>
+                                </table>
+                            </div>
+                        </mat-tab>
+                        <mat-tab label="End-term">
+
+                            <div class="scrolling-table-container mat-elevation-z8 mb-20">
+                                <table mat-table [dataSource]="endtermDataSource"
+                                    class="group-setting-table-plan mb-20">
+                                    <ng-container matColumnDef="sNo" sticky>
+                                        <th mat-header-cell *matHeaderCellDef>{{headerTable[7]}}</th>
+                                        <td mat-cell *matCellDef="let element; let i = index;">{{ element.name }}
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="appraisee">
+                                        <th mat-header-cell *matHeaderCellDef>{{headerTable[0]}}
+
+                                        </th>
+                                        <td mat-cell *matCellDef="let element" class="text-center">
+                                            <mat-checkbox [(ngModel)]="element.appraisee"
+                                                [ngModelOptions]="{standalone: true}" aria-label="check1{{i}}"
+                                                name="check1{{i}}"></mat-checkbox>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="ap1">
+                                        <th mat-header-cell *matHeaderCellDef>{{headerTable[1]}}
+
+                                        </th>
+                                        <td mat-cell *matCellDef="let element" class="text-center">
+                                            <mat-checkbox [(ngModel)]="element.appraiser1"
+                                                [ngModelOptions]="{standalone: true}" aria-label="check2{{i}}"
+                                                name="check2{{i}}"></mat-checkbox>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="ap2">
+                                        <th mat-header-cell *matHeaderCellDef>{{headerTable[2]}}
+
+                                        </th>
+                                        <td mat-cell *matCellDef="let element" class="text-center">
+                                            <mat-checkbox [(ngModel)]="element.appraiser2"
+                                                [disabled]="groupForm.get('appraiser').value<2"
+                                                [ngModelOptions]="{standalone: true}" aria-label="check3{{i}}"
+                                                name="check3{{i}}"></mat-checkbox>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="ap3">
+                                        <th mat-header-cell *matHeaderCellDef>{{headerTable[3]}}
+                                        </th>
+                                        <td mat-cell *matCellDef="let element" class="text-center">
+                                            <mat-checkbox [(ngModel)]="element.appraiser3"
+                                                [disabled]="groupForm.get('appraiser').value<3"
+                                                [ngModelOptions]="{standalone: true}" aria-label="check4{{i}}"
+                                                name="check4{{i}}"></mat-checkbox>
+                                        </td>
+                                    </ng-container>
+
+                                    <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+                                    <tr mat-row *matRowDef="let row; columns: displayedColumns2" [hidden]="!row.show">
+                                    </tr>
+                                </table>
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+
+                </div>
+
+
+                <div class="group-setting-subbox mb-20 mat-card">
+                    <div class="heading-all-card">{{'NAV.appraisalGroupFrom.evaluationType' | translate}}</div>
+                    <mat-radio-group aria-label="Select an option" fxLayout="row" fxLayoutAlign="start center"
+                        fxFlex="1 0 auto" formControlName="evaluationType" fxFlex="100">
+                        <mat-radio-button value="relative" class="width_checklist" fxFlex="25">
+                            {{'NAV.appraisalGroupFrom.relative' | translate}}</mat-radio-button>
+                        <mat-radio-button value="absolute" fxFlex="25">{{'NAV.appraisalGroupFrom.absolute' | translate}}
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+
+                <div class="group-setting-subbox mb-20 mat-card">
+                    <div class="heading-all-card">{{'NAV.appraisalGroupFrom.evaluationProcess' | translate}}</div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="">
+                        <mat-checkbox fxFlex="25" [(ngModel)]="evaluationProcess.indicativeRating"
+                            [ngModelOptions]="{standalone: true}" aria-label="check-indicativeRating"
+                            name="check-indicativeRating">{{'NAV.appraisalGroupFrom.indicativeRating' | translate}}
+                        </mat-checkbox>
+
+                        <mat-checkbox fxFlex="25" [(ngModel)]="evaluationProcess.primaryRating"
+                            [ngModelOptions]="{standalone: true}" aria-label="check-primaryRating"
+                            name="check-primaryRating">{{'NAV.appraisalGroupFrom.primaryRating' | translate}}
+                        </mat-checkbox>
+
+                        <mat-checkbox fxFlex="25" [(ngModel)]="evaluationProcess.finalRating"
+                            [ngModelOptions]="{standalone: true}" aria-label="check-finalRating"
+                            name="check-finalRating">{{'NAV.appraisalGroupFrom.finalRating' | translate}}</mat-checkbox>
+
+                    </div>
+                </div>
+
+                <div class="group-setting-subbox mb-20 mat-card">
+                    <div class="heading-all-card">{{'NAV.appraisalGroupFrom.evaluationResult' | translate}}<span
+                            *ngIf="evaluationResult.compositeRating"
+                            [ngClass]="(evaluationResult.total==100)?'complete':'pending'">({{evaluationResult.total}}%)</span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="">
+                        <mat-checkbox fxFlex="25" *ngIf="groupForm.get('objective').value==true"
+                            [(ngModel)]="evaluationResult.performanceRating"
+                            (change)="evaluationResultOptionChange('per',$event)" [ngModelOptions]="{standalone: true}"
+                            aria-label="check-performanceRating" name="check-performanceRating">
+                            {{'NAV.appraisalGroupFrom.performanceRating' | translate}}</mat-checkbox>
+
+                        <mat-checkbox *ngIf="groupForm.get('companyParameter').value==true" fxFlex="25"
+                            [(ngModel)]="evaluationResult.companyParameter" [ngModelOptions]="{standalone: true}"
+                            (change)="evaluationResultOptionChange('com',$event)" aria-label="check-companyParameter"
+                            name="check-companyParameter">{{'NAV.appraisalGroupFrom.companyParameter' | translate}}
+                        </mat-checkbox>
+
+                        <mat-checkbox *ngIf="groupForm.get('competencyParameter').value==true" fxFlex="25"
+                            [(ngModel)]="evaluationResult.competencyRating" [ngModelOptions]="{standalone: true}"
+                            (change)="evaluationResultOptionChange('compe',$event)" aria-label="check-competencyRating"
+                            name="check-competencyRating">{{'NAV.appraisalGroupFrom.competencyRating' | translate}}
+                        </mat-checkbox>
+
+                        <mat-checkbox
+                            *ngIf="groupForm.get('competencyParameter').value==true || groupForm.get('companyParameter').value==true"
+                            fxFlex="25" [(ngModel)]="evaluationResult.compositeRating"
+                            [ngModelOptions]="{standalone: true}" (change)="evaluationResultOptionChange('one',$event)"
+                            aria-label="check-compositeRating" name="check-compositeRating">
+                            {{'NAV.appraisalGroupFrom.oneCompositeRating' | translate}}
+                        </mat-checkbox>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                        *ngIf="evaluationResult.compositeRating">
+                        <mat-form-field appearance="outline" fxFlex="25" class="pl-8 input-appraisal-setting"
+                            *ngIf="evaluationResult.performanceRating">
+                            <mat-label class="required-astrick">{{'NAV.appraisalGroupFrom.performanceRatingWeightage' |
+                                translate}} (%)</mat-label>
+                            <mat-select [(ngModel)]="evaluationResult.performanceRatingWeightage"
+                                [ngModelOptions]="{standalone: true}"
+                                (selectionChange)="errorCheckingWeightageEvaluationResult('1')">
+                                <mat-option *ngFor="let weight of arrayOne(101);let i = index"
+                                    [ngStyle]="{'display': ((100-(evaluationResult.total - evaluationResult.performanceRatingWeightage ) < i) && (100-(evaluationResult.total || 0) < i)) ? 'none' : 'block'}"
+                                    [value]="i">
+                                    {{i}} %
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="25" class="pl-8 input-appraisal-setting"
+                            *ngIf="evaluationResult.companyParameter">
+                            <mat-label class="required-astrick">{{'NAV.appraisalGroupFrom.companyParameterWeightage' |
+                                translate}} (%)</mat-label>
+                            <mat-select [(ngModel)]="evaluationResult.companyParameterWeightage"
+                                [ngModelOptions]="{standalone: true}"
+                                (selectionChange)="errorCheckingWeightageEvaluationResult('2')">
+                                <mat-option *ngFor="let weight of arrayOne(101);let i = index"
+                                    [ngStyle]="{'display': ((100-(evaluationResult.total - evaluationResult.companyParameterWeightage ) < i) && (100-(evaluationResult.total || 0) < i)) ? 'none' : 'block'}"
+                                    [value]="i">
+                                    {{i}} %
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="25" class="pl-8 input-appraisal-setting"
+                            *ngIf="evaluationResult.competencyRating">
+                            <mat-label class="required-astrick">{{'NAV.appraisalGroupFrom.competencyRatingWeightage' |
+                                translate}} (%)</mat-label>
+                            <mat-select [(ngModel)]="evaluationResult.competencyRatingWeightage"
+                                [ngModelOptions]="{standalone: true}"
+                                (selectionChange)="errorCheckingWeightageEvaluationResult('3')">
+                                <mat-option *ngFor="let weight of arrayOne(101);let i = index"
+                                    [ngStyle]="{'display': ((100-(evaluationResult.total - evaluationResult.competencyRatingWeightage ) < i) && (100-(evaluationResult.total || 0) < i)) ? 'none' : 'block'}"
+                                    [value]="i">
+                                    {{i}} %
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+
+
+
+                <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto" *ngIf="roleModule.write">
+                    <div class="color-red">{{'NAV.note' | translate}}</div>
+                    <button mat-raised-button color="accent">{{'NAV.submit' | translate}}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- / CONTENT -->
+</div>

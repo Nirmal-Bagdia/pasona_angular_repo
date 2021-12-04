@@ -1,0 +1,139 @@
+<div id="dashboard-project" class="page-layout simple fullwidth angular-material-elements" >
+    <!-- HEADER -->
+    <div class="header accent p-24 h-100" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+      fxLayoutAlign.gt-xs="space-between center">
+      <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="column" fxLayoutAlign.gt-xs="center start">
+        <div class="h2 head-icon">
+          <mat-icon aria-hidden="true">dashboard</mat-icon>{{'NAV.dashboard' | translate}}
+        </div>
+      </div>
+    </div>
+<!-- CENTER -->
+    <div class="center" fusePerfectScrollbar>
+        <!-- CONTENT -->
+        <div class="content set-display-block">
+            <div class="widget-group p-12 pb-0" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
+                [@animateStagger]="{value:'50'}">
+
+                <fuse-widget [@animate]="{value:'*',params:{y:'100%'}}" class="widget width-set-widget"
+                    fxLayout="column" fxFlex="100" fxFlex.gt-xs="50" fxFlex.gt-md="25"
+                    *ngFor="let widget of widgetsDashboard;let i=index">
+                    <!-- Front -->
+                    <div class="fuse-widget-front">
+                        <div class="pl-16 pr-8 py-16 h-52" fxLayout="row" fxLayoutAlign="space-between center"
+                            [ngClass]="(i==0 || i==4) ? 'dashboard-card-header-1' : (i==1 || i==5) ? 'dashboard-card-header-2' : (i==2 || i==6) ? 'dashboard-card-header-3' : (i==3 || i==7) ? 'dashboard-card-header-4':'dashboard-card-header-1' ">
+                            <div class="h3">{{widget.title}}</div>
+                            <button mat-icon-button fuseWidgetToggle aria-label="more" style="width: 20px;">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                        </div>
+
+                        <div class="pt-8 pb-32" fxLayout="column" fxLayoutAlign="center center"
+                            style="background-color: #f5f5f5;">
+                            <div class="font-size-72 line-height-72"
+                                [ngClass]="(i==0 || i==4) ? 'light-blue-fg' : (i==1 || i==5) ? 'red-fg' : (i==2 || i==6) ? 'orange-fg' : (i==3 || i==7) ? 'blue-grey-fg':'light-blue-fg' ">
+                                {{widget.data.count}}
+                            </div>
+                            <div class="h3 secondary-text font-weight-500">{{widget.data.label}}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- / Front -->
+                    <!-- Back -->
+                    <div class="fuse-widget-back p-16 pt-32">
+                        <button mat-icon-button fuseWidgetToggle class="fuse-widget-flip-button"
+                            aria-label="Flip widget">
+                            <mat-icon class="s-16">close</mat-icon>
+                        </button>
+                        <div>
+                            {{widget.detail}}
+                        </div>
+                    </div>
+                    <!-- / Back -->
+                </fuse-widget>
+                <!-- WIDGET 5 -->
+            </div>
+
+            <div class="widget-group p-12 pt-0" fxLayout="row wrap" fxFlex="100" *fuseIfOnDom
+                [@animateStagger]="{value:'50'}">
+                <div class="active-plan-card-set" [ngClass.xs]="'mr-0'" *ngFor="let apDetails of dashboardData?.activePlansDetails" fxLayout="column"
+                    fxFlex="100" fxFlex.gt-xs="50" fxFlex.gt-md="33.33">
+                    <div class="fuse-card fuse-card-overide">
+                        <!-- fuse-card -->
+                        <div class="dashboard-card-header-4">
+                            <div class="p-16" fxLayout="row" fxLayoutAlign="space-between center">
+                                <div class="pr-16">
+                                    <div class="h1 font-weight-300">Appraisal Plan</div>
+                                    <div class="h5 ">{{apDetails.planName | decryption}}</div>
+                                </div>
+                            </div>
+
+                            <div class="p-16 pt-8" fxLayout="row" fxLayoutAlign="space-between end">
+                                <div class="font-size-40 font-weight-300 line-height-1">{{apDetails.totalParticipants}}
+                                    <div class="h5 ">Participants</div>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutAlign="start center">
+                                    <mat-icon>access_time</mat-icon>
+                                    <div class="ml-8">{{apDetails.fromMonth}}/{{apDetails.fromYear}} to {{apDetails.toMonth}}/{{apDetails.toYear}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                        <mat-tab-group class="dashboard-tab">
+                            <mat-tab label="Status">
+                                <div class="h-200 my-16 mx-16">
+                                    <div class="progess-bar-div">
+                                        Objective Process ({{apDetails.setObjStatus}}%)
+                                        <mat-progress-bar mode="determinate" value="{{apDetails.setObjStatus}}" class="dashboard-progressbar ">
+                                        </mat-progress-bar>
+                                    </div>
+                                    <div class="progess-bar-div">
+                                        Midterm Process ({{apDetails.midTermReviewStatus}}%)
+                                        <mat-progress-bar mode="determinate" value="{{apDetails.midTermReviewStatus}}" class="dashboard-progressbar ">
+                                        </mat-progress-bar>
+                                    </div>
+                                    <div class="progess-bar-div">
+                                        Evalution Process ({{apDetails.endTermReviewStatus}}%)
+                                        <mat-progress-bar mode="determinate" value="{{apDetails.endTermReviewStatus}}" class="dashboard-progressbar ">
+                                        </mat-progress-bar>
+                                    </div>
+
+                                </div>
+                            </mat-tab>
+
+                            <mat-tab label="Participant">
+                                <div class="h-200 my-16 mx-16">
+                                    <div *ngFor="let emp of apDetails?.participantDetails;let i =index;" class="participant-div-dashboard">
+                                        <div><span class="numbering-paricipant">{{i+1}}</span>
+                                        <span class="emp-code-span">{{emp.empCode | decryption}}</span> ({{emp.empName | decryption}}) 
+                                        <!-- <span  *ngIf="i!=0" class="material-icons icon-dashboard-active" matTooltip="Active">check_circle</span> -->
+                                        <!-- <span   *ngIf="i==0" class="material-icons icon-dashboard-inactive" matTooltip="Resigned">highlight_off</span> -->
+                                     </div>
+                                    </div>
+                                </div>
+                            </mat-tab>
+
+                            <mat-tab label="Appraiser Details">
+                                <div class="h-200 my-16 mx-16">
+                                    <div *ngFor="let appraiser of apDetails?.appraisersDetails;let i =index;" class="participant-div-dashboard">
+                                        <div><span class="numbering-paricipant">{{i+1}}</span>
+                                            <span class="emp-code-span">{{appraiser.empCode | decryption}}</span> ({{appraiser.empName | decryption}}) 
+                                            <!-- <span *ngIf="i!=0"  class="material-icons icon-dashboard-active" matTooltip="Active">check_circle</span> -->
+                                            <!-- <span *ngIf="i==0"  class="material-icons icon-dashboard-inactive" matTooltip="Resigned">highlight_off</span> -->
+                                        </div>
+                                        </div>
+                                </div>
+                            </mat-tab>
+                        </mat-tab-group>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <!-- / WIDGET GROUP -->
+        </div>
+        <!-- / CONTENT -->
+    </div>
+    <!-- / CENTER -->
+</div>

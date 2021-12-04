@@ -1,0 +1,21 @@
+table {
+    width: 100%;
+  }
+  
+ 
+  
+  .mat-icon.search-icon {
+    position: absolute;
+    right: 0px;
+    top: 0;
+  }
+  
+ .parameterTable td.mat-cell:last-of-type,
+ .parameterTable th.mat-header-cell:last-of-type {
+    padding-right: 0px !important;
+    width: auto !important;
+  }
+
+  .group_setting_tab .mat-tab-body-content {
+    padding: 5px;
+    }

@@ -1,0 +1,43 @@
+:host {
+
+    .content {
+
+        form {
+            width: 100%;
+            max-width: 800px !important;
+        }
+
+        .form-errors-model {
+            flex: 1;
+
+            code {
+                background: none !important;
+            }
+        }
+
+        .horizontal-stepper-wrapper,
+        .vertical-stepper-wrapper {
+            max-width: 800px;
+        }
+    }
+}
+
+.mat-icon.upload-icon {
+    font-size: 45px;
+    line-height: 1;
+    height: 45px;
+    padding: 0;
+    width: 45px;
+    cursor: pointer;
+}
+
+#photoInput {
+    display: none;
+}
+
+.image-file-set {
+    align-items: center;
+    display: flex;
+
+}
+

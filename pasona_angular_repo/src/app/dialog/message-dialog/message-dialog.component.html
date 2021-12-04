@@ -1,0 +1,85 @@
+<div style="position: relative;">
+    <h1 class="delete-dialog heading-dailog" mat-dialog-title>
+        <span>{{type=='accept' ? ('NAV.sendAlert' | translate) : ('NAV.sendAlert' | translate)}}</span> </h1>
+    <mat-icon class="edit-color cancel-icon-dialog" (click)="onNoClick()">close</mat-icon>
+    <div mat-dialog-content class="set-display-block">
+        <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" [formGroup]="messageForm">
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="type=='accept'"
+                style="margin: 20px 0px 20px 0px;">
+                {{message}}
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="isFirst">
+                <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                    <mat-label class="required-astrick">Offline Meeting Date</mat-label>
+                    <input matInput [matDatepicker]="picker1" [min]="minDate" [max]="maxDate"
+                        formControlName="offlineMeetingDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                    <mat-error>Meeting Date is required!</mat-error>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" style="margin-bottom: 1.2em;"
+                *ngIf="isFirst">
+                <div fxFlex="50" class="pr-4">
+                    <input type="file" formControlName="files" id="photoInput" #photoInput
+                        (change)="preview($event.target.files)" accept=".pdf,.doc,.docx">
+                    <div class="image-file-set" style="cursor: pointer;" (click)="photoInput.click()">
+                        <mat-icon class="upload-icon1">attach_file</mat-icon>
+                        <span>Upload MOM (.pdf,.doc,.docx) File </span><!-- <span style="color: red;">*</span> -->
+                    </div>
+                </div>
+                <div fxFlex="50" class="pl-4" style="overflow: auto;">
+                    {{messageForm.get('files').value}}
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="type=='revise'">
+                <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                    <mat-label class="required-astrick">Message</mat-label>
+                    <textarea matInput formControlName="description"></textarea>
+                    <mat-error *ngIf="f1.description.hasError('required')">
+                        Message is required.
+                    </mat-error>
+                    <mat-error *ngIf="f1.description.hasError('maxlength')">
+                        Message length should be less than or equal to 200.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </form>
+        <mat-menu #aboveMenu="matMenu" yPosition="above" class="set-menu-dropdown">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 offlinetable" style="margin-top: -6px;">
+                <ng-container matColumnDef="sno">
+                    <th mat-header-cell *matHeaderCellDef> S No. </th>
+                    <td mat-cell *matCellDef="let element;let i=index"> {{i+1}} </td>
+                </ng-container>
+                <ng-container matColumnDef="MeetingDate">
+                    <th mat-header-cell *matHeaderCellDef>Meeting Date </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.offlineMeetingDate | date :pasonaService.dateFormat}} </td>
+                </ng-container>
+                <ng-container matColumnDef="file">
+                    <th mat-header-cell *matHeaderCellDef>MOM File Link </th>
+                    <td mat-cell *matCellDef="let element" matTooltip="{{element.filePath}}"> <a
+                            (click)="downloadFile(element.filePath)">{{element.filePath}}</a> </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <div fxLayout="row" fxLayoutAlign="center center" class="no-data-available"
+                [ngClass]="(dataSource.length === 0)?'visible-no-data-available':''">
+            </div>
+        </mat-menu>
+    </div>
+    <div mat-dialog-actions>
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto">
+            <button mat-raised-button color="accent" (click)="viewHistory()" matTooltip="View History"
+                [matMenuTriggerFor]="aboveMenu">
+                <mat-icon>history</mat-icon>
+            </button>
+            <div class="color-red">Fields marked * are mandatory.</div>
+            <div>
+                <button mat-raised-button color="accent" (click)='sendAlert()'>{{'NAV.continue' | translate}}</button>
+                <button mat-button (click)="onNoClick()" class="cancel-btn-dailog">{{'NAV.cancel' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

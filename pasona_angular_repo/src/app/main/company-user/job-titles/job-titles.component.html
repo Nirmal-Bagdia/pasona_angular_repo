@@ -1,0 +1,86 @@
+<div class="page-layout simple fullwidth angular-material-elements">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-100" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+      fxLayoutAlign.gt-xs="space-between center">
+      <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="column" fxLayoutAlign.gt-xs="center start">
+        <div class="h2 head-icon">
+          <mat-icon aria-hidden="true">work</mat-icon>{{'NAV.jobTitle.view' | translate}}
+        </div>
+      </div>
+      <a *ngIf="roleModule.write" mat-raised-button class="reference-button mt-16 mt-sm-0" [routerLink]="urlCurrentAdd">
+        <mat-icon class="mr-8">add</mat-icon>
+        <span lang="ja">{{'NAV.jobTitle.add' | translate}}</span>
+      </a>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+    <div class="content p-24">
+      <div fxLayout="row" fxLayoutAlign="end center">
+        <div fxFlex="75"></div>
+        <!-- <mat-form-field fxFlex="20">
+          <mat-label>Role</mat-label>
+          <mat-select  [(ngModel)]="selection.roleId" (selectionChange)="getAllAssignRole()">
+            <mat-option [value]="">--None--</mat-option>
+              <mat-option *ngFor="let roleData of rolesAllData" [value]="roleData.roleId">
+                {{roleData.roleName}}
+              </mat-option>
+          </mat-select>
+      </mat-form-field> -->
+      <div fxFlex="5"></div>
+        <mat-form-field fxFlex="20">
+          <input matInput [(ngModel)]="selection.jobTitleName" name="search" placeholder="Search" class="search_input" (change)="applyFilter($event.target.value)"> <!-- (keyup)="applyFilter($event.target.value)" -->
+          <mat-icon class="edit-color search-icon" (click)="applyFilter($event.target.value)" style="cursor: pointer;">search</mat-icon>
+        </mat-form-field>
+      </div>
+      <table mat-table [dataSource]="jobTitleData" class="mat-elevation-z8">
+        <ng-container matColumnDef="sNo">
+          <th mat-header-cell *matHeaderCellDef>{{'jobTitleTable.sNo' | translate}} </th>
+          <td mat-cell *matCellDef="let element; let i = index;">{{ (i+1) + (paginator.pageIndex * paginator.pageSize) }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="jobTitleFrom">
+          <th mat-header-cell *matHeaderCellDef>{{'jobTitleTable.designationFrom' | translate}}</th>
+          <td mat-cell *matCellDef="let element" [appEllipsifyMe]="element.designationFrom">{{element.designationFrom}}  </td>
+        </ng-container>
+        <ng-container matColumnDef="jobTitleTo">
+          <th mat-header-cell *matHeaderCellDef>{{'jobTitleTable.designationTo' | translate}}</th>
+          <td mat-cell *matCellDef="let element" [appEllipsifyMe]="element.designationTo">{{element.designationTo}}  </td>
+        </ng-container>
+        <ng-container matColumnDef="presentGrade">
+          <th mat-header-cell *matHeaderCellDef>{{'jobTitleTable.presentGrade' | translate}}</th>
+          <td mat-cell *matCellDef="let element" > {{element.noOfYearsInPresentGrade}} </td>
+        </ng-container>
+        <ng-container matColumnDef="capPoint">
+          <th mat-header-cell *matHeaderCellDef>{{'jobTitleTable.capPoint' | translate}}</th>
+          <td mat-cell *matCellDef="let element" > {{element.minimumCapPoint}} </td>
+        </ng-container>
+        <ng-container matColumnDef="jobTime">
+          <th mat-header-cell *matHeaderCellDef>{{'jobTitleTable.rating' | translate}}</th>
+          <td mat-cell *matCellDef="let element"> {{element.precedingYearRating}} </td>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>{{'jobTitleTable.action' | translate}}</th>
+          <td mat-cell *matCellDef="let element">
+            <button *ngIf="roleModule.write" mat-button class="edit-del" (click)="editJobtitle(element.jobTitleId)"
+              matTooltip="Edit">
+              <mat-icon class="edit-color">edit</mat-icon>
+            </button>
+            <button *ngIf="!roleModule.write" mat-button class="edit-del" (click)="editJobtitle(element.jobTitleId)"
+              matTooltip="View">
+              <mat-icon class="edit-color">remove_red_eye</mat-icon>
+            </button>
+            <button *ngIf="roleModule.write" mat-button class="edit-del" (click)="deleteJobTitlesPopup(element.jobTitleId)"
+              matTooltip="Delete">
+              <mat-icon class="del-color">delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <div fxLayout="row" fxLayoutAlign="center center" class="no-data-available" [ngClass]="(jobTitleData.length === 0)?'visible-no-data-available':''">  
+      </div>
+    <mat-paginator #paginator [length]="resultsLength" [pageSize]="selection.pSize" [pageSizeOptions]="[5, 10, 25, 100]" (page)="getPaginatorData($event)">
+    </mat-paginator>
+    </div>
+  </div>

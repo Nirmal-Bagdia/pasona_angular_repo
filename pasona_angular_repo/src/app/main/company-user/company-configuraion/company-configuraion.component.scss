@@ -1,0 +1,232 @@
+:host {
+
+    .content {
+
+        form {
+            width: 100%;
+            max-width: 800px !important;
+        }
+
+        .form-errors-model {
+            flex: 1;
+
+            code {
+                background: none !important;
+            }
+        }
+
+        .horizontal-stepper-wrapper,
+        .vertical-stepper-wrapper {
+            max-width: 800px;
+        }
+    }
+}
+
+.mat-icon.upload-icon {
+    font-size: 45px;
+    line-height: 1;
+    height: 45px;
+    padding: 0;
+    width: 45px;
+    cursor: pointer;
+}
+
+#photoInput {
+    display: none;
+}
+
+.image-file-set {
+    align-items: center;
+    display: flex;
+
+}
+
+
+.widget-height-set-scroll
+{
+height: 120px;
+overflow: auto;
+}
+.set-row-parameter
+{
+    display:flex ;
+    justify-content: space-between;
+}
+.select-weightage
+{
+    height: 20px;
+    width: 100px;
+}
+
+.card-scroll-view
+{
+    max-height: 230px;
+    overflow: auto;
+}
+
+.group-setting-table-plan td.mat-cell:last-of-type,
+.group-setting-table-plan th.mat-header-cell:last-of-type {
+    width:  auto !important;
+}
+
+.group-setting-table-plan td.mat-cell:first-of-type,
+.group-setting-table-plan td.mat-footer-cell:first-of-type,
+.group-setting-table-plan th.mat-header-cell:first-of-type {
+    padding-left: 24px;
+    width: auto !important;
+}
+
+.error-class-red
+{
+    color: red;
+    font-size: 12px;
+}
+.group-setting-subbox
+{
+display: block !important;
+padding: 12px;
+}
+.widget-header-color
+{
+    background-color: #cc0000 !important;
+}
+
+.heading-all-card
+{
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.ac
+{
+display: flex;
+align-items: center;
+}
+
+.panel-override-2 {
+    min-height: 80vh !important;
+  }
+  .mat-select-height-reduce.mat-form-field
+  {
+width: 125px;
+
+  }
+  .mat-select-height-reduce.mat-form-field.mat-form-field-type-mat-select .mat-form-field-infix {
+    padding: 0px 0px 10px 0px!important;
+  }
+  .mat-select-height-reduce.mat-form-field-appearance-outline .mat-form-field-label {
+    /* top: 1.84375em; */
+    /* margin-top: -0.25em; */
+    top: 20px !important;
+    font-size: 12px !important;
+}
+
+.cdk-overlay-container .cdk-overlay-pane .mat-select-height-reduce.mat-select-panel .mat-option {
+    font-size: 12px;
+    line-height: 2em;
+    height: 2em;
+}
+.mat-select-height-reduce.mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: 0.6em 0 !important;
+    padding-bottom: 0em !important;
+}
+.mat-select-height-reduce.mat-form-field.mat-form-field-type-mat-select .mat-form-field-infix .mat-select {
+    font-size: 12px;
+}
+
+
+
+.example-container {
+    width: 100%;
+    max-width: 100%;
+    display: inline-block;
+    vertical-align: top;
+  }
+  
+  .example-list {
+    border: solid 1px #ccc;
+    min-height: 60px;
+    background: white;
+    border-radius: 4px;
+    overflow: hidden;
+    display: block;
+  }
+  
+  .example-box {
+    padding: 20px 10px;
+    border-bottom: solid 1px #ccc;
+    color: rgba(0, 0, 0, 0.87);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    cursor: move;
+    background: white;
+    font-size: 14px;
+  }
+  
+  .cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+                0 8px 10px 1px rgba(0, 0, 0, 0.14),
+                0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  }
+  
+  .cdk-drag-placeholder {
+    opacity: 0;
+  }
+  
+  .cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+  
+  .example-box:last-child {
+    border: none;
+  }
+  
+  .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .company-alpha-box
+{
+    width: 60px;
+    border: solid 1px #ccc;
+    margin: 5px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    cursor: move;
+    background: white;
+    font-size: 14px;
+    float: left;
+}
+.outline-set
+{
+    align-items: center;
+    display: flex;
+    height: 60px;
+    margin-top: -23px;
+}
+.delete-btn-form
+{
+    background-color: #cc0000 !important;
+    color: #fff !important;
+    text-align: end !important;
+    padding: 0 !important;
+    min-width: 40px !important;
+}
+.add-btn-form
+{
+    background-color:green !important;
+    color: #fff !important;
+    text-align: end !important;
+    padding: 0 !important;
+    min-width: 40px !important;
+    margin-right: 10px !important;
+    margin-left: 10px;
+}

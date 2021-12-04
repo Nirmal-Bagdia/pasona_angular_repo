@@ -1,0 +1,255 @@
+<div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-100" fxLayout="row" fxLayoutAlign="start center">
+        <div fxLayout="row" fxLayoutAlign="center start">
+            <!--  <button mat-icon-button class="mr-0 backbutton" [routerLink]="urlCurrent">
+                <mat-icon>arrow_back</mat-icon>
+            </button> -->
+            <div class="h1 head-icon">
+                <mat-icon aria-hidden="true">settings_applications</mat-icon>{{'NAV.configuration.view' | translate}}
+            </div>
+        </div>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+    <div class="content p-24">
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
+            <form class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                name="form" [formGroup]="configurationForm" [ngClass]="{'disabled-checklist': roleModule.write==false}">
+                <!-- <div class="group-setting-subbox mb-20 mat-card"> -->
+                <div class="group-setting-subbox mb-20 mat-card">
+                    <div class="heading-all-card">{{'NAV.ratingForm.planType' | translate}} </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="">
+                        <mat-radio-group aria-label="Select an option" formControlName="planType" fxFlex="100">
+                            <mat-radio-button value="half yearly">{{'NAV.ratingForm.halfyearly' | translate}}
+                            </mat-radio-button>
+                            <mat-radio-button style="margin-left: 10px;" value="quarterly">
+                                {{'NAV.ratingForm.quarterly' | translate}}
+                            </mat-radio-button>
+                            <mat-radio-button style="margin-left: 10px;" value="annually">
+                                {{'NAV.ratingForm.annually' | translate}}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="mb-0">
+                    <mat-form-field appearance="outline" fxFlex="100" class="input-appraisal-setting">
+                        <mat-label class="required-astrick">{{'NAV.ratingForm.ratingType' | translate}}</mat-label>
+                        <mat-select formControlName="ratingType"
+                            (selectionChange)="setAlphaNumericList(configurationForm.get('ratingType').value,configurationForm.get('ratingTo').value)">
+                            <mat-option *ngFor="let rData of RATING_DATA" [value]="rData.value">
+                                {{rData.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="set-display-block mb-0 ">
+                    <div class="heading-all-card"> {{'NAV.ratingForm.ratingScale' | translate}}</div>
+                    <!--   <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="mb-0  heading-set-obj"> -->
+                    <!-- <mat-radio-group aria-label="Select an option" formControlName="planType" fxFlex="100">
+                            <mat-radio-button value="5">1-5</mat-radio-button>
+                            <mat-radio-button style="margin-left: 10px;" value="7">1-7</mat-radio-button>
+                            <mat-radio-button style="margin-left: 10px;" value="10">1-10</mat-radio-button>
+                        </mat-radio-group> -->
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="mb-0">
+                        <mat-form-field appearance="outline" fxFlex="10" class="input-appraisal-setting pr-4">
+                            <mat-label class="required-astrick"> {{'NAV.ratingForm.from' | translate}}</mat-label>
+                            <mat-select formControlName="ratingFrom" [disabled]="true">
+                                <mat-option *ngFor="let rData of arrayOne(1);let i = index" [value]="i+1">
+                                    {{i+1}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="10" class="input-appraisal-setting pl-4">
+                            <mat-label class="required-astrick"> {{'NAV.ratingForm.to' | translate}}</mat-label>
+                            <mat-select formControlName="ratingTo"
+                                (selectionChange)="setAlphaNumericList(configurationForm.get('ratingType').value,configurationForm.get('ratingTo').value)">
+                                <mat-option *ngFor="let rData of arrayOne(9);let i = index" [value]="i+2">
+                                    {{i+2}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <!-- </div> -->
+                    </div>
+                </div>
+ 
+                <div class="" formArrayName="alphaNumericList"
+                    *ngIf="configurationForm.get('ratingType').value!='numeric'">
+                    <div class="heading-all-card">{{'NAV.ratingForm.alphaNum' | translate}}</div>
+                    <div *ngFor="let item of configurationForm.get('alphaNumericList').controls; let pointIndex=index"
+                        [formGroupName]="pointIndex">
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                            <mat-form-field appearance="outline" fxFlex="20" class="pr-4">
+                                <mat-label class="required-astrick">{{'NAV.ratingForm.value' | translate}}</mat-label>
+                                <input matInput formControlName="numberValue" readonly>
+                            </mat-form-field>
+                            <mat-form-field appearance="outline" fxFlex="30" class="pl-4">
+                                <mat-label class="required-astrick">{{'NAV.ratingForm.name' | translate}}</mat-label>
+                                <input matInput formControlName="name">
+                                <mat-error *ngIf="item.get('name').hasError('required')">
+                                    {{'NAV.ratingFormValidation.nameRequired' | translate}}
+                                </mat-error>
+                            
+                                <mat-error *ngIf="item.get('name').hasError('maxlength') ">
+                                    {{'NAV.ratingFormValidation.nameMax' | translate}}
+                                </mat-error>
+                                
+                                <mat-error
+                                    *ngIf="item.get('name').hasError('pattern') && item.get('name').value?.length<=3">
+                                    {{'NAV.ratingFormValidation.special' | translate}}
+                                </mat-error>
+                                <mat-error
+                                    *ngIf="item.get('name').hasError('alphanumeric') && item.get('name').value?.length<=3">
+                                    {{'NAV.ratingFormValidation.aplhaNumeric' | translate}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <ng-container>
+                    <div class="heading-all-card">{{'NAV.ratingForm.gradeConfig' | translate}}({{totalGradeNumber}}%)
+                        <mat-radio-group aria-label="Select an option" formControlName="gradeConfi">
+                            <mat-radio-button value="1" (change)="gradeConfiOption($event.value)">{{'NAV.ratingForm.yes' | translate}}</mat-radio-button>
+                            <mat-radio-button style="margin-left: 10px;" value="0"
+                                (change)="gradeConfiOption($event.value)">{{'NAV.ratingForm.no' | translate}}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <div class="" formArrayName="gradeList">
+                        <div *ngFor="let item of gradeLists.controls; let pointIndex=index"
+                            [formGroupName]="pointIndex">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                <mat-form-field appearance="outline" fxFlex="20" class="pr-4">
+                                    <mat-label class="required-astrick">{{'NAV.ratingForm.grade' | translate}}</mat-label>
+                                    <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                        cdkAutosizeMinRows="1" cdkAutosizeMaxRows="4"
+                                        formControlName="grade"></textarea>
+                                    <mat-error *ngIf="item.get('grade').hasError('required')">
+                                        {{'NAV.ratingFormValidation.gradeRequired' | translate}}
+                                    </mat-error>
+                                
+                                    <mat-error *ngIf="item.get('grade').hasError('maxlength')">
+                                        {{'NAV.ratingFormValidation.gradeMax' | translate}}
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex="25" class="pl-4 pr-4 ">
+                                    <mat-label class="required-astrick">{{'NAV.ratingForm.percentage' | translate}} (%)</mat-label>
+                                    <mat-select formControlName="percentage"
+                                        (selectionChange)="errorCheckingGrade(pointIndex)">
+                                        <mat-option *ngFor="let weight of arrayOne(100);let i = index" [value]="i+1">
+                                            {{i+1}} %
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="item.get('percentage').touched"> {{'NAV.ratingFormValidation.percentRequired' | translate}}
+                                    </mat-error>
+                                </mat-form-field>
+                                <div fxFlex="5" class="pl-4 outline-set">
+                                    <button mat-button class="delete-btn-form"
+                                        (click)="deleteGrd(pointIndex,item.get('grade').value)"
+                                        [disabled]="configurationForm.get('gradeList').value.length==1"
+                                        *ngIf="pointIndex != activeIndex">
+                                        <mat-icon class="mr-8">remove</mat-icon>
+                                    </button>
+                                    <button mat-button class="delete-btn-form" (click)="deleteGrade(pointIndex)"
+                                        [disabled]="configurationForm.get('gradeList').value.length==1 "
+                                        *ngIf="pointIndex == activeIndex">
+                                        <mat-icon class="mr-8">delete</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto"
+                        *ngIf="configurationForm.get('gradeConfi').value==1">
+                        <button mat-button class="add-btn-form ml-0" (click)="addGrade()"
+                            [disabled]="configurationForm.get('gradeList').invalid ">
+                            <mat-icon class="mr-8">add</mat-icon>
+                        </button>
+                    </div>
+                </ng-container>
+
+                <ng-container>
+                    <div class="heading-all-card mt-20">{{'NAV.ratingForm.valueConfig' | translate}} ({{totalValueNumber}}%)</div>
+                    <div class="" formArrayName="valueList">
+                        <div *ngFor="let item of valueLists.controls; let pointIndex=index"
+                            [formGroupName]="pointIndex">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                <mat-form-field appearance="outline" fxFlex="25" class="pr-4 ">
+                                    <mat-label class="required-astrick">{{'NAV.ratingForm.valueFrom' | translate}}</mat-label>
+                                    <mat-select formControlName="valueFrom"
+                                        (selectionChange)="errorCheckingValue(pointIndex)" [disabled]="true">
+                                        <mat-option *ngFor="let weight of arrayOne(100);let i = index" [value]="i+1">
+                                            {{i+1}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="item.get('valueFrom').touched">{{'NAV.ratingFormValidation.valueFromRequired' | translate}}
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex="25" class="pl-4 ">
+                                    <mat-label class="required-astrick">{{'NAV.ratingForm.valueTo' | translate}}</mat-label>
+                                    <!-- [disabled]="((i+1)<=item.get('valueFrom')?.value)" -->
+                                    <mat-select formControlName="valueTo"
+                                        (selectionChange)="errorCheckingValue(pointIndex)"
+                                        [disabled]="pointIndex != valueLists.length-1">
+                                        <mat-option *ngFor="let weight of arrayOne(100);let i = index" [value]="i+1"
+                                            [style.display]="((i+1)<=item.get('valueFrom')?.value) ? 'none': 'block'">
+                                            {{i+1}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="item.get('valueTo').touched">{{'NAV.ratingFormValidation.valueToRequired' | translate}}
+                                    </mat-error>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex="20" class="pr-4 pl-4">
+                                    <mat-label class="required-astrick">{{'NAV.ratingForm.name' | translate}} </mat-label>
+                                    <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                        cdkAutosizeMinRows="1" cdkAutosizeMaxRows="4" formControlName="name"></textarea>
+                                    <mat-error *ngIf="item.get('name').hasError('required')">
+                                        {{'NAV.ratingFormValidation.nameRequired' | translate}}
+                                    </mat-error>
+                                    <mat-error *ngIf="item.get('name').hasError('maxlength')">
+                                        {{'NAV.ratingFormValidation.nameMax' | translate}}
+                                    </mat-error>
+                                  
+                                </mat-form-field>
+                                <!--   <div fxFlex="5" class="pl-4 outline-set">
+                                    <button mat-button class="delete-btn-form"
+                                        (click)="deleteVal(pointIndex,item.get('name').value)"
+                                        [disabled]="configurationForm.get('valueList').value.length==1"
+                                        *ngIf="pointIndex != activeIndexValue">
+                                        <mat-icon class="mr-8">remove</mat-icon>
+                                    </button>
+                                    <button mat-button class="delete-btn-form" (click)="deleteValue(pointIndex)"
+                                        [disabled]="configurationForm.get('valueList').value.length==1 "
+                                        *ngIf="pointIndex == activeIndexValue">
+                                        <mat-icon class="mr-8">delete</mat-icon>
+                                    </button>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <button mat-button class="add-btn-form ml-0" (click)="addValue()"
+                            [disabled]="configurationForm.get('valueList').invalid ">
+                            <mat-icon class="mr-8">add</mat-icon>
+                        </button>
+                        <button mat-button class="delete-btn-form"
+                            (click)="deleteVal(valueLists.length-1,valueLists.at(valueLists.length-1).get('valueTo').value)"
+                            [disabled]="configurationForm.get('valueList').value.length==1" *ngIf="!activeIndexValue">
+                            <mat-icon class="mr-8">remove</mat-icon>
+                        </button>
+                        <button mat-button class="delete-btn-form" (click)="deleteValue(valueLists.length-1)"
+                            [disabled]="configurationForm.get('valueList').value.length==1 " *ngIf="activeIndexValue">
+                            <mat-icon class="mr-8">delete</mat-icon>
+                        </button>
+                    </div>
+                </ng-container>
+                <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto" *ngIf="roleModule.write">
+                    <div class="color-red">{{'NAV.note' |translate}}</div>
+                    <button mat-raised-button color="accent" (click)="submitRatingSetting()">{{'NAV.submit' |
+                        translate}}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- / CONTENT -->
+</div>

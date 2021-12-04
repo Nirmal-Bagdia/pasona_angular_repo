@@ -1,0 +1,106 @@
+<div  style="position: relative;">
+    <h1 class="delete-dialog heading-dailog" mat-dialog-title> <span> {{'NAV.appRating' | translate}}</span> </h1>
+    <mat-icon class="edit-color cancel-icon-dialog" (click)="onNoClick()">close</mat-icon>
+    <div mat-dialog-content class="set-display-block">
+  <div>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 offlinetable" style="margin-top: -6px;" *ngIf="type==1">
+
+        <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+      
+        <!-- Position Column  -->
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef> {{'viewCommentAndRatingTable.sNo' | translate}} </th>
+          <td mat-cell *matCellDef="let element;let i=index"> {{i+1}} </td>
+        </ng-container>
+      
+        <!-- Name Column -->
+        <ng-container matColumnDef="appraiserName">
+          <th mat-header-cell *matHeaderCellDef>{{'viewCommentAndRatingTable.appraiserName' | translate}}</th>
+          <td mat-cell *matCellDef="let element" matTooltip="{{element.appraiserEmpCode| decryption }} ({{element.appraiserName | decryption}})"> {{element.appraiserEmpCode | decryption}} ({{element.appraiserName | decryption}})</td>
+        </ng-container>
+      
+        <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef>{{'viewCommentAndRatingTable.appraiserType' | translate}}</th>
+            <td mat-cell *matCellDef="let element"  > {{element.appraiserType}} </td>
+          </ng-container>
+          <ng-container matColumnDef="term">
+            <th mat-header-cell *matHeaderCellDef>{{'viewCommentAndRatingTable.term' | translate}}</th>
+            <td mat-cell *matCellDef="let element">
+              <span *ngIf="element.term==1">Mid-term</span>
+              <span *ngIf="element.term==2">End-term</span>
+            </td>
+          </ng-container>
+        <!-- Weight Column -->
+        <ng-container matColumnDef="rating">
+          <th mat-header-cell *matHeaderCellDef>{{'viewCommentAndRatingTable.rating' | translate}}</th>
+          <td mat-cell *matCellDef="let element"  >{{element.appraisersRating}} </td>
+        </ng-container>
+      
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="comment">
+          <th mat-header-cell *matHeaderCellDef>{{'viewCommentAndRatingTable.comment' | translate}}</th>
+          <td mat-cell *matCellDef="let element" matTooltip="{{element.appraisersComment | decryption}}"> {{element.appraisersComment | decryption}} </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 offlinetable" style="margin-top: -6px;" *ngIf="type!=1">
+
+        <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+      
+        <!-- Position Column  -->
+        <ng-container matColumnDef="sno">
+          <th mat-header-cell *matHeaderCellDef> {{'viewCommentAndRatingTable.sNo' | translate}} </th>
+          <td mat-cell *matCellDef="let element;let i=index"> {{i+1}} </td>
+        </ng-container>
+      
+        <!-- Name Column -->
+        <ng-container matColumnDef="appraiserName">
+          <th mat-header-cell *matHeaderCellDef>{{'viewCommentAndRatingTable.appraiserName' | translate}}</th>
+          <td mat-cell *matCellDef="let element" matTooltip="{{element.appraiserEmpCode| decryption }} ({{element.appraiserName | decryption}})"> {{element.appraiserEmpCode | decryption}} ({{element.appraiserName | decryption}})</td>
+        </ng-container>
+      
+        <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef>{{'viewCommentAndRatingTable.appraiserType' | translate}}</th>
+            <td mat-cell *matCellDef="let element"  > {{element.appraiserType}} </td>
+          </ng-container>
+          <ng-container matColumnDef="term">
+            <th mat-header-cell *matHeaderCellDef>{{'viewCommentAndRatingTable.term' | translate}}</th>
+            <td mat-cell *matCellDef="let element">
+              <span *ngIf="element.term==1">Mid-term</span>
+              <span *ngIf="element.term==2">End-term</span>
+            </td>
+          </ng-container>
+        <!-- Weight Column -->
+        <ng-container matColumnDef="para">
+          <th mat-header-cell *matHeaderCellDef>{{'viewCommentAndRatingTable.para' | translate}}</th>
+          <td mat-cell *matCellDef="let element"  >Parameter {{element.type}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="rating">
+          <th mat-header-cell *matHeaderCellDef>{{'viewCommentAndRatingTable.rating' | translate}}</th>
+          <td mat-cell *matCellDef="let element"  >{{element.appraisersRating}} </td>
+        </ng-container>
+      
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="comment">
+          <th mat-header-cell *matHeaderCellDef>{{'viewCommentAndRatingTable.comment' | translate}}</th>
+          <td mat-cell *matCellDef="let element" matTooltip="{{element.appraisersComment | decryption}}"> {{element.appraisersComment | decryption}} </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+      </table>
+      <div fxLayout="row" fxLayoutAlign="center center" class="no-data-available" [ngClass]="(dataSource.length === 0)?'visible-no-data-available':''">  
+    </div>
+  </div>
+   
+    </div>
+    <div mat-dialog-actions style="height: 0px;">
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto"> </div>
+    </div>
+  </div>

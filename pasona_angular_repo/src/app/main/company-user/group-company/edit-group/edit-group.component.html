@@ -1,0 +1,76 @@
+<div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-100" fxLayout="row" fxLayoutAlign="start center">
+        <div fxLayout="row" fxLayoutAlign="center start">
+            <button mat-icon-button class="mr-0 backbutton" [routerLink]="urlCurrent">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <div class="h1 head-icon">
+                <mat-icon aria-hidden="true">group</mat-icon>{{'NAV.appraisalGroup.edit' | translate}}
+            </div>
+        </div>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+    <div class="content p-24">
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
+            <form class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                name="form" [formGroup]="groupForm" (ngSubmit)="editGroup()">
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4 select-to-input">
+                        <mat-label class="required-astrick">{{'NAV.appraisalGroupForm.company' | translate}}</mat-label>
+                        <mat-select formControlName="companyId"
+                            (selectionChange)="getAllUnitDataByCompanyId($event.value)" [disabled]="true">
+                            <mat-option *ngFor="let company of companyData" [value]="company.companyId">
+                                {{company.companyName | decryption}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>{{'NAV.appraisalFormValidation.companyRequired' | translate}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                        <mat-label class="required-astrick">{{'NAV.appraisalGroupForm.appraisalGroup' | translate}}</mat-label>
+                        <input matInput formControlName="groupName">
+                        <mat-error *ngIf="f.groupName.hasError('required')">
+                            {{'NAV.appraisalFormValidation.appraisalGroupRequired' | translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.groupName.hasError('maxlength') && f.groupName.value!=''">
+                            {{'NAV.appraisalFormValidation.appraisalMax' | translate}}
+                        </mat-error>
+                      <!--   <mat-error *ngIf="f.groupName.hasError('alphanumeric')">
+                            special characters are not allowed.
+                        </mat-error> -->
+                    </mat-form-field>
+                   <!--  <mat-form-field appearance="outline" fxFlex="50" class="pl-4" [ngClass]="{'select-to-input': userData?.userType==3}">
+                        <mat-label class="required-astrick">Unit/Division</mat-label>
+                        <mat-select formControlName="unitId">
+                            <mat-option *ngFor="let unit of unitData" [value]="unit.unitId">
+                                {{unit.unitName | decryption}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>Unit/Division is required!</mat-error>
+                    </mat-form-field> -->
+                </div>
+               <!--  <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label class="required-astrick">Appraisal Group Name</mat-label>
+                        <input matInput formControlName="groupName">
+                        <mat-error *ngIf="f.groupName.hasError('required')">
+                            Appraisal Group Name is required.
+                        </mat-error>
+                        <mat-error *ngIf="f.groupName.hasError('maxlength') && f.groupName.value!=''">
+                            Appraisal Group Name length should be less or equal 30.
+                        </mat-error>
+                        <mat-error *ngIf="f.groupName.hasError('alphanumeric')">
+                            special characters are not allowed.
+                        </mat-error>
+                    </mat-form-field>
+                </div> -->
+                <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto" *ngIf="roleModule.write">
+                    <div class="color-red">{{'NAV.note' | translate}}</div>
+                    <button mat-raised-button color="accent">{{'NAV.submit' | translate}}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- / CONTENT -->
+</div>

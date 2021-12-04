@@ -1,0 +1,95 @@
+<div class="page-layout simple fullwidth angular-material-elements">
+  <!-- HEADER -->
+  <div class="header accent p-24 h-100" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+    fxLayoutAlign.gt-xs="space-between center">
+    <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="column" fxLayoutAlign.gt-xs="center start">
+      <div class="h2 head-icon">
+        <mat-icon aria-hidden="true" svgIcon="plan"></mat-icon>{{'NAV.appraisalPlan.view' | translate}}
+      </div>
+    </div>
+    <a *ngIf="roleModule.write" mat-raised-button class="reference-button mt-16 mt-sm-0"
+      (click)="addAppraisalPlanPopUp('Add','')">
+      <mat-icon class="mr-8">add</mat-icon>
+      <span>{{'NAV.appraisalPlan.add' | translate}}</span>
+    </a>
+  </div>
+  <!-- / HEADER -->
+  <!-- CONTENT -->
+  <div class="content p-24">
+    <div fxLayout="row" fxLayoutAlign="end center">
+      <mat-form-field class="set-search-box-matField">
+        <input matInput [(ngModel)]="selection.planName" name="search" placeholder="Search" class="search_input"
+          (change)="applyFilter($event.target.value)"> <!-- (keyup)="applyFilter($event.target.value)" -->
+        <mat-icon class="edit-color search-icon" (click)="applyFilter($event.target.value)" style="cursor: pointer;">
+          search</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <table mat-table [dataSource]="appraisalPlanData" class="mat-elevation-z8 appraisal-plan-table">
+      <ng-container matColumnDef="sNo">
+        <th mat-header-cell *matHeaderCellDef>{{'appraisalPlanTable.sNo' | translate}} </th>
+        <td mat-cell *matCellDef="let element; let i = index;">{{ (i+1) + (paginator.pageIndex * paginator.pageSize) }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="appraisalPlan">
+        <th mat-header-cell *matHeaderCellDef>{{'appraisalPlanTable.planName' | translate}} </th>
+        <td mat-cell *matCellDef="let element" [appEllipsifyMe]="element.planName | decryption"> {{element.planName |
+          decryption}} </td>
+      </ng-container>
+      <ng-container matColumnDef="objective">
+        <th mat-header-cell *matHeaderCellDef>{{'appraisalPlanTable.purpose' | translate}} </th>
+        <td mat-cell *matCellDef="let element" [appEllipsifyMe]="element.objective | decryption"> {{element.objective |
+          decryption}} </td>
+      </ng-container>
+      <ng-container matColumnDef="creation">
+        <th mat-header-cell *matHeaderCellDef>{{'appraisalPlanTable.startDate' | translate}} </th>
+        <td mat-cell *matCellDef="let element">
+          {{+element?.fromMonth < 10 ? '0' + element?.fromMonth : element?.fromMonth}} /{{element.fromYear}} </td>
+      </ng-container>
+      <ng-container matColumnDef="end">
+        <th mat-header-cell *matHeaderCellDef>{{'appraisalPlanTable.endDate' | translate}} </th>
+        <td mat-cell *matCellDef="let element">{{+element?.toMonth < 10 ? '0' + element?.toMonth : element?.toMonth}}
+            /{{element.toYear}} </td>
+      </ng-container>
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>{{'appraisalPlanTable.action' | translate}} </th>
+        <td mat-cell *matCellDef="let element">
+          <div>
+            <button *ngIf="element.status==0" mat-button class="edit-del"
+              (click)="addAppraisalPlanPopUp('Edit',element.appraisalPlanId)" matTooltip="Edit">
+              <mat-icon class="edit-color">edit</mat-icon>
+            </button>
+            <!-- <button *ngIf="roleModule.write" mat-button class="edit-del" (click)="editGroup(element.appraisalPlanId)"
+            matTooltip="Notification">
+            <mat-icon class="edit-color" style="color: #99CC33;">notification_important</mat-icon>
+          </button> -->
+            <!-- <button *ngIf="element.status==0 || element.status==2" mat-button class="edit-del"
+            (click)="playPausePopup(element.appraisalPlanId,'Pause')" matTooltip="Start">
+            <mat-icon class="edit-color" style="color: indianred;">play_circle_outline</mat-icon>
+          </button>
+          <button *ngIf="element.status==1" mat-button class="edit-del"
+            (click)="playPausePopup(element.appraisalPlanId,'Play')" matTooltip="Stop">
+            <mat-icon class="edit-color" style="color: indianred;">pause_circle_outline</mat-icon>
+          </button> -->
+            <button *ngIf="roleModule.write" mat-button class="edit-del"
+              (click)="viewPlan(element.appraisalPlanId, element.planName )" matTooltip="View">
+              <mat-icon class="edit-color">remove_red_eye</mat-icon>
+            </button>
+            <button *ngIf="roleModule.write" mat-button class="edit-del"
+              (click)="deleteAppraisalPlanPopUp(element.appraisalPlanId)" matTooltip="Delete">
+              <mat-icon class="del-color">delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <div fxLayout="row" fxLayoutAlign="center center" class="no-data-available"
+      [ngClass]="(appraisalPlanData.length === 0)?'visible-no-data-available':''">
+    </div>
+    <mat-paginator #paginator [length]="resultsLength" [pageSize]="selection.pSize" [pageSizeOptions]="[5, 10, 25, 100]"
+      (page)="getPaginatorData($event)">
+    </mat-paginator>
+  </div>
+</div>

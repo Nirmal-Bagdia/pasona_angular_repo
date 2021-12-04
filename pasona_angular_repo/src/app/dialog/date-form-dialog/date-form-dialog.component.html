@@ -1,0 +1,276 @@
+<div style="position: relative;">
+    <h1 class="delete-dialog heading-dailog" mat-dialog-title> <span>{{'NAV.confiTime' | translate}}</span> </h1>
+    <mat-icon class="edit-color cancel-icon-dialog" (click)="onNoClick()">close</mat-icon>
+    <div mat-dialog-content class="set-display-block">
+        <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" [formGroup]="dateObjectiveForm"
+            *ngIf="data.popupType=='objective'">
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field fxFlex="50" class="pr-15">
+                    <mat-label class="required-astrick">{{'NAV.dateForm.objectiveStartDate' | translate}}</mat-label>
+                    <input matInput [matDatepicker]="picker1" [min]="minDate" [max]="maxDate"
+                        formControlName="setObjectiveStartDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field fxFlex="50" class="pl-15">
+                    <mat-label class="required-astrick">Objective Setup End Date</mat-label>
+                    <input matInput [matDatepicker]="picker2"
+                        [min]="dateObjectiveForm.get('setObjectiveStartDate').value" [max]="maxDate"
+                        formControlName="setObjectiveEndDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field fxFlex="50" class="pr-15">
+                    <mat-label>{{'NAV.dateForm.appraisee' | translate}} </mat-label>
+                    <input matInput [matDatepicker]="picker3"
+                        [min]="dateObjectiveForm.get('setObjectiveStartDate').value"
+                        [max]="dateObjectiveForm.get('setObjectiveEndDate').value"
+                        formControlName="setObjectiveAppraiseeEndDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                    <mat-datepicker #picker3></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="50" class="pl-15">
+                    <mat-label>First Appraiser </mat-label>
+                    <input matInput [matDatepicker]="picker4"
+                        [min]="dateObjectiveForm.get('setObjectiveStartDate').value"
+                        [max]="dateObjectiveForm.get('setObjectiveEndDate').value"
+                        formControlName="setObjectiveFirstAppraiserEndDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                    <mat-datepicker #picker4></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+            </div>
+
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field fxFlex="50" class="pr-15">
+                    <mat-label>{{'NAV.dateForm.secondAppraiser' | translate}}</mat-label>
+                    <input matInput [matDatepicker]="picker5"
+                        [min]="dateObjectiveForm.get('setObjectiveStartDate').value"
+                        [max]="dateObjectiveForm.get('setObjectiveEndDate').value"
+                        formControlName="setObjectiveSecondAppraiserEndDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
+                    <mat-datepicker #picker5></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="50" class="pl-15">
+                    <mat-label>{{'NAV.dateForm.thirdAppraiser' | translate}}</mat-label>
+                    <input matInput [matDatepicker]="picker6"
+                        [min]="dateObjectiveForm.get('setObjectiveStartDate').value"
+                        [max]="dateObjectiveForm.get('setObjectiveEndDate').value"
+                        formControlName="setObjectiveThirdAppraiserEndDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker6"></mat-datepicker-toggle>
+                    <mat-datepicker #picker6></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field fxFlex="100">
+                    <mat-label>{{'NAV.dateForm.goalApprover' | translate}}</mat-label>
+                    <input matInput [matDatepicker]="picker7"
+                        [min]="dateObjectiveForm.get('setObjectiveStartDate').value"
+                        [max]="dateObjectiveForm.get('setObjectiveEndDate').value"
+                        formControlName="setObjectiveGoalApproverEndDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker7"></mat-datepicker-toggle>
+                    <mat-datepicker #picker7></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+            </div>
+        </form>
+
+        <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" [formGroup]="dateMidtermForm"
+            *ngIf="data.popupType=='midterm'">
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field fxFlex="50" class="pr-15">
+                    <mat-label class="required-astrick">{{'NAV.dateForm.midtermStartDate' | translate}}</mat-label>
+                    <input matInput [matDatepicker]="picker1" [min]="minDate" [max]="maxDate"
+                        formControlName="midTermStartDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="50" class="pl-15">
+                    <mat-label class="required-astrick">{{'NAV.dateForm.midtermEndDate' | translate}}</mat-label>
+                    <input matInput [matDatepicker]="picker2" [min]="dateMidtermForm.get('midTermStartDate').value"
+                        [max]="maxDate" formControlName="midTermEndDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field fxFlex="50" class="pr-15">
+                    <mat-label>{{'NAV.dateForm.appraisee' | translate}} </mat-label>
+                    <input matInput [matDatepicker]="picker3" [min]="dateMidtermForm.get('midTermStartDate').value"
+                        [max]="dateMidtermForm.get('midTermEndDate').value" formControlName="midTermAppraiseeEndDate"
+                        readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                    <mat-datepicker #picker3></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="50" class="pl-15">
+                    <mat-label>{{'NAV.dateForm.firstAppraiser' | translate}} </mat-label>
+                    <input matInput [matDatepicker]="picker4" [min]="dateMidtermForm.get('midTermStartDate').value"
+                        [max]="dateMidtermForm.get('midTermEndDate').value"
+                        formControlName="midTermFirstAppraiserEndDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                    <mat-datepicker #picker4></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field fxFlex="50" class="pr-15">
+                    <mat-label>{{'NAV.dateForm.secondAppraiser' | translate}} </mat-label>
+                    <input matInput [matDatepicker]="picker5" [min]="dateMidtermForm.get('midTermStartDate').value"
+                        [max]="dateMidtermForm.get('midTermEndDate').value"
+                        formControlName="midTermSecondAppraiserEndDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
+                    <mat-datepicker #picker5></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="50" class="pl-15">
+                    <mat-label>{{'NAV.dateForm.thirdAppraiser' | translate}} </mat-label>
+                    <input matInput [matDatepicker]="picker6" [min]="dateMidtermForm.get('midTermStartDate').value"
+                        [max]="dateMidtermForm.get('midTermEndDate').value"
+                        formControlName="midTermThirdAppraiserEndDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker6"></mat-datepicker-toggle>
+                    <mat-datepicker #picker6></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field fxFlex="50" class="pr-15">
+                    <mat-label>{{'NAV.dateForm.ratingConsolidator' | translate}} </mat-label>
+                    <input matInput [matDatepicker]="picker7" [min]="dateMidtermForm.get('midTermStartDate').value"
+                        [max]="dateMidtermForm.get('midTermEndDate').value"
+                        formControlName="midTermRatingConsolidatorEndDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker7"></mat-datepicker-toggle>
+                    <mat-datepicker #picker7></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="50" class="pl-15">
+                    <mat-label>{{'NAV.dateForm.finalApprover' | translate}}</mat-label>
+                    <input matInput [matDatepicker]="picker8" [min]="dateMidtermForm.get('midTermStartDate').value"
+                        [max]="dateMidtermForm.get('midTermEndDate').value"
+                        formControlName="midTermFinalApproverEndDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker8"></mat-datepicker-toggle>
+                    <mat-datepicker #picker8></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+            </div>
+        </form>
+
+        <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" [formGroup]="dateEvalutionForm"
+            *ngIf="data.popupType=='evalution'">
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field fxFlex="50" class="pr-15">
+                    <mat-label class="required-astrick">{{'NAV.dateForm.finalStartDate' | translate}}</mat-label>
+                    <input matInput [matDatepicker]="picker1" [min]="minDate" [max]="maxDate"
+                        formControlName="endTermStartDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="50" class="pl-15">
+                    <mat-label class="required-astrick">{{'NAV.dateForm.finalEndDate' | translate}}</mat-label>
+                    <input matInput [matDatepicker]="picker2" [min]="dateEvalutionForm.get('endTermStartDate').value"
+                        [max]="maxDate" formControlName="endTermEndDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field fxFlex="50" class="pr-15">
+                    <mat-label>{{'NAV.dateForm.appraisee' | translate}} </mat-label>
+                    <input matInput [matDatepicker]="picker3" [min]="dateEvalutionForm.get('endTermStartDate').value"
+                        [max]="dateEvalutionForm.get('endTermEndDate').value" formControlName="endTermAppraiseeEndDate"
+                        readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                    <mat-datepicker #picker3></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+                
+                <mat-form-field fxFlex="50" class="pl-15">
+                    <mat-label>{{'NAV.dateForm.firstAppraiser' | translate}}</mat-label>
+                    <input matInput [matDatepicker]="picker4" [min]="dateEvalutionForm.get('endTermStartDate').value"
+                        [max]="dateEvalutionForm.get('endTermEndDate').value"
+                        formControlName="endTermFirstAppraiserEndDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                    <mat-datepicker #picker4></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+            </div>
+        
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field fxFlex="50" class="pr-15">
+                    <mat-label>{{'NAV.dateForm.secondAppraiser' | translate}} </mat-label>
+                    <input matInput [matDatepicker]="picker5" [min]="dateEvalutionForm.get('endTermStartDate').value"
+                        [max]="dateEvalutionForm.get('endTermEndDate').value"
+                        formControlName="endTermSecondAppraiserEndDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
+                    <mat-datepicker #picker5></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field fxFlex="50" class="pl-15">
+                    <mat-label>{{'NAV.dateForm.thirdAppraiser' | translate}}</mat-label>
+                    <input matInput [matDatepicker]="picker6" [min]="dateEvalutionForm.get('endTermStartDate').value"
+                        [max]="dateEvalutionForm.get('endTermEndDate').value"
+                        formControlName="endTermThirdAppraiserEndDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker6"></mat-datepicker-toggle>
+                    <mat-datepicker #picker6></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field fxFlex="50" class="pr-15">
+                    <mat-label>{{'NAV.dateForm.ratingConsolidator' | translate}}</mat-label>
+                    <input matInput [matDatepicker]="picker7" [min]="dateEvalutionForm.get('endTermStartDate').value"
+                        [max]="dateEvalutionForm.get('endTermEndDate').value"
+                        formControlName="endTermRatingConsolidatorEndDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker7"></mat-datepicker-toggle>
+                    <mat-datepicker #picker7></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+                <mat-form-field fxFlex="50" class="pl-15">
+                    <mat-label>{{'NAV.dateForm.finalApprover' | translate}}</mat-label>
+                    <input matInput [matDatepicker]="picker8" [min]="dateEvalutionForm.get('endTermStartDate').value"
+                        [max]="dateEvalutionForm.get('endTermEndDate').value"
+                        formControlName="endTermFinalApproverEndDate" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker8"></mat-datepicker-toggle>
+                    <mat-datepicker #picker8></mat-datepicker>
+                    <mat-error>{{'NAV.dateForm.dateRequired' | translate}}</mat-error>
+                </mat-form-field>
+            </div>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto">
+            <div class="color-red">{{'NAV.note' | translate}}</div>
+            <div>
+                <button *ngIf="data.popupType=='objective'" mat-raised-button color="accent"
+                    (click)='setDateObjective()'>{{'NAV.submit' | translate}}</button>
+                <button *ngIf="data.popupType=='midterm'" mat-raised-button color="accent"
+                    (click)='setDateMidterm()'>{{'NAV.submit' | translate}}</button>
+                <button *ngIf="data.popupType=='evalution'" mat-raised-button color="accent"
+                    (click)='setDateEvalution()'>{{'NAV.submit' | translate}}</button>
+                <button mat-button (click)="onNoClick()" class="cancel-btn-dailog">{{'NAV.cancel' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

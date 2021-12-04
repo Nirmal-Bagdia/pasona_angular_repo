@@ -1,0 +1,23 @@
+<div style="position: relative;">
+  <h1 class="delete-dialog heading-dailog" mat-dialog-title><span *ngIf="!message">{{'NAV.delete' | translate}}</span> {{type}}</h1>
+  <mat-icon class="edit-color cancel-icon-dialog" (click)="onNoClick()">close</mat-icon>
+  <div mat-dialog-content class="set-display-block">
+    <p *ngIf="!message">Are you Sure?</p>
+    <p *ngIf="message">{{message}}</p>
+    <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" [formGroup]="deleteForm"
+      *ngIf="type=='Company'">
+      <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" type="password">
+        <mat-error *ngIf="f.password.hasError('required')">
+          Password is required.
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </div>
+  <div mat-dialog-actions>
+    <button *ngIf="type!='Company'" mat-button (click)='yes()'>{{'NAV.yes' | translate}}</button>
+    <button *ngIf="type=='Company'" mat-button (click)='yesCompany()'>{{'NAV.yes' | translate}}</button>
+    <button mat-button (click)="onNoClick()" class="cancel-btn-dailog">{{'NAV.no' | translate}}</button>
+  </div>
+</div>

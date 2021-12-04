@@ -1,0 +1,124 @@
+<div style="position: relative;">
+    <h1 class="delete-dialog heading-dailog" mat-dialog-title> {{(type=='Add') ? ('NAV.appraisalPlan.addAppraiser' | translate) : ('NAV.appraisalPlan.editAppraiser' | translate)}}</h1>
+    <mat-icon class="edit-color cancel-icon-dialog" (click)="onNoClick()">close</mat-icon>
+    <div mat-dialog-content class="set-display-block">
+        <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" [formGroup]="appraisalForm">
+            <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                <mat-label class="required-astrick">Employee </mat-label>
+                <mat-select formControlName="empId" placeholder="Employee" multiple #multiSelect>
+                    <ngx-mat-select-search [showToggleAllCheckbox]="true" placeholderLabel="Search"
+                        noEntriesFoundLabel="no matching data found" (toggleAll)="toggleSelectAll($event)"
+                        [formControl]="empMultiFilterCtrl"></ngx-mat-select-search>
+                    <mat-option *ngFor="let emp of filterdEmpMulti | async" [value]="emp.id">
+                        {{emp.name | decryption}}
+                    </mat-option>
+                </mat-select>
+                <mat-error>Employee is required!</mat-error>
+            </mat-form-field>
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="heading-set-obj"
+                style="margin-bottom: 20px;">
+                Appraisers
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                    <mat-label class="required-astrick">First Appraiser</mat-label>
+                    <mat-select formControlName="firstAppraiser">
+                        <mat-option>
+                            <ngx-mat-select-search [formControl]="fAppraiserFilterCtrl" placeholderLabel="Search"
+                                noEntriesFoundLabel="no matching data found"></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let empData of filterdfAppraiser | async" [value]="empData.id"
+                            [disabled]="appraisalForm.get('secondAppraiser').value==empData.id || appraisalForm.get('thirdAppraiser').value==empData.id || appraisalForm.get('empId').value.indexOf(empData.id)>-1">
+                            {{empData.empCode | decryption}} ({{empData.empName | decryption}})
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>First Appraiser is required!</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                    <mat-label>Second Appraiser</mat-label>
+                    <mat-select formControlName="secondAppraiser" [disabled]="appraiserCount==1">
+                        <mat-option>
+                            <ngx-mat-select-search [formControl]="sAppraiserFilterCtrl" placeholderLabel="Search"
+                                noEntriesFoundLabel="no matching data found"></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let empData of filterdsAppraiser | async" [value]="empData.id"
+                            [disabled]="appraisalForm.get('firstAppraiser').value==empData.id || appraisalForm.get('thirdAppraiser').value==empData.id || appraisalForm.get('empId').value.indexOf(empData.id)>-1">
+                            {{empData.empCode | decryption}} ({{empData.empName | decryption}})
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>Second Appraiser is required!</mat-error>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                    <mat-label>Third Appraiser</mat-label>
+                    <mat-select formControlName="thirdAppraiser" [disabled]="appraiserCount==1 || appraiserCount==2">
+                        <mat-option>
+                            <ngx-mat-select-search [formControl]="tAppraiserFilterCtrl" placeholderLabel="Search"
+                                noEntriesFoundLabel="no matching data found"></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let empData of filterdtAppraiser | async" [value]="empData.id"
+                            [disabled]="appraisalForm.get('firstAppraiser').value==empData.id || appraisalForm.get('secondAppraiser').value==empData.id || appraisalForm.get('empId').value.indexOf(empData.id)>-1">
+                            {{empData.empCode | decryption}} ({{empData.empName | decryption}})
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>Third Appraiser is required!</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                    <mat-label class="required-astrick">Objective approver</mat-label>
+                    <mat-select formControlName="goalApprover">
+                        <mat-option>
+                            <ngx-mat-select-search [formControl]="goalApproverFilterCtrl" placeholderLabel="Search"
+                                noEntriesFoundLabel="no matching data found"></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let empData of filterdgoalApprover | async" [value]="empData.id"
+                            [disabled]="appraisalForm.get('empId').value.indexOf(empData.id)>-1">
+                            {{empData.empCode | decryption}} ({{empData.empName | decryption}})
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>Goal approver is required!</mat-error>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                    <mat-label class="required-astrick">Rating consolidator</mat-label>
+                    <mat-select formControlName="ratingConsolidator">
+                        <mat-option>
+                            <ngx-mat-select-search [formControl]="ratingConsoFilterCtrl" placeholderLabel="Search"
+                                noEntriesFoundLabel="no matching data found"></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let empData of filterdratingConso | async" [value]="empData.id"
+                            [disabled]="appraisalForm.get('empId').value.indexOf(empData.id)>-1">
+                            {{empData.empCode | decryption}} ({{empData.empName | decryption}})
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>Rating consolidator is required!</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                    <mat-label class="required-astrick">Final Approver</mat-label>
+                    <mat-select formControlName="finalApprover">
+                        <mat-option>
+                            <ngx-mat-select-search [formControl]="finalApproverFilterCtrl" placeholderLabel="Search"
+                                noEntriesFoundLabel="no matching data found"></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let empData of filterdfinalApprover | async" [value]="empData.id"
+                            [disabled]="appraisalForm.get('empId').value.indexOf(empData.id)>-1">
+                            {{empData.empCode | decryption}} ({{empData.empName | decryption}})
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>Final Approver is required!</mat-error>
+                </mat-form-field>
+            </div>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto">
+            <div class="color-red">Fields marked * are mandatory.</div>
+            <div>
+                <button *ngIf="type=='Add'" mat-raised-button color="accent" (click)='addAppraiser()'>{{'NAV.add' | translate}}</button>
+                <button *ngIf="type=='Edit'" mat-raised-button color="accent" (click)='addAppraiser()'>{{'NAV.update' | translate}}</button>
+                <button mat-button (click)="onNoClick()" class="cancel-btn-dailog">{{'NAV.cancel' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

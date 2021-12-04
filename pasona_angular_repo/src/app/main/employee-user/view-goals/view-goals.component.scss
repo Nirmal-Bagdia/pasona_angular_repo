@@ -1,0 +1,17 @@
+table {
+  width: 100%;
+}
+
+.mat-icon.search-icon {
+  position: absolute;
+  right: 0px;
+  top: 0;
+}
+
+.div-class-nowrap {
+  white-space: nowrap;
+  width: 230px;
+  word-break: break-word;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

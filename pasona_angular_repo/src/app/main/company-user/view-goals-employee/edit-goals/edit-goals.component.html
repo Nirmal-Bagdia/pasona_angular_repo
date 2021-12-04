@@ -1,0 +1,1154 @@
+<div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+   <!-- HEADER -->
+   <div class="header accent p-24 h-100" fxLayout="row" fxLayoutAlign="start center">
+      <div fxLayout="row" fxLayoutAlign="center start">
+         <button mat-icon-button class="mr-0 backbutton" (click)="backToGoals()">
+            <mat-icon>arrow_back</mat-icon>
+         </button>
+         <div class="h1 head-icon">
+            <mat-icon aria-hidden="true" svgIcon="goal"></mat-icon>
+            {{'NAV.employeeObj.viewEmpObj' | translate}}
+            <div class="state_name-set">{{stateName}}</div>
+         </div>
+      </div>
+   </div>
+   <!-- / HEADER -->
+   <!-- CONTENT -->
+   <div class="content p-24 display-block-set">
+      <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
+         <!-- <div class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"> -->
+         <form class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+            name="form" [formGroup]="goalsForm">
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+               <mat-form-field appearance="outline" fxFlex="50" class="mr-4 textareaset">
+                  <mat-label> Employee Name</mat-label>
+                  <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                     cdkAutosizeMaxRows="4" value="{{goalsData.empName | decryption}}" readonly></textarea>
+               </mat-form-field>
+               <mat-form-field appearance="outline" fxFlex="50" class="mr-4 textareaset">
+                  <mat-label>Department Name</mat-label>
+                  <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                     cdkAutosizeMaxRows="4" value="{{goalsData.departmentName | decryption}}" readonly></textarea>
+               </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" style="margin-top: 20px;">
+               <mat-form-field appearance="outline" fxFlex="50" class="mr-4 textareaset">
+                  <mat-label>Section Name</mat-label>
+                  <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                     cdkAutosizeMaxRows="4" value="{{goalsData.sectionName | decryption}}" readonly></textarea>
+               </mat-form-field>
+               <mat-form-field appearance="outline" fxFlex="50" class="mr-4 textareaset">
+                  <mat-label>Appraisal Group Name</mat-label>
+                  <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                     cdkAutosizeMaxRows="4" value="{{goalsData.groupName | decryption}}" readonly></textarea>
+               </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" style="margin-top: 20px;">
+               <mat-form-field appearance="outline" fxFlex="15" class="mr-4 textareaset">
+                  <mat-label>From</mat-label>
+                  <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                     cdkAutosizeMaxRows="4"
+                     value="{{+goalsData?.fromMonth < 10 ? '0' + goalsData?.fromMonth : goalsData?.fromMonth}}/{{goalsData.fromYear}}"
+                     readonly></textarea>
+               </mat-form-field>
+               <mat-form-field appearance="outline" fxFlex="15" class="mr-4 textareaset">
+                  <mat-label>To</mat-label>
+                  <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                     cdkAutosizeMaxRows="4"
+                     value="{{+goalsData?.toMonth < 10 ? '0' + goalsData?.toMonth : goalsData?.toMonth}}/{{goalsData.toYear}}"
+                     readonly></textarea>
+               </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+               <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                  <mat-label>Summary</mat-label>
+                  <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                     cdkAutosizeMaxRows="4" value="{{goalsData.summary}}" readonly></textarea>
+               </mat-form-field>
+            </div>
+
+
+            <mat-tab-group class="goal_add_edit_tab">
+               <mat-tab label="Objective" *ngIf="objective">
+                  <div formArrayName="objectiveList">
+                     <div *ngFor="let item of objectiveList; let pointIndex=index;"
+                        class="box-view-objective set-display-block">
+                        <span class="objective-box-set-emp">{{pointIndex+1}}</span>
+                        <div class="set-header-objective-emp">
+                           <div style="width:90%">
+                              <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto" class="width-100">
+                                 <mat-form-field appearance="outline" fxFlex="15" class="mr-4 textareaset">
+                                    <mat-label>Objective Type</mat-label>
+                                    <input matInput value=" {{item?.objectiveType}}" readonly>
+                                 </mat-form-field>
+                                 <div fxFlex="15"></div>
+                                 <mat-form-field appearance="outline" fxFlex="15" class="mr-4 textareaset">
+                                    <mat-label>From</mat-label>
+                                    <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                       cdkAutosizeMinRows="1" cdkAutosizeMaxRows="4"
+                                       value="{{item.fromDate | date:'dd/MM/yyyy'}}" readonly></textarea>
+                                 </mat-form-field>
+                                 <mat-form-field appearance="outline" fxFlex="15" class="mr-4 textareaset">
+                                    <mat-label>To</mat-label>
+                                    <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                       cdkAutosizeMinRows="1" cdkAutosizeMaxRows="4"
+                                       value="{{item.toDate | date:'dd/MM/yyyy'}}" readonly></textarea>
+                                 </mat-form-field>
+                                 <div fxFlex="10"></div>
+                                 <mat-form-field appearance="outline" fxFlex="15" class="mr-4 textareaset">
+                                    <mat-label>Weightage(%)</mat-label>
+                                    <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                       cdkAutosizeMinRows="1" cdkAutosizeMaxRows="4" value="{{item.weightage}} %"
+                                       readonly></textarea>
+                                 </mat-form-field>
+                                 <mat-form-field appearance="outline" fxFlex="15" class="mr-4 textareaset">
+                                    <mat-label>Difficulty Level</mat-label>
+                                    <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                       cdkAutosizeMinRows="1" cdkAutosizeMaxRows="4" value="{{item.difficultyLevel}}"
+                                       readonly></textarea>
+                                 </mat-form-field>
+                              </div>
+                           </div>
+                           <div class="pl-4"
+                              *ngIf="goalsData?.reviseStatus==0 && (appraiserView && userData.empCode == goalsData.assignedTo)">
+                              <mat-checkbox name="setobj{{pointIndex}}" class="edit-delete-checklist-icon"
+                                 [disabled]="editArr[pointIndex] == null ? false : true"
+                                 [(ngModel)]="editArr[pointIndex]" [ngModelOptions]="{standalone: true}"
+                                 (change)="editPermissin(item.id,$event,pointIndex)">
+                                 <mat-icon aria-hidden="true">edit </mat-icon>
+                              </mat-checkbox>
+                              <mat-checkbox name="setobj{{pointIndex}}"
+                                 [disabled]="deleteArr[pointIndex] == null ? false : true"
+                                 [(ngModel)]="deleteArr[pointIndex]" class="edit-delete-checklist-icon"
+                                 [ngModelOptions]="{standalone: true}"
+                                 (change)="deletePermissin(item.id,$event,pointIndex)">
+                                 <mat-icon aria-hidden="true">delete</mat-icon>
+                              </mat-checkbox>
+                           </div>
+                           <div *ngIf="goalsData?.midTermProcessStatus==1 && appraiserView">
+                              <button mat-button class="btn-comment-obj" matTooltip="View Comments & Rating"
+                                 (click)="viewCommentAndRating(item.id,goalsData.empObjId,1)">
+                                 <mat-icon aria-hidden="true">star_outline</mat-icon>
+                              </button>
+                           </div>
+                        </div>
+                        <!-- <div class="set-display-block"
+                                [ngStyle]="{'width':(appraiserView && userData.empCode == goalsData.assignedTo) ? '95%' : '100%' }">
+                                </div> -->
+                        <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                           class="margin-bottom-objectives">
+                           <mat-form-field appearance="outline" fxFlex="100" class=" textareaset">
+                              <mat-label>Objective</mat-label>
+                              <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                 cdkAutosizeMinRows="1" cdkAutosizeMaxRows="4" value="{{item.objective}}"
+                                 readonly></textarea>
+                           </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                           class="margin-bottom-objectives">
+                           <mat-form-field appearance="outline" fxFlex="100" class=" textareaset">
+                              <mat-label>Measurement criteria</mat-label>
+                              <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                 cdkAutosizeMinRows="1" cdkAutosizeMaxRows="4" value="{{item.measurementCriteria}}"
+                                 readonly></textarea>
+                           </mat-form-field>
+                        </div>
+                        <div class="midterm-endterm-box-set midterm-endterm-box1"
+                           *ngIf="goalsData?.midTermProcessStatus==1" #midtermDiv1
+                           [ngClass]="{'set-display-none': midtermDiv1Ele!=1}">
+                           <span class="midterm-endterm-box-span" style="background-color: #fff;">Mid-term
+                              <!-- {{midtermDiv?.childElementCount}} -->
+                           </span>
+                           <ng-container
+                              *ngIf="(configMidTermAppraisee.objectiveComment || configMidTermAppraisee.objectiveRating)">
+                              <div class="heading-set-obj mb-10">
+                                 {{(appraiserView) ? 'Appraisee Rating' :'Self Rating'}}
+                              </div>
+                              <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                 class="margin-bottom-objectives">
+                                 <mat-form-field appearance="outline" fxFlex="20" class="mr-4 textareaset"
+                                    *ngIf="configMidTermAppraisee.objectiveRating">
+                                    <mat-label>Rating</mat-label>
+                                    <input matInput value=" {{item?.midTermSelfRating}}" readonly>
+                                 </mat-form-field>
+                                 <mat-form-field appearance="outline" fxFlex="auto" class="mr-4 textareaset"
+                                    *ngIf="configMidTermAppraisee.objectiveComment">
+                                    <mat-label>Actions Taken</mat-label>
+                                    <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                       cdkAutosizeMinRows="1" cdkAutosizeMaxRows="4"
+                                       value="{{item.midTermActionsTaken}}" readonly></textarea>
+                                 </mat-form-field>
+                                 <mat-form-field appearance="outline" fxFlex="auto" class="mr-4 textareaset"
+                                    *ngIf="configMidTermAppraisee.objectiveComment">
+                                    <mat-label>Results Achieved</mat-label>
+                                    <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                       cdkAutosizeMinRows="1" cdkAutosizeMaxRows="4"
+                                       value="{{item.midTermResultsAchieved}}" readonly></textarea>
+                                 </mat-form-field>
+                              </div>
+                           </ng-container>
+                           <ng-container
+                              *ngIf="(goalsData?.midTermProcessStatus==1 && appraiserView) && (configMidTermAppraiser.objectiveComment || configMidTermAppraiser.objectiveRating)">
+                              <ng-container
+                                 *ngIf="(userData.empCode == goalsData.assignedTo) && goalsData?.endTermProcessStatus==0">
+                                 <div class="heading-set-obj mb-10">Appraiser Rating</div>
+                                 <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                    class="margin-bottom-objectives" [formGroupName]="pointIndex">
+                                    <mat-form-field appearance="outline" fxFlex="20" class="mr-4"
+                                       *ngIf="configMidTermAppraiser.objectiveRating">
+                                       <mat-label class="required-astrick">Rating</mat-label>
+                                       <mat-select formControlName="midTermAppraiserRating">
+                                          <mat-option *ngFor="let rating of ratingData" value={{rating}}>
+                                             {{rating}}
+                                          </mat-option>
+                                       </mat-select>
+                                       <mat-error
+                                          *ngIf="objectiveLists.at(pointIndex).get('midTermAppraiserRating').hasError('required')">
+                                          Rating is required.
+                                       </mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="auto" class="mr-4 "
+                                       *ngIf="configMidTermAppraiser.objectiveComment">
+                                       <mat-label class="required-astrick">Comment</mat-label>
+                                       <input matInput formControlName="midTermAppraiserComment">
+                                       <mat-error
+                                          *ngIf="objectiveLists.at(pointIndex).get('midTermAppraiserComment').hasError('required')">
+                                          Comment is required.
+                                       </mat-error>
+                                    </mat-form-field>
+                                 </div>
+                              </ng-container>
+                              <ng-container
+                                 *ngIf="(showRating && ( userData.empCode != goalsData.assignedTo || goalsData?.endTermProcessStatus==1))">
+                                 <div class="heading-set-obj mb-10">Appraiser Rating</div>
+                                 <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                    class="margin-bottom-objectives" [formGroupName]="pointIndex">
+                                    <mat-form-field appearance="outline" fxFlex="20" class="mr-4 textareaset"
+                                       *ngIf="configMidTermAppraiser.objectiveRating">
+                                       <mat-label>Rating</mat-label>
+                                       <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                          cdkAutosizeMinRows="1" cdkAutosizeMaxRows="4"
+                                          value="{{objectiveLists.at(pointIndex).get('midTermAppraiserRating').value}}"
+                                          readonly></textarea>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="auto" class="mr-4 textareaset "
+                                       *ngIf="configMidTermAppraiser.objectiveComment">
+                                       <mat-label>Comment</mat-label>
+                                       <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                          cdkAutosizeMinRows="1" cdkAutosizeMaxRows="4"
+                                          value="{{objectiveLists.at(pointIndex).get('midTermAppraiserComment').value}}"
+                                          readonly></textarea>
+                                    </mat-form-field>
+                                 </div>
+                              </ng-container>
+                           </ng-container>
+                        </div>
+
+                        <div *ngIf="goalsData?.endTermProcessStatus == 1"
+                           class="midterm-endterm-box-set midterm-endterm-box2" #endtermDiv1
+                           [ngClass]="{'set-display-none': endtermDiv1Ele!=1}">
+                           <span class="midterm-endterm-box-span" style="background-color: #fff;">End-term</span>
+                           <ng-container
+                              *ngIf="(configEndTermAppraisee.objectiveComment || configEndTermAppraisee.objectiveRating)">
+                              <div class="heading-set-obj mb-10">
+                                 {{(appraiserView) ? 'Appraisee Rating' :'Self Rating'}}
+                              </div>
+                              <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                 class="margin-bottom-objectives">
+                                 <mat-form-field appearance="outline" fxFlex="20" class="mr-4 textareaset"
+                                    *ngIf="configEndTermAppraisee.objectiveRating">
+                                    <mat-label>Rating</mat-label>
+                                    <input matInput value=" {{item?.endTermSelfRating}}" readonly>
+                                 </mat-form-field>
+                                 <mat-form-field appearance="outline" fxFlex="auto" class="mr-4 textareaset"
+                                    *ngIf="configEndTermAppraisee.objectiveComment">
+                                    <mat-label>Actions Taken</mat-label>
+                                    <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                       cdkAutosizeMinRows="1" cdkAutosizeMaxRows="4"
+                                       value="{{item.endTermActionsTaken}}" readonly></textarea>
+                                 </mat-form-field>
+                                 <mat-form-field appearance="outline" fxFlex="auto" class="mr-4 textareaset"
+                                    *ngIf="configEndTermAppraisee.objectiveComment">
+                                    <mat-label>Results Achieved</mat-label>
+                                    <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                       cdkAutosizeMinRows="1" cdkAutosizeMaxRows="4"
+                                       value="{{item.endTermResultsAchieved}}" readonly></textarea>
+                                 </mat-form-field>
+                              </div>
+                           </ng-container>
+                           <ng-container
+                              *ngIf="(goalsData?.endTermProcessStatus==1 && appraiserView) && (configEndTermAppraiser.objectiveComment || configEndTermAppraiser.objectiveRating)">
+                              <ng-container *ngIf="(userData.empCode == goalsData.assignedTo)">
+                                 <div class="heading-set-obj mb-10">Appraiser Rating</div>
+                                 <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                    class="margin-bottom-objectives" [formGroupName]="pointIndex">
+                                    <mat-form-field appearance="outline" fxFlex="20" class="mr-4"
+                                       *ngIf="configEndTermAppraiser.objectiveRating">
+                                       <mat-label class="required-astrick">Rating</mat-label>
+                                       <mat-select formControlName="endTermAppraiserRating">
+                                          <mat-option *ngFor="let rating of ratingData" value={{rating}}>
+                                             {{rating}}
+                                          </mat-option>
+                                       </mat-select>
+                                       <mat-error
+                                          *ngIf="objectiveLists.at(pointIndex).get('endTermAppraiserRating').hasError('required')">
+                                          Rating is required.
+                                       </mat-error>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="auto" class="mr-4 "
+                                       *ngIf="configEndTermAppraiser.objectiveComment">
+                                       <mat-label class="required-astrick">Comment</mat-label>
+                                       <input matInput formControlName="endTermAppraiserComment">
+                                       <mat-error
+                                          *ngIf="objectiveLists.at(pointIndex).get('endTermAppraiserComment').hasError('required')">
+                                          Comment is required.
+                                       </mat-error>
+                                    </mat-form-field>
+                                 </div>
+                              </ng-container>
+                              <ng-container *ngIf="(showRatingEndTerm && ( userData.empCode != goalsData.assignedTo))">
+                                 <div class="heading-set-obj mb-10">Appraiser Rating</div>
+                                 <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                    class="margin-bottom-objectives" [formGroupName]="pointIndex">
+                                    <mat-form-field appearance="outline" fxFlex="20" class="mr-4 textareaset"
+                                       *ngIf="configEndTermAppraiser.objectiveRating">
+                                       <mat-label>Rating</mat-label>
+                                       <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                          cdkAutosizeMinRows="1" cdkAutosizeMaxRows="4"
+                                          value="{{objectiveLists.at(pointIndex).get('endTermAppraiserRating').value}}"
+                                          readonly></textarea>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="auto" class="mr-4 textareaset "
+                                       *ngIf="configEndTermAppraiser.objectiveComment">
+                                       <mat-label>Comment</mat-label>
+                                       <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                          cdkAutosizeMinRows="1" cdkAutosizeMaxRows="4"
+                                          value="{{objectiveLists.at(pointIndex).get('endTermAppraiserComment').value}}"
+                                          readonly></textarea>
+                                    </mat-form-field>
+                                 </div>
+                              </ng-container>
+                           </ng-container>
+                        </div>
+                     </div>
+                  </div>
+               </mat-tab>
+
+
+               <mat-tab label="Personal Competency" *ngIf="defaultCompetency">
+                  <div class="card-scroll-view">
+                     <div class="widget-group  pb-0" fxLayout="row wrap" fxFlex="100">
+                        <!-- blue-grey-fg -->
+                        <ng-container formArrayName="defaultCompetencyParameterWeightage">
+                           <fuse-widget class="widget " fxLayout="column" fxFlex="100" fxFlex.gt-xs="100"
+                              fxFlex.gt-md="100"
+                              *ngFor="let widget of goalsForm.get('defaultCompetencyParameterWeightage').controls; let i=index">
+                              <!-- Front -->
+                              <div class="fuse-widget-front" [formGroupName]="i">
+                                 <div class="px-16 py-16 h-52 blue-grey widget-header-color" fxLayout="row"
+                                    fxLayoutAlign="space-between center">
+                                    <div class="h3 overflow-ellipsis "
+                                       [appEllipsifyMe]="widget.get('name').value | decryption">
+                                       {{widget.get('name')?.value | decryption}}
+                                    </div>
+                                    <button mat-button class="btn-comment-obj" matTooltip="View Comments & Rating"
+                                       *ngIf="goalsData?.midTermProcessStatus==1 && appraiserView"
+                                       (click)="viewCommentAndRating(widget.get('appraisalParameterId').value,'',4)">
+                                       <mat-icon aria-hidden="true">star_outline</mat-icon>
+                                    </button>
+                                 </div>
+                                 <div class="" fxLayout="column" fxLayoutAlign="center start"
+                                    style="background-color: #f5f5f5;" formArrayName="parameters">
+                                    <div class="p-8  goals_widget-height-set-scroll width-100">
+                                       <div *ngFor="let para of widget.get('parameters').controls;let j=index; ">
+                                          <div [formGroupName]="j"
+                                             class="pb-8 set-row-parameter wiget-parameter-box-set set-display-block">
+                                             <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                                <div fxFlex="80" class="pr-4 objective-div">
+                                                   <mat-form-field appearance="outline">
+                                                      <mat-label class="required-astrick">Parameter
+                                                      </mat-label>
+                                                      <textarea matInput cdkTextareaAutosize
+                                                         #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                                         cdkAutosizeMaxRows="4" formControlName="parameterName"
+                                                         readonly></textarea>
+                                                   </mat-form-field>
+                                                </div>
+                                                <mat-form-field appearance="outline" fxFlex="20" class="pl-4 ">
+                                                   <mat-label class="required-astrick">Weightage (%)
+                                                   </mat-label>
+                                                   <textarea matInput cdkTextareaAutosize
+                                                      #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                                      cdkAutosizeMaxRows="4" formControlName="parameterWeightage"
+                                                      readonly></textarea>
+                                                </mat-form-field>
+                                             </div>
+                                             <div class="midterm-endterm-box-set midterm-endterm-box3"
+                                                *ngIf="goalsData?.midTermProcessStatus==1" #midtermDiv2
+                                                [ngClass]="{'set-display-none': midtermDiv2Ele!=1}">
+                                                <span class="midterm-endterm-box-span">Mid-term</span>
+                                                <ng-container
+                                                   *ngIf="(configMidTermAppraisee.defaultCompetencyComment || configMidTermAppraisee.defaultCompetencyRating)">
+                                                   <div class="heading-set-obj mb-10">{{(appraiserView) ? 'Appraisee
+                                                      Rating' :'Self Rating'}}</div>
+                                                   <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                                      class="margin-bottom-objectives">
+                                                      <mat-form-field appearance="outline" fxFlex="20"
+                                                         class="mr-4 textareaset"
+                                                         *ngIf="configMidTermAppraisee.defaultCompetencyRating">
+                                                         <mat-label>Rating</mat-label>
+                                                         <input matInput formControlName="midTermAppraiseeRating"
+                                                            readonly>
+                                                      </mat-form-field>
+                                                      <mat-form-field appearance="outline" fxFlex="80"
+                                                         class="mr-4 textareaset"
+                                                         *ngIf="configMidTermAppraisee.defaultCompetencyComment">
+                                                         <mat-label>Comment</mat-label>
+                                                         <textarea matInput cdkTextareaAutosize
+                                                            #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                                            cdkAutosizeMaxRows="4"
+                                                            formControlName="midTermAppraiseeComment"
+                                                            readonly></textarea>
+                                                      </mat-form-field>
+                                                   </div>
+                                                </ng-container>
+                                                <ng-container
+                                                   *ngIf="(appraiserView) && (configMidTermAppraiser.defaultCompetencyComment || configMidTermAppraiser.defaultCompetencyRating)">
+                                                   <ng-container
+                                                      *ngIf="(userData.empCode == goalsData.assignedTo) && goalsData?.endTermProcessStatus==0">
+                                                      <div class="heading-set-obj mb-10">Appraiser Rating </div>
+                                                      <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                                         class="margin-bottom-objectives">
+                                                         <mat-form-field appearance="outline" fxFlex="20" class="mr-4 "
+                                                            *ngIf="configMidTermAppraiser.defaultCompetencyRating">
+                                                            <mat-label class="required-astrick">Rating</mat-label>
+                                                            <mat-select formControlName="midTermAppraiserRating">
+                                                               <mat-option *ngFor="let rating of ratingData"
+                                                                  value={{rating}}>
+                                                                  {{rating}}
+                                                               </mat-option>
+                                                            </mat-select>
+                                                            <mat-error
+                                                               *ngIf="para.get('midTermAppraiserRating').hasError('required')">
+                                                               Rating is required.
+                                                            </mat-error>
+                                                         </mat-form-field>
+                                                         <mat-form-field appearance="outline" fxFlex="auto"
+                                                            class="mr-4 "
+                                                            *ngIf="configMidTermAppraiser.defaultCompetencyComment">
+                                                            <mat-label class="required-astrick">Comment
+                                                            </mat-label>
+                                                            <input matInput formControlName="midTermAppraiserComment">
+                                                            <mat-error
+                                                               *ngIf="para.get('midTermAppraiserComment').hasError('required')">
+                                                               Comment is required.
+                                                            </mat-error>
+                                                         </mat-form-field>
+                                                      </div>
+                                                   </ng-container>
+                                                   <ng-container
+                                                      *ngIf="(showRating && ( userData.empCode != goalsData.assignedTo || goalsData?.endTermProcessStatus==1))">
+                                                      <div class="heading-set-obj mb-10">Appraiser Rating </div>
+                                                      <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                                         class="margin-bottom-objectives">
+                                                         <mat-form-field appearance="outline" fxFlex="20"
+                                                            class="mr-4 textareaset"
+                                                            *ngIf="configMidTermAppraiser.defaultCompetencyRating">
+                                                            <mat-label>Rating</mat-label>
+                                                            <textarea matInput cdkTextareaAutosize
+                                                               #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                                               cdkAutosizeMaxRows="4"
+                                                               value="{{para.get('midTermAppraiserRating').value}}"
+                                                               readonly></textarea>
+                                                         </mat-form-field>
+                                                         <mat-form-field appearance="outline" fxFlex="auto"
+                                                            class="mr-4 textareaset "
+                                                            *ngIf="configMidTermAppraiser.defaultCompetencyComment">
+                                                            <mat-label>Comment</mat-label>
+                                                            <textarea matInput cdkTextareaAutosize
+                                                               #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                                               cdkAutosizeMaxRows="4"
+                                                               value="{{para.get('midTermAppraiserComment').value}}"
+                                                               readonly></textarea>
+                                                         </mat-form-field>
+                                                      </div>
+                                                   </ng-container>
+                                                </ng-container>
+                                             </div>
+
+                                             <div class="midterm-endterm-box-set midterm-endterm-box4"
+                                                *ngIf="goalsData?.endTermProcessStatus==1" #endtermDiv2
+                                                [ngClass]="{'set-display-none': endtermDiv2Ele!=1}">
+                                                <span class="midterm-endterm-box-span">End-term</span>
+                                                <ng-container
+                                                   *ngIf="(configEndTermAppraisee.defaultCompetencyComment || configEndTermAppraisee.defaultCompetencyRating)">
+                                                   <div class="heading-set-obj mb-10">{{(appraiserView) ? 'Appraisee
+                                                      Rating' :'Self Rating'}}</div>
+                                                   <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                                      class="margin-bottom-objectives">
+                                                      <mat-form-field appearance="outline" fxFlex="20"
+                                                         class="mr-4 textareaset"
+                                                         *ngIf="configEndTermAppraisee.defaultCompetencyRating">
+                                                         <mat-label>Rating</mat-label>
+                                                         <input matInput formControlName="endTermAppraiseeRating"
+                                                            readonly>
+                                                      </mat-form-field>
+                                                      <mat-form-field appearance="outline" fxFlex="80"
+                                                         class="mr-4 textareaset"
+                                                         *ngIf="configEndTermAppraisee.defaultCompetencyComment">
+                                                         <mat-label>Comment</mat-label>
+                                                         <textarea matInput cdkTextareaAutosize
+                                                            #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                                            cdkAutosizeMaxRows="4"
+                                                            formControlName="endTermAppraiseeComment"
+                                                            readonly></textarea>
+                                                      </mat-form-field>
+                                                   </div>
+                                                </ng-container>
+                                                <ng-container
+                                                   *ngIf="(appraiserView) && (configEndTermAppraiser.defaultCompetencyComment || configEndTermAppraiser.defaultCompetencyRating)">
+                                                   <ng-container *ngIf="(userData.empCode == goalsData.assignedTo)">
+                                                      <div class="heading-set-obj mb-10">Appraiser Rating </div>
+                                                      <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                                         class="margin-bottom-objectives">
+                                                         <mat-form-field appearance="outline" fxFlex="20" class="mr-4 "
+                                                            *ngIf="configEndTermAppraiser.defaultCompetencyRating">
+                                                            <mat-label class="required-astrick">Rating</mat-label>
+                                                            <mat-select formControlName="endTermAppraiserRating">
+                                                               <mat-option *ngFor="let rating of ratingData"
+                                                                  value={{rating}}>
+                                                                  {{rating}}
+                                                               </mat-option>
+                                                            </mat-select>
+                                                            <mat-error
+                                                               *ngIf="para.get('endTermAppraiserRating').hasError('required')">
+                                                               Rating is required.
+                                                            </mat-error>
+                                                         </mat-form-field>
+                                                         <mat-form-field appearance="outline" fxFlex="auto"
+                                                            class="mr-4 "
+                                                            *ngIf="configEndTermAppraiser.defaultCompetencyComment">
+                                                            <mat-label class="required-astrick">Comment
+                                                            </mat-label>
+                                                            <input matInput formControlName="endTermAppraiserComment">
+                                                            <mat-error
+                                                               *ngIf="para.get('endTermAppraiserComment').hasError('required')">
+                                                               Comment is required.
+                                                            </mat-error>
+                                                         </mat-form-field>
+                                                      </div>
+                                                   </ng-container>
+                                                   <ng-container
+                                                      *ngIf="(showRatingEndTerm && ( userData.empCode != goalsData.assignedTo))">
+                                                      <div class="heading-set-obj mb-10">Appraiser Rating </div>
+                                                      <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                                         class="margin-bottom-objectives">
+                                                         <mat-form-field appearance="outline" fxFlex="20"
+                                                            class="mr-4 textareaset"
+                                                            *ngIf="configEndTermAppraiser.defaultCompetencyRating">
+                                                            <mat-label>Rating</mat-label>
+                                                            <textarea matInput cdkTextareaAutosize
+                                                               #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                                               cdkAutosizeMaxRows="4"
+                                                               value="{{para.get('endTermAppraiserRating').value}}"
+                                                               readonly></textarea>
+                                                         </mat-form-field>
+                                                         <mat-form-field appearance="outline" fxFlex="auto"
+                                                            class="mr-4 textareaset "
+                                                            *ngIf="configEndTermAppraiser.defaultCompetencyComment">
+                                                            <mat-label>Comment</mat-label>
+                                                            <textarea matInput cdkTextareaAutosize
+                                                               #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                                               cdkAutosizeMaxRows="4"
+                                                               value="{{para.get('endTermAppraiserComment').value}}"
+                                                               readonly></textarea>
+                                                         </mat-form-field>
+                                                      </div>
+                                                   </ng-container>
+                                                </ng-container>
+                                             </div>
+
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <!-- / Front -->
+                           </fuse-widget>
+                        </ng-container>
+                        <!-- WIDGET 5 -->
+                     </div>
+                  </div>
+               </mat-tab>
+
+
+               <mat-tab label="Competency Parameter" *ngIf="groupConfig?.competencyParameter">
+                  <div class="card-scroll-view">
+                     <div class="widget-group  pb-0" fxLayout="row wrap" fxFlex="100">
+                        <!-- blue-grey-fg -->
+                        <ng-container formArrayName="competencyParameterWeightage">
+                           <fuse-widget class="widget " fxLayout="column" fxFlex="100" fxFlex.gt-xs="100"
+                              fxFlex.gt-md="100"
+                              *ngFor="let widget of goalsForm.get('competencyParameterWeightage').controls; let i=index">
+                              <!-- Front -->
+                              <div class="fuse-widget-front" [formGroupName]="i">
+                                 <div class="px-16 py-16 h-52 blue-grey widget-header-color" fxLayout="row"
+                                    fxLayoutAlign="space-between center">
+                                    <div class="h3 overflow-ellipsis "
+                                       [appEllipsifyMe]="widget.get('name').value | decryption">
+                                       {{widget.get('name')?.value | decryption}}
+                                    </div>
+                                    <button mat-button class="btn-comment-obj" matTooltip="View Comments & Rating"
+                                       *ngIf="goalsData?.midTermProcessStatus==1 && appraiserView"
+                                       (click)="viewCommentAndRating(widget.get('appraisalParameterId').value,'',3)">
+                                       <mat-icon aria-hidden="true">star_outline</mat-icon>
+                                    </button>
+                                 </div>
+                                 <div class="" fxLayout="column" fxLayoutAlign="center start"
+                                    style="background-color: #f5f5f5;" formArrayName="parameters">
+                                    <div class="p-8  goals_widget-height-set-scroll width-100">
+                                       <div *ngFor="let para of widget.get('parameters').controls;let j=index; ">
+                                          <div [formGroupName]="j"
+                                             class="pb-8 set-row-parameter wiget-parameter-box-set set-display-block">
+                                             <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                                <div fxFlex="100" class="pr-4 objective-div">
+                                                   <mat-form-field appearance="outline">
+                                                      <mat-label class="required-astrick">Parameter
+                                                      </mat-label>
+                                                      <textarea matInput cdkTextareaAutosize
+                                                         #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                                         cdkAutosizeMaxRows="4" formControlName="parameterName"
+                                                         readonly></textarea>
+                                                   </mat-form-field>
+                                                </div>
+                                                <!--    <mat-form-field appearance="outline" fxFlex="20" class="pl-4 ">
+       <mat-label class="required-astrick">Weightage (%)</mat-label>
+       <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+       cdkAutosizeMinRows="1" cdkAutosizeMaxRows="4"
+       formControlName="parameterWeightage" readonly></textarea>
+       </mat-form-field> -->
+                                             </div>
+                                             <div class="midterm-endterm-box-set midterm-endterm-box5"
+                                                *ngIf="goalsData?.midTermProcessStatus==1" #midtermDiv3
+                                                [ngClass]="{'set-display-none': midtermDiv3Ele!=1}">
+                                                <span class="midterm-endterm-box-span">Mid-term</span>
+                                                <ng-container
+                                                   *ngIf="(configMidTermAppraisee.competencyComment || configMidTermAppraisee.competencyRating)">
+                                                   <div class="heading-set-obj mb-10">{{(appraiserView) ? 'Appraisee
+                                                      Rating' :'Self Rating'}}</div>
+                                                   <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                                      class="margin-bottom-objectives">
+                                                      <mat-form-field appearance="outline" fxFlex="20"
+                                                         class="mr-4 textareaset"
+                                                         *ngIf="configMidTermAppraisee.competencyRating">
+                                                         <mat-label>Rating</mat-label>
+                                                         <input matInput formControlName="midTermAppraiseeRating"
+                                                            readonly>
+                                                      </mat-form-field>
+                                                      <mat-form-field appearance="outline" fxFlex="80"
+                                                         class="mr-4 textareaset"
+                                                         *ngIf="configMidTermAppraisee.competencyComment">
+                                                         <mat-label>Comment</mat-label>
+                                                         <textarea matInput cdkTextareaAutosize
+                                                            #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                                            cdkAutosizeMaxRows="4"
+                                                            formControlName="midTermAppraiseeComment"
+                                                            readonly></textarea>
+                                                      </mat-form-field>
+                                                   </div>
+                                                </ng-container>
+                                                <ng-container
+                                                   *ngIf="(appraiserView) && (configMidTermAppraiser.competencyComment || configMidTermAppraiser.competencyRating)">
+                                                   <ng-container
+                                                      *ngIf="(userData.empCode == goalsData.assignedTo) && goalsData?.endTermProcessStatus==0">
+                                                      <div class="heading-set-obj mb-10">Appraiser Rating </div>
+                                                      <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                                         class="margin-bottom-objectives">
+                                                         <mat-form-field appearance="outline" fxFlex="20" class="mr-4 "
+                                                            *ngIf="configMidTermAppraiser.competencyRating">
+                                                            <mat-label class="required-astrick">Rating</mat-label>
+                                                            <mat-select formControlName="midTermAppraiserRating">
+                                                               <mat-option *ngFor="let rating of ratingData"
+                                                                  value={{rating}}>
+                                                                  {{rating}}
+                                                               </mat-option>
+                                                            </mat-select>
+                                                            <mat-error
+                                                               *ngIf="para.get('midTermAppraiserRating').hasError('required')">
+                                                               Rating is required.
+                                                            </mat-error>
+                                                         </mat-form-field>
+                                                         <mat-form-field appearance="outline" fxFlex="auto"
+                                                            class="mr-4 "
+                                                            *ngIf="configMidTermAppraiser.competencyComment">
+                                                            <mat-label class="required-astrick">Comment
+                                                            </mat-label>
+                                                            <input matInput formControlName="midTermAppraiserComment">
+                                                            <mat-error
+                                                               *ngIf="para.get('midTermAppraiserComment').hasError('required')">
+                                                               Comment is required.
+                                                            </mat-error>
+                                                         </mat-form-field>
+                                                      </div>
+                                                   </ng-container>
+                                                   <ng-container
+                                                      *ngIf="(showRating && ( userData.empCode != goalsData.assignedTo || goalsData?.endTermProcessStatus==1))">
+                                                      <div class="heading-set-obj mb-10">Appraiser Rating </div>
+                                                      <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                                         class="margin-bottom-objectives">
+                                                         <mat-form-field appearance="outline" fxFlex="20"
+                                                            class="mr-4 textareaset"
+                                                            *ngIf="configMidTermAppraiser.competencyRating">
+                                                            <mat-label>Rating</mat-label>
+                                                            <textarea matInput cdkTextareaAutosize
+                                                               #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                                               cdkAutosizeMaxRows="4"
+                                                               value="{{para.get('midTermAppraiserRating').value}}"
+                                                               readonly></textarea>
+                                                         </mat-form-field>
+                                                         <mat-form-field appearance="outline" fxFlex="auto"
+                                                            class="mr-4 textareaset "
+                                                            *ngIf="configMidTermAppraiser.competencyComment">
+                                                            <mat-label>Comment</mat-label>
+                                                            <textarea matInput cdkTextareaAutosize
+                                                               #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                                               cdkAutosizeMaxRows="4"
+                                                               value="{{para.get('midTermAppraiserComment').value}}"
+                                                               readonly></textarea>
+                                                         </mat-form-field>
+                                                      </div>
+                                                   </ng-container>
+                                                </ng-container>
+                                             </div>
+
+                                             <div class="midterm-endterm-box-set midterm-endterm-box6"
+                                                *ngIf="goalsData?.endTermProcessStatus==1" #endtermDiv3
+                                                [ngClass]="{'set-display-none': endtermDiv3Ele!=1}">
+                                                <span class="midterm-endterm-box-span">End-term</span>
+                                                <ng-container
+                                                   *ngIf="(configEndTermAppraisee.competencyComment || configEndTermAppraisee.competencyRating)">
+                                                   <div class="heading-set-obj mb-10">{{(appraiserView) ? 'Appraisee
+                                                      Rating' :'Self Rating'}}</div>
+                                                   <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                                      class="margin-bottom-objectives">
+                                                      <mat-form-field appearance="outline" fxFlex="20"
+                                                         class="mr-4 textareaset"
+                                                         *ngIf="configEndTermAppraisee.competencyRating">
+                                                         <mat-label>Rating</mat-label>
+                                                         <input matInput formControlName="endTermAppraiseeRating"
+                                                            readonly>
+                                                      </mat-form-field>
+                                                      <mat-form-field appearance="outline" fxFlex="80"
+                                                         class="mr-4 textareaset"
+                                                         *ngIf="configEndTermAppraisee.competencyComment">
+                                                         <mat-label>Comment</mat-label>
+                                                         <textarea matInput cdkTextareaAutosize
+                                                            #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                                            cdkAutosizeMaxRows="4"
+                                                            formControlName="endTermAppraiseeComment"
+                                                            readonly></textarea>
+                                                      </mat-form-field>
+                                                   </div>
+                                                </ng-container>
+                                                <ng-container
+                                                   *ngIf="(appraiserView) && (configEndTermAppraiser.competencyComment || configEndTermAppraiser.competencyRating)">
+                                                   <ng-container *ngIf="(userData.empCode == goalsData.assignedTo)">
+                                                      <div class="heading-set-obj mb-10">Appraiser Rating </div>
+                                                      <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                                         class="margin-bottom-objectives">
+                                                         <mat-form-field appearance="outline" fxFlex="20" class="mr-4 "
+                                                            *ngIf="configEndTermAppraiser.competencyRating">
+                                                            <mat-label class="required-astrick">Rating</mat-label>
+                                                            <mat-select formControlName="endTermAppraiserRating">
+                                                               <mat-option *ngFor="let rating of ratingData"
+                                                                  value={{rating}}>
+                                                                  {{rating}}
+                                                               </mat-option>
+                                                            </mat-select>
+                                                            <mat-error
+                                                               *ngIf="para.get('endTermAppraiserRating').hasError('required')">
+                                                               Rating is required.
+                                                            </mat-error>
+                                                         </mat-form-field>
+                                                         <mat-form-field appearance="outline" fxFlex="auto"
+                                                            class="mr-4 "
+                                                            *ngIf="configEndTermAppraiser.competencyComment">
+                                                            <mat-label class="required-astrick">Comment
+                                                            </mat-label>
+                                                            <input matInput formControlName="endTermAppraiserComment">
+                                                            <mat-error
+                                                               *ngIf="para.get('endTermAppraiserComment').hasError('required')">
+                                                               Comment is required.
+                                                            </mat-error>
+                                                         </mat-form-field>
+                                                      </div>
+                                                   </ng-container>
+                                                   <ng-container *ngIf="(userData.empCode == goalsData.assignedTo)">
+                                                      <div class="heading-set-obj mb-10">Appraiser Rating </div>
+                                                      <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                                         class="margin-bottom-objectives"
+                                                         *ngIf="(showRatingEndTerm && ( userData.empCode != goalsData.assignedTo))">
+                                                         <mat-form-field appearance="outline" fxFlex="20"
+                                                            class="mr-4 textareaset"
+                                                            *ngIf="configEndTermAppraiser.competencyRating">
+                                                            <mat-label>Rating</mat-label>
+                                                            <textarea matInput cdkTextareaAutosize
+                                                               #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                                               cdkAutosizeMaxRows="4"
+                                                               value="{{para.get('endTermAppraiserRating').value}}"
+                                                               readonly></textarea>
+                                                         </mat-form-field>
+                                                         <mat-form-field appearance="outline" fxFlex="auto"
+                                                            class="mr-4 textareaset "
+                                                            *ngIf="configEndTermAppraiser.competencyComment">
+                                                            <mat-label>Comment</mat-label>
+                                                            <textarea matInput cdkTextareaAutosize
+                                                               #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                                               cdkAutosizeMaxRows="4"
+                                                               value="{{para.get('endTermAppraiserComment').value}}"
+                                                               readonly></textarea>
+                                                         </mat-form-field>
+                                                      </div>
+                                                   </ng-container>
+                                                </ng-container>
+                                             </div>
+
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <!-- / Front -->
+                           </fuse-widget>
+                        </ng-container>
+                        <!-- WIDGET 5 -->
+                     </div>
+                  </div>
+               </mat-tab>
+
+
+               <mat-tab label="Company Parameter" *ngIf="groupConfig?.companyParameter">
+                  <div class="card-scroll-view">
+                     <div class="widget-group  pb-0" fxLayout="row wrap" fxFlex="100">
+                        <!-- blue-grey-fg -->
+                        <ng-container formArrayName="companyParameterWeightage">
+                           <fuse-widget class="widget " fxLayout="column" fxFlex="100" fxFlex.gt-xs="100"
+                              fxFlex.gt-md="100"
+                              *ngFor="let widget of goalsForm.get('companyParameterWeightage').controls; let i=index">
+                              <!-- Front -->
+                              <div class="fuse-widget-front" [formGroupName]="i">
+                                 <div class="px-16 py-16 h-52 blue-grey widget-header-color" fxLayout="row"
+                                    fxLayoutAlign="space-between center">
+                                    <div class="h3 overflow-ellipsis "
+                                       [appEllipsifyMe]="widget.get('name').value | decryption">
+                                       {{widget.get('name')?.value | decryption}}
+                                    </div>
+                                    <button mat-button class="btn-comment-obj" matTooltip="View Comments & Rating"
+                                       *ngIf="goalsData?.midTermProcessStatus==1 && appraiserView"
+                                       (click)="viewCommentAndRating(widget.get('companyParameterId').value,'',2)">
+                                       <mat-icon aria-hidden="true">star_outline</mat-icon>
+                                    </button>
+                                 </div>
+                                 <div class="" fxLayout="column" fxLayoutAlign="center start"
+                                    style="background-color: #f5f5f5;" formArrayName="parameters">
+                                    <div class="p-8  goals_widget-height-set-scroll width-100">
+                                       <div *ngFor="let para of widget.get('parameters').controls;let j=index; ">
+                                          <div [formGroupName]="j"
+                                             class="pb-8 set-row-parameter wiget-parameter-box-set set-display-block">
+                                             <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                                <div fxFlex="100" class="pr-4 objective-div">
+                                                   <mat-form-field appearance="outline">
+                                                      <mat-label class="required-astrick">Parameter
+                                                      </mat-label>
+                                                      <textarea matInput cdkTextareaAutosize
+                                                         #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                                         cdkAutosizeMaxRows="4" formControlName="parameterName"
+                                                         readonly></textarea>
+                                                   </mat-form-field>
+                                                </div>
+                                             </div>
+                                             <!--    <mat-form-field appearance="outline" fxFlex="20" class="pl-4 ">
+       <mat-label class="required-astrick">Weightage (%)</mat-label>
+       <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+       cdkAutosizeMinRows="1" cdkAutosizeMaxRows="4"
+       formControlName="parameterWeightage" readonly></textarea>
+       </mat-form-field> -->
+                                             <div class="midterm-endterm-box-set midterm-endterm-box7"
+                                                *ngIf="goalsData?.midTermProcessStatus==1" #midtermDiv4
+                                                [ngClass]="{'set-display-none': midtermDiv4Ele!=1}">
+                                                <span class="midterm-endterm-box-span">Mid-term</span>
+                                                <ng-container
+                                                   *ngIf="(configMidTermAppraisee.companyComment || configMidTermAppraisee.companyRating)">
+                                                   <div class="heading-set-obj mb-10">{{(appraiserView) ? 'Appraisee
+                                                      Rating' :'Self Rating'}}</div>
+                                                   <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                                      class="margin-bottom-objectives">
+                                                      <mat-form-field appearance="outline" fxFlex="20"
+                                                         class="mr-4 textareaset"
+                                                         *ngIf="configMidTermAppraisee.companyRating">
+                                                         <mat-label>Rating</mat-label>
+                                                         <input matInput formControlName="midTermAppraiseeRating"
+                                                            readonly>
+                                                      </mat-form-field>
+                                                      <mat-form-field appearance="outline" fxFlex="80"
+                                                         class="mr-4 textareaset"
+                                                         *ngIf="configMidTermAppraisee.companyComment">
+                                                         <mat-label>Comment</mat-label>
+                                                         <textarea matInput cdkTextareaAutosize
+                                                            #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                                            cdkAutosizeMaxRows="4"
+                                                            formControlName="midTermAppraiseeComment"
+                                                            readonly></textarea>
+                                                      </mat-form-field>
+                                                   </div>
+                                                </ng-container>
+                                                <ng-container
+                                                   *ngIf="(appraiserView) && (configMidTermAppraiser.companyComment || configMidTermAppraiser.companyRating)">
+                                                   <ng-container
+                                                      *ngIf="(userData.empCode == goalsData.assignedTo) && goalsData?.endTermProcessStatus==0">
+                                                      <div class="heading-set-obj mb-10">Appraiser Rating </div>
+                                                      <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                                         class="margin-bottom-objectives">
+                                                         <mat-form-field appearance="outline" fxFlex="20" class="mr-4 "
+                                                            *ngIf="configMidTermAppraiser.companyRating">
+                                                            <mat-label class="required-astrick">Rating</mat-label>
+                                                            <mat-select formControlName="midTermAppraiserRating">
+                                                               <mat-option *ngFor="let rating of ratingData"
+                                                                  value={{rating}}>
+                                                                  {{rating}}
+                                                               </mat-option>
+                                                            </mat-select>
+                                                            <mat-error
+                                                               *ngIf="para.get('midTermAppraiserRating').hasError('required')">
+                                                               Rating is required.
+                                                            </mat-error>
+                                                         </mat-form-field>
+                                                         <mat-form-field appearance="outline" fxFlex="auto"
+                                                            class="mr-4 " *ngIf="configMidTermAppraiser.companyComment">
+                                                            <mat-label class="required-astrick">Comment
+                                                            </mat-label>
+                                                            <input matInput formControlName="midTermAppraiserComment">
+                                                            <mat-error
+                                                               *ngIf="para.get('midTermAppraiserComment').hasError('required')">
+                                                               Comment is required.
+                                                            </mat-error>
+                                                         </mat-form-field>
+                                                      </div>
+                                                   </ng-container>
+                                                   <ng-container
+                                                      *ngIf="(showRating && ( userData.empCode != goalsData.assignedTo || goalsData?.endTermProcessStatus==1))">
+                                                      <div class="heading-set-obj mb-10">Appraiser Rating </div>
+                                                      <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                                         class="margin-bottom-objectives">
+                                                         <mat-form-field appearance="outline" fxFlex="20"
+                                                            class="mr-4 textareaset"
+                                                            *ngIf="configMidTermAppraiser.companyRating">
+                                                            <mat-label>Rating</mat-label>
+                                                            <textarea matInput cdkTextareaAutosize
+                                                               #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                                               cdkAutosizeMaxRows="4"
+                                                               value="{{para.get('midTermAppraiserRating').value}}"
+                                                               readonly></textarea>
+                                                         </mat-form-field>
+                                                         <mat-form-field appearance="outline" fxFlex="auto"
+                                                            class="mr-4 textareaset "
+                                                            *ngIf="configMidTermAppraiser.companyComment">
+                                                            <mat-label>Comment</mat-label>
+                                                            <textarea matInput cdkTextareaAutosize
+                                                               #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                                               cdkAutosizeMaxRows="4"
+                                                               value="{{para.get('midTermAppraiserComment').value}}"
+                                                               readonly></textarea>
+                                                         </mat-form-field>
+                                                      </div>
+                                                   </ng-container>
+                                                </ng-container>
+                                             </div>
+
+                                             <div class="midterm-endterm-box-set midterm-endterm-box8"
+                                                *ngIf="goalsData?.endTermProcessStatus==1" #endtermDiv4
+                                                [ngClass]="{'set-display-none': endtermDiv4Ele!=1}">
+                                                <span class="midterm-endterm-box-span">End-term</span>
+                                                <ng-container
+                                                   *ngIf="(configEndTermAppraisee.companyComment || configEndTermAppraisee.companyRating)">
+                                                   <div class="heading-set-obj mb-10">{{(appraiserView) ? 'Appraisee
+                                                      Rating' :'Self Rating'}}</div>
+                                                   <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                                      class="margin-bottom-objectives">
+                                                      <mat-form-field appearance="outline" fxFlex="20"
+                                                         class="mr-4 textareaset"
+                                                         *ngIf="configEndTermAppraisee.companyRating">
+                                                         <mat-label>Rating</mat-label>
+                                                         <input matInput formControlName="endTermAppraiseeRating"
+                                                            readonly>
+                                                      </mat-form-field>
+                                                      <mat-form-field appearance="outline" fxFlex="80"
+                                                         class="mr-4 textareaset"
+                                                         *ngIf="configEndTermAppraisee.companyComment">
+                                                         <mat-label>Comment</mat-label>
+                                                         <textarea matInput cdkTextareaAutosize
+                                                            #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                                            cdkAutosizeMaxRows="4"
+                                                            formControlName="endTermAppraiseeComment"
+                                                            readonly></textarea>
+                                                      </mat-form-field>
+                                                   </div>
+                                                </ng-container>
+                                                <ng-container
+                                                   *ngIf="(appraiserView) && (configEndTermAppraiser.companyComment || configEndTermAppraiser.companyRating)">
+                                                   <ng-container *ngIf="(userData.empCode == goalsData.assignedTo)">
+                                                      <div class="heading-set-obj mb-10">Appraiser Rating </div>
+                                                      <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                                         class="margin-bottom-objectives">
+                                                         <mat-form-field appearance="outline" fxFlex="20" class="mr-4 "
+                                                            *ngIf="configEndTermAppraiser.companyRating">
+                                                            <mat-label class="required-astrick">Rating</mat-label>
+                                                            <mat-select formControlName="endTermAppraiserRating">
+                                                               <mat-option *ngFor="let rating of ratingData"
+                                                                  value={{rating}}>
+                                                                  {{rating}}
+                                                               </mat-option>
+                                                            </mat-select>
+                                                            <mat-error
+                                                               *ngIf="para.get('endTermAppraiserRating').hasError('required')">
+                                                               Rating is required.
+                                                            </mat-error>
+                                                         </mat-form-field>
+                                                         <mat-form-field appearance="outline" fxFlex="auto"
+                                                            class="mr-4 " *ngIf="configEndTermAppraiser.companyComment">
+                                                            <mat-label class="required-astrick">Comment
+                                                            </mat-label>
+                                                            <input matInput formControlName="endTermAppraiserComment">
+                                                            <mat-error
+                                                               *ngIf="para.get('endTermAppraiserComment').hasError('required')">
+                                                               Comment is required.
+                                                            </mat-error>
+                                                         </mat-form-field>
+                                                      </div>
+                                                   </ng-container>
+                                                   <ng-container
+                                                      *ngIf="(showRatingEndTerm && ( userData.empCode != goalsData.assignedTo))">
+                                                      <div class="heading-set-obj mb-10">Appraiser Rating </div>
+                                                      <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto"
+                                                         class="margin-bottom-objectives">
+                                                         <mat-form-field appearance="outline" fxFlex="20"
+                                                            class="mr-4 textareaset"
+                                                            *ngIf="configEndTermAppraiser.companyRating">
+                                                            <mat-label>Rating</mat-label>
+                                                            <textarea matInput cdkTextareaAutosize
+                                                               #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                                               cdkAutosizeMaxRows="4"
+                                                               value="{{para.get('endTermAppraiserRating').value}}"
+                                                               readonly></textarea>
+                                                         </mat-form-field>
+                                                         <mat-form-field appearance="outline" fxFlex="auto"
+                                                            class="mr-4 textareaset "
+                                                            *ngIf="configEndTermAppraiser.companyComment">
+                                                            <mat-label>Comment</mat-label>
+                                                            <textarea matInput cdkTextareaAutosize
+                                                               #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                                                               cdkAutosizeMaxRows="4"
+                                                               value="{{para.get('endTermAppraiserComment').value}}"
+                                                               readonly></textarea>
+                                                         </mat-form-field>
+                                                      </div>
+                                                   </ng-container>
+                                                </ng-container>
+                                             </div>
+
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <!-- / Front -->
+                           </fuse-widget>
+                        </ng-container>
+                        <!-- WIDGET 5 -->
+                     </div>
+                  </div>
+               </mat-tab>
+
+            </mat-tab-group>
+
+            <div class="midterm-endterm-box-set pt-20"
+               *ngIf="goalsData?.midTermProcessStatus==1 && (configMidTermAppraiser?.overallComments || configMidTermAppraiser?.trainingNeeds)">
+               <span class="midterm-endterm-box-span " style="background-color: #fff;">Mid-term</span>
+               <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto" class="margin-bottom-objectives"
+                  *ngIf="(appraiserView) && configMidTermAppraiser.overallComments">
+                  <mat-form-field appearance="outline" fxFlex="100" class="mr-4 textareaset">
+                     <mat-label>Overall Comments</mat-label>
+                     <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                        cdkAutosizeMaxRows="4" formControlName="midTermOverallComments"
+                        [readonly]="showRating && (userData.empCode != goalsData.assignedTo || goalsData?.endTermProcessStatus==1)"></textarea>
+                  </mat-form-field>
+               </div>
+
+               <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto" class="margin-bottom-objectives"
+                  *ngIf="(appraiserView) && configMidTermAppraiser.trainingNeeds">
+                  <mat-form-field appearance="outline" fxFlex="100" class="mr-4 textareaset">
+                     <mat-label>Training Needs</mat-label>
+                     <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                        cdkAutosizeMaxRows="4" formControlName="midTermTrainingNeeds"
+                        [readonly]="showRating && (userData.empCode != goalsData.assignedTo || goalsData?.endTermProcessStatus==1)"></textarea>
+                  </mat-form-field>
+               </div>
+            </div>
+            <div class="midterm-endterm-box-set pt-20 "
+               *ngIf="goalsData?.midTermProcessStatus==1 && (configEndTermAppraiser?.overallComments || configEndTermAppraiser?.trainingNeeds)">
+               <span class="midterm-endterm-box-span " style="background-color: #fff;">End-term</span>
+               <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto" class="margin-bottom-objectives "
+                  *ngIf="(appraiserView) && configEndTermAppraiser.overallComments">
+                  <mat-form-field appearance="outline" fxFlex="100" class="mr-4 textareaset">
+                     <mat-label>Overall Comments</mat-label>
+                     <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                        cdkAutosizeMaxRows="4" formControlName="endTermOverallComments"
+                        [readonly]="showRatingEndTerm && (userData.empCode != goalsData.assignedTo)"></textarea>
+                  </mat-form-field>
+               </div>
+
+               <div fxLayout="row" fxLayoutAlign="start start" fxFlex="1 0 auto" class="margin-bottom-objectives"
+                  *ngIf="(appraiserView) && configEndTermAppraiser.trainingNeeds">
+                  <mat-form-field appearance="outline" fxFlex="100" class="mr-4 textareaset">
+                     <mat-label>Training Needs</mat-label>
+                     <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                        cdkAutosizeMaxRows="4" formControlName="endTermTrainingNeeds"
+                        [readonly]="showRatingEndTerm && (userData.empCode != goalsData.assignedTo)"></textarea>
+                  </mat-form-field>
+               </div>
+            </div>
+         </form>
+      </div>
+
+
+
+      <div fxLayout="row" fxLayoutAlign="end center" fxFlex="1 0 auto"
+         *ngIf="(appraiserView && userData.empCode == goalsData.assignedTo)">
+         <div class="mr-8">
+            <mat-checkbox name="setobjadd" (change)="addPermission($event)"
+               class="edit-delete-checklist-icon add-checklist-icon">
+               <mat-icon aria-hidden="true">add </mat-icon>
+               Add New Objective
+            </mat-checkbox>
+         </div>
+         <button mat-raised-button color="accent"
+            (click)="AcceptRevisePopUP('accept',goalsData.empId,goalsData.empObjId,goalsData.empName,goalsData.midTermProcessStatus,action,goalsData.objectiveApprovalStatus,goalsData.midTermApprovalStatus,goalsData.endTermProcessStatus,goalsData.endTermApprovalStatus)"
+            [disabled]="(goalsData.reviseStatus==1) || (action.deleteIds.length!=0 || action.editIds.length!=0 || action.addPermission)">{{'NAV.approve'
+            | translate}}</button>
+         <button mat-raised-button
+            (click)="AcceptRevisePopUP('revise',goalsData.empId,goalsData.empObjId,'',goalsData.midTermProcessStatus,action,goalsData.objectiveApprovalStatus,goalsData.midTermApprovalStatus,goalsData.endTermProcessStatus,goalsData.endTermApprovalStatus)"
+            [disabled]="(goalsData.reviseStatus==1) || (action.deleteIds.length==0 && action.editIds.length==0 && !action.addPermission) "
+            style="margin:0px 10px 0px 10px;">{{'NAV.revise' | translate}}</button>
+         <!-- <button mat-raised-button  (click)="sendMessagePopUp('allmsg','message',goalsData.empId,goalsData.empObjId,'comment')" [disabled]="goalsData.reviseStatus==1" class="cancel-btn-dailog">Comment</button> -->
+         <button mat-raised-button (click)="notesPopUp(goalsData.empId,goalsData.empObjId,1)"
+            [disabled]="goalsData.reviseStatus==1" class="cancel-btn-dailog">{{'NAV.notes' | translate}}</button>
+         <button mat-raised-button color="accent"
+            *ngIf="goalsData?.midTermProcessStatus==1 && goalsData?.endTermProcessStatus==0" (click)="saveRating()"
+            [disabled]="goalsData.reviseStatus==1" class="ml-10">{{'NAV.save' | translate}}</button>
+         <button mat-raised-button color="accent" *ngIf="goalsData?.endTermProcessStatus==1"
+            (click)="saveRatingEndTerm()" [disabled]="goalsData.reviseStatus==1" class="ml-10">{{'NAV.save' |
+            translate}}</button>
+      </div>
+   </div>
+   <!-- / CONTENT -->
+</div>

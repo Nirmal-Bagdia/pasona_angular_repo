@@ -1,0 +1,79 @@
+<div class="page-layout simple fullwidth angular-material-elements">
+  <!-- HEADER -->
+  <div class="header accent p-24 h-100" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+    fxLayoutAlign.gt-xs="space-between center">
+    <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="column" fxLayoutAlign.gt-xs="center start">
+      <div class="h2 head-icon">
+        <mat-icon aria-hidden="true">assignment_ind</mat-icon>{{'NAV.assignRole.view' | translate}}
+      </div>
+    </div>
+    <a *ngIf="roleModule.write" mat-raised-button class="reference-button mt-16 mt-sm-0" [routerLink]="urlCurrentAdd">
+      <mat-icon class="mr-8">add</mat-icon>
+      <span>{{'NAV.assignRole.add' | translate}}</span>
+    </a>
+  </div>
+  <!-- / HEADER -->
+  <!-- CONTENT -->
+    <div class="content p-24">
+    <div fxLayout="row" fxLayoutAlign="end center">
+      <div fxFlex="55"></div>
+      <mat-form-field fxFlex="20">
+        <mat-label>Role</mat-label>
+        <mat-select  [(ngModel)]="selection.roleId" (selectionChange)="getAllAssignRole()">
+          <mat-option [value]="">--None--</mat-option>
+            <mat-option *ngFor="let roleData of rolesAllData" [value]="roleData.roleId">
+              {{roleData.roleName | decryption}}
+            </mat-option>
+
+        </mat-select>
+    </mat-form-field>
+    <div fxFlex="5"></div>
+      <mat-form-field fxFlex="20">
+        <input matInput [(ngModel)]="selection.empCode" name="search" placeholder="Search" (change)="applyFilter($event.target.value)" class="search_input"> <!-- (keyup)="applyFilter($event.target.value)" -->
+        <mat-icon class="edit-color search-icon" (click)="applyFilter($event.target.value)" style="cursor: pointer;">search</mat-icon>
+      </mat-form-field>
+    </div>
+    <table mat-table [dataSource]="rolesData" class="mat-elevation-z8">
+      <ng-container matColumnDef="sNo">
+        <th mat-header-cell *matHeaderCellDef>{{'assignRoleTable.sNo' | translate}} </th>
+        <td mat-cell *matCellDef="let element; let i = index;">{{ (i+1) + (paginator.pageIndex * paginator.pageSize) }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="empName">
+        <th mat-header-cell *matHeaderCellDef>{{'assignRoleTable.empName' | translate}}</th>
+        <td mat-cell *matCellDef="let element" appEllipsifyMe="{{element.empCode | decryption}} ({{element.empName | decryption}})">{{element.empCode | decryption}} ({{element.empName | decryption}}) </td>
+      </ng-container>
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>{{'assignRoleTable.email' | translate}}</th>
+        <td mat-cell *matCellDef="let element" appEllipsifyMe="{{element.email | decryption}}"> {{element.email | decryption}} </td>
+      </ng-container>
+      <ng-container matColumnDef="roleName">
+        <th mat-header-cell *matHeaderCellDef>{{'assignRoleTable.roleName' | translate}}</th>
+        <td mat-cell *matCellDef="let element" appEllipsifyMe="{{element.roleName | decryption}}"> {{element.roleName | decryption}} </td>
+      </ng-container>
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>{{'assignRoleTable.action' | translate}}</th>
+        <td mat-cell *matCellDef="let element">
+          <button *ngIf="roleModule.write" mat-button class="edit-del" (click)="editRoles(element.id)"
+            matTooltip="Edit">
+            <mat-icon class="edit-color">edit</mat-icon>
+          </button>
+          <button *ngIf="!roleModule.write" mat-button class="edit-del" (click)="editRoles(element.id)"
+            matTooltip="View">
+            <mat-icon class="edit-color">remove_red_eye</mat-icon>
+          </button>
+          <button *ngIf="roleModule.write" mat-button class="edit-del" (click)="deleteRolePopUp(element.id)"
+            matTooltip="Delete">
+            <mat-icon class="del-color">delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <div fxLayout="row" fxLayoutAlign="center center" class="no-data-available" [ngClass]="(rolesData.length === 0)?'visible-no-data-available':''">  
+    </div>
+  <mat-paginator #paginator [length]="resultsLength" [pageSize]="selection.pSize" [pageSizeOptions]="[5, 10, 25, 100]" (page)="getPaginatorData($event)">
+  </mat-paginator>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<div style="position: relative;">
+  <h1 class="delete-dialog heading-dailog" mat-dialog-title>{{'NAV.alreadyExistEmp' | translate}}</h1>
+  <mat-icon class="edit-color cancel-icon-dialog" (click)="onNoClick()">close</mat-icon>
+  <div mat-dialog-content class="set-display-block">
+    <div *ngIf="msg" style="color:red;margin-bottom: 10px;">{{msg}} already exists.</div>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 employee-list">
+      <ng-container matColumnDef="sNo">
+        <th mat-header-cell *matHeaderCellDef> S.No. </th>
+        <td mat-cell *matCellDef="let element; let i = index;">{{ (i+1) + (paginator.pageIndex * paginator.pageSize) }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="empName">
+        <th mat-header-cell *matHeaderCellDef>Employee Name </th>
+        <td mat-cell *matCellDef="let element"> {{element?.empCode | decryption}}({{element.empName | decryption}}) </td>
+      </ng-container>
+      <ng-container matColumnDef="department">
+        <th mat-header-cell *matHeaderCellDef>Department </th>
+        <td mat-cell *matCellDef="let element"> {{element.departmentName | decryption}} </td>
+      </ng-container>
+      <ng-container matColumnDef="section">
+        <th mat-header-cell *matHeaderCellDef>Section </th>
+        <td mat-cell *matCellDef="let element"> {{element.sectionName | decryption}} </td>
+      </ng-container>
+      <ng-container matColumnDef="group">
+        <th mat-header-cell *matHeaderCellDef>Group </th>
+        <td mat-cell *matCellDef="let element"> {{element.groupName | decryption}} </td>
+      </ng-container>
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let element"> {{element.email | decryption}} </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()" class="cancel-btn-dailog">{{'NAV.cancel' | translate}}</button>
+  </div>
+</div>

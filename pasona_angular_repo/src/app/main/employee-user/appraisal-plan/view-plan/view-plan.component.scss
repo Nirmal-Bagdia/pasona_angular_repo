@@ -1,0 +1,168 @@
+:host {
+
+    .content {
+
+        form {
+            width: 100%;
+            max-width: 800px !important;
+        }
+
+        .form-errors-model {
+            flex: 1;
+
+            code {
+                background: none !important;
+            }
+        }
+
+        .horizontal-stepper-wrapper,
+        .vertical-stepper-wrapper {
+            max-width: 800px;
+        }
+    }
+}
+
+.mat-icon.upload-icon {
+    font-size: 45px;
+    line-height: 1;
+    height: 45px;
+    padding: 0;
+    width: 45px;
+    cursor: pointer;
+}
+
+#photoInput {
+    display: none;
+}
+
+.image-file-set {
+    align-items: center;
+    display: flex;
+
+}
+
+
+
+
+.progess-h-stepper .mat-horizontal-stepper-header-container .mat-horizontal-stepper-header .mat-step-label 
+{
+    display: inline-block !important;
+    min-width: 50px !important;
+}
+.appraisal-plan-progress-bar.mat-progress-bar {
+    margin-top: 3px;
+    margin-left: 5px;
+    width:120px;
+}
+
+mat-tab-group {
+    height: 100%;
+
+    .mat-tab-body-wrapper {
+        flex-grow: 1;
+    }
+}
+.mat-tab-group.appraisal-plan-tab .mat-tab-header ,.mat-tab-group.appraisal-plan-tab .mat-tab-header-pagination
+{
+    background-color: #d3d3d3 !important;
+    
+}
+
+/* .mat-tab-group.appraisal-plan-tab .mat-tab-label, body.theme-default .mat-tab-link {
+  ///color: #fff !important; 
+//   background-color: red;
+} */
+
+.mat-tab-group.appraisal-plan-tab .mat-tab-header-pagination-chevron {
+    border-color: #fff !important;
+}
+
+.dashboard-progressbar .mat-progress-bar-fill::after {
+    background-color:#607d8b !important;
+}
+.appraisal-plan-tab .mat-tab-label-container {
+    padding: 0 0px !important;
+}
+.appraisal-plan-tab .mat-tab-label-container .mat-tab-label {
+    height: 60px !important;
+    padding: 10px !important;
+    border-right: 1px solid #fff !important;
+    opacity: 1;
+}
+.appraisal-plan-tab .mat-tab-label-container .mat-tab-label:last-child {
+    border-right: 0px solid #fff !important;
+}
+.appraisal-plan-tab .mat-tab-label-container .mat-tab-label.mat-tab-label-active {
+    background-color: #129286c2 !important;
+    color: #fff !important;
+}
+
+
+
+.table-main-div-header {
+    background-color: #f5f5f5;
+    border-bottom: 2px solid lightgrey;
+    padding: 12px;
+}
+
+.content-tab {
+    border: 2px solid lightgrey;
+}
+
+.mat-icon.search-icon {
+    position: absolute;
+    right: 0px;
+    top: 0;
+}
+
+.span-Participants {
+    font-size: 20px;
+    margin-left: 2%;
+}
+
+.display-block-set {
+    display: block !important;
+}
+body.theme-default .mat-progress-bar-fill::after {
+    background-color:green !important;
+}
+.mat-form-field-appearance-legacy .mat-form-field-wrapper {
+    padding-bottom: 1.25em;
+    width: 100% !important;
+  }
+  
+  .midtermTable td.mat-cell:last-of-type,
+  .midtermTable th.mat-header-cell:last-of-type {
+    padding-right: 0px !important;
+    width: 70px !important;
+}
+.from-to-date-inside-plan
+{
+    padding-left: 35px;
+    font-size: 14px;
+}
+
+.deadline-input-change.mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: -0.6em 0 !important;
+    padding-bottom: 0em !important;
+    width: 160px;
+}
+.deadline-input-change.mat-form-field .mat-form-field-infix {
+    padding: 0px 0px 5px 0px!important;
+  }
+  .deadline-input-change.mat-form-field-appearance-outline .mat-form-field-outline {
+    color: #fff !important;
+}
+.deadline-input-change.mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-suffix .mat-icon-button{
+color: #fff !important;
+}
+.deadline-input-change.mat-form-field-appearance-outline .mat-form-field-label {
+    /* top: 1.84375em; */
+    /* margin-top: -0.25em; */
+    top: 21px !important;
+    font-size: 12px !important;
+    color: #fff !important;
+}
+.deadline-input-change.mat-form-field-appearance-outline .mat-form-field-flex {
+    padding: 0 0em 0 .75em !important;
+}

@@ -1,0 +1,501 @@
+<div class="page-layout simple fullwidth angular-material-elements">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-100" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+      fxLayoutAlign.gt-xs="space-between center">
+      <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="column" fxLayoutAlign.gt-xs="center start">
+        <div class="h2 head-icon">
+          <mat-icon aria-hidden="true">report</mat-icon>{{'NAV.report.name' | translate}}
+        </div>
+      </div>
+    <!--   <a *ngIf="roleModule.write" mat-raised-button class="reference-button mt-16 mt-sm-0" [routerLink]="urlCurrentAdd">
+        <mat-icon class="mr-8">add</mat-icon>
+        <span>{{'NAV.department.add' | translate}}</span>
+      </a> -->
+    </div>
+  
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+    <div class="content p-24">
+      <!-- <div fxLayout="row" fxLayoutAlign="end center">
+        <mat-form-field class="set-search-box-matField">
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search" class="search_input">
+          <mat-icon class="edit-color search-icon">search</mat-icon>
+        </mat-form-field>
+      </div> -->
+
+      <div class="group-setting-subbox mb-20 mat-card">
+        <!-- <div class="heading-all-card">Report Type</div> -->
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="">
+          <mat-form-field appearance="outline" fxFlex="50" class="pr-4 ">
+            <mat-label class="required-astrick">{{'NAV.reportForm.appraisalPlan' | translate}}</mat-label>
+            <mat-select [(ngModel)]="selection.appraisalPlan" >
+                <mat-option *ngFor="let app of appraisalPlanData;let i = index"  
+                [value]="app.appraisalPlanId">
+                    {{app.planName | decryption}} 
+                </mat-option>
+            </mat-select>
+           <!--  <mat-error>Weightage is required!</mat-error> -->
+        </mat-form-field>
+          <mat-form-field appearance="outline" fxFlex="50" class="pl-4 ">
+          <mat-label class="required-astrick">{{'NAV.reportForm.reportType' | translate}}</mat-label>
+          <mat-select [(ngModel)]="reportType">
+              <mat-option *ngFor="let opt of reportOption;let i = index"  
+              [value]="opt.id">
+                  {{opt.name}} 
+              </mat-option>
+          </mat-select>
+         <!--  <mat-error>Weightage is required!</mat-error> -->
+      </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+        
+          <mat-form-field appearance="outline" fxFlex="50" class="pr-4 pl-4 " *ngIf="reportType==2 || reportType==5 || reportType==7 || reportType==10 || reportType==12 || reportType==21">
+          <mat-label class="required-astrick">{{'NAV.reportForm.department' | translate}}</mat-label>
+          <mat-select [(ngModel)]="selection.department" multiple>
+              <mat-option [value]="0" *ngIf="departmentData.length!=0" #allSelectedDept (click)="toggleAllSelectionDept()" > All </mat-option>
+              <mat-option *ngFor="let dept of departmentData;let i = index"  
+              [value]="dept.depId" (click)="tosslePerOneDept()">
+                  {{dept.departmentName}} 
+              </mat-option>
+          </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex="50" class="pr-4 pl-4"  *ngIf="reportType==1 || reportType==2 || reportType==6 || reportType==7 || reportType==21">
+        <mat-label class="required-astrick">{{'NAV.reportForm.gradeCategory' | translate}}</mat-label>
+        <mat-select [(ngModel)]="selection.gradeCategory" multiple>
+          <mat-option [value]="0" *ngIf="gradeData.length!=0" #allSelectedGcate (click)="toggleAllSelectionGcate()"> All </mat-option>
+            <mat-option *ngFor="let gradeData of gradeData" [value]="gradeData.gradeId" (click)="tosslePerOneGcate()">
+                {{gradeData.categoryName | decryption}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" fxFlex="50" class="pr-4 pl-4" *ngIf="reportType==1 || reportType==2 || reportType==6 || reportType==7 || reportType==21">
+        <mat-label >{{'NAV.reportForm.gradeCode' | translate}}</mat-label>
+        <mat-select [(ngModel)]="selection.gradeCode" multiple>
+          <mat-option [value]="0"  *ngIf="gradeCode.length!=0" #allSelectedGcode (click)="toggleAllSelectionGcode()" > All </mat-option>
+            <mat-option *ngFor="let grade of gradeCode" [value]="grade.gradeCodeId" (click)="tosslePerOneGcode()">
+                {{grade.gradeCodeName | decryption}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" fxFlex="50" class="pr-4 pl-4" *ngIf="reportType==4">
+      <mat-label class="required-astrick" >{{'NAV.reportForm.appraiser' | translate}}</mat-label>
+      <mat-select [(ngModel)]="selection.appraiser" multiple>
+        <mat-option [value]="0" *ngIf="appraiserData.length!=0"  #allSelectedAppraiser (click)="toggleAllSelectionAppraiser()"> All </mat-option>
+          <mat-option *ngFor="let emp of appraiserData" [value]="emp.id" (click)="tosslePerOneAppraiser()">
+              {{emp.empName | decryption}}
+          </mat-option>
+      </mat-select>
+  </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex="50" class="pr-4 pl-4" *ngIf="reportType==5 || reportType==3">
+        <mat-label class="required-astrick">{{'NAV.reportForm.appraisalGroup' | translate}}</mat-label>
+        <mat-select [(ngModel)]="selection.appraisalGroup" multiple>
+            <mat-option [value]="0" *ngIf="groupData.length!=0"  #allSelectedAppGroup (click)="toggleAllSelectionAppGroup()"> All </mat-option>
+            <mat-option *ngFor="let grpData of groupData" [value]="grpData.groupId" (click)="tosslePerOneAppGroup()">
+                {{grpData.groupName | decryption}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" fxFlex="50" class="pr-4 pl-4" *ngIf="reportType==10 || reportType==11">
+      <mat-label class="required-astrick">{{'NAV.reportForm.appraiserType' | translate}}</mat-label>
+      <mat-select [(ngModel)]="selection.aprType" >
+         <!--  <mat-option [value]="0"  #allSelectedAprType (click)="toggleAllSelectionAprType()"> All </mat-option> -->
+          <mat-option *ngFor="let appType of appraiserType" [value]="appType.id" ><!--  (click)="tosslePerOneAprType()" -->
+              {{appType.name }}
+          </mat-option>
+      </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="outline" fxFlex="50" class="pr-4 pl-4" *ngIf="reportType==6 || reportType==7">
+    <mat-label class="required-astrick">{{'NAV.reportForm.appraisalRatingYear' | translate}}</mat-label>
+    <mat-select [(ngModel)]="selection.aprYear">
+       <!--  <mat-option [value]="0"  #allSelectedAprYear (click)="toggleAllSelectionAprYear()"> All </mat-option> -->
+        <mat-option *ngFor="let year of [1,2,3]" [value]="year" > <!-- (click)="tosslePerOneAprYear()" -->
+            {{year}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>
+<mat-form-field appearance="outline" fxFlex="50" class="pr-4 pl-4" *ngIf="reportType==8 || reportType==9 || reportType==11">
+  <mat-label class="required-astrick">{{'NAV.reportForm.status' | translate}}</mat-label>
+  <mat-select [(ngModel)]="selection.status" multiple>
+      <mat-option [value]="0"  #allSelectedStatus (click)="toggleAllSelectionStatus()"> All </mat-option>
+      <mat-option *ngFor="let status of filter1" [value]="status.id" (click)="tosslePerOneStatus()">
+          {{status.name}}
+      </mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field appearance="outline" fxFlex="50" class="pr-4 pl-4" *ngIf="reportType==9 || reportType==14 || reportType==11 || reportType==21 || reportType==15 || reportType==16">
+  <mat-label class="required-astrick">{{'NAV.reportForm.term' | translate}}</mat-label>
+  <mat-select [(ngModel)]="selection.term">
+     <!--  <mat-option [value]="0"> All </mat-option> -->
+      <mat-option *ngFor="let term of term" [value]="term.id">
+          {{term.name}}
+      </mat-option>
+  </mat-select>
+</mat-form-field>
+<mat-form-field appearance="outline" fxFlex="50" class="pr-4 pl-4" *ngIf="reportType==11">
+  <mat-label class="required-astrick">{{'NAV.reportForm.process' | translate}}</mat-label>
+  <mat-select [(ngModel)]="selection.process">
+     <mat-option [value]="1">{{'NAV.reportForm.objectiveSetting' | translate}}</mat-option>
+     <mat-option [value]="2">{{'NAV.reportForm.review' | translate}}</mat-option>
+  </mat-select>
+</mat-form-field>
+        </div>
+      <!--   <ng5-slider *ngIf="reportType==3 || reportType==4 || reportType==5" [(value)]="value" [(highValue)]="highValue" [options]="options" (userChangeEnd)="onUserChangeEnd($event)" style=" margin-bottom: 50px; "></ng5-slider> -->
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto">
+          <div class="color-red">{{'NAV.note' | translate}}</div>
+          <button mat-raised-button color="accent" (click)="searchReport()">{{'NAV.submit' | translate}}</button>
+      </div>
+      </div>
+      <div class=" mat-card  p-12 set-display-block">
+        <div fxLayout="row" fxLayoutAlign="end center" fxFlex="1 0 auto">
+          <button mat-raised-button color="accent" class="mb-12" (click)="exportReport()" [disabled]="reportData.length==0">{{'NAV.export' | translate}}</button>
+      </div>
+    
+      <div class="scrollable-div-consolidate">
+        <table class="tg consolidateTable" *ngIf="reportType!=6 && reportType!=7 && reportType!=8 && reportType!=11 && reportType!=10 && reportType!=12 && reportType!=13 && reportType!=14 && reportType!=21 && reportType!=15 && reportType!=16 && reportType!=18">
+        <tbody>
+          <tr class="th-subclas">
+            <td class="tg-0lax static-column td-fixed-margin1" rowspan="2">{{'appraisalReport.appraisalGroup' | translate}}</td>
+            <td class="tg-0lax" rowspan="2">{{'appraisalReport.Department' | translate}}</td>
+            <td class="tg-0lax" rowspan="2">{{'appraisalReport.Section' | translate}}</td>
+            <td class="tg-0lax static-column td-fixed-margin2" rowspan="2">{{'appraisalReport.empCode' | translate}}</td>
+            <td class="tg-0lax static-column td-fixed-margin3" rowspan="2">{{'appraisalReport.employeeName' | translate}}</td>
+            <td class="tg-0lax" rowspan="2">{{'appraisalReport.gradeCategory' | translate}}</td>
+            <td class="tg-0lax" rowspan="2">{{'appraisalReport.gradeCode' | translate}}</td>
+            <td class="tg-0lax" rowspan="2">{{'appraisalReport.Designation' | translate}}</td>
+            <td class="tg-0lax" rowspan="2">{{'appraisalReport.DOJ' | translate}}</td>
+            <td class="tg-0lax" rowspan="2">{{'appraisalReport.firstAppraiser' | translate}}</td>
+            <td class="tg-0lax" rowspan="2">{{'appraisalReport.secondAppraiser' | translate}}</td>
+            <td class="tg-0lax" rowspan="2">{{'appraisalReport.thirdAppraiser' | translate}}</td>
+            <td class="tg-0lax" rowspan="2">{{'appraisalReport.midTermFinalScore' | translate}}</td>
+            <td class="tg-0lax" rowspan="2">{{'appraisalReport.midTermFinalRating' | translate}}</td>
+            <td class="tg-0lax" rowspan="2">{{'appraisalReport.endtermFinalScore' | translate}}</td>
+            <td class="tg-0lax" rowspan="2"> {{'appraisalReport.endTermFinalRating' | translate}}</td>
+            <td class="tg-0lax" rowspan="2">{{'appraisalReport.finalScore' | translate}}</td>
+            <td class="tg-0lax" rowspan="2">{{'appraisalReport.finalGrade' | translate}}</td>
+          </tr>
+         <tr></tr>
+        <tr class="td-data"  *ngFor="let data of reportData; let i=index">
+            <td class="tg-0lax static-column td-fixed-margin4">{{data.appraisalGroup | decryption}}</td>
+            <td class="tg-0lax">{{data.dept | decryption}}</td>
+            <td class="tg-0lax">{{data.section | decryption}}</td>
+            <td class="tg-0lax static-column td-fixed-margin5">{{data.empCode | decryption}}</td>
+            <td class="tg-0lax static-column td-fixed-margin6">{{data.empName | decryption}}</td>
+            <td class="tg-0lax">{{data.gradeCategory | decryption}}</td>
+            <td class="tg-0lax">{{data.gradeCode | decryption}}</td>
+            <td class="tg-0lax">{{data.designation | decryption}} </td>
+            <td class="tg-0lax">{{data.doj |  date :pasonaService.dateFormat}}</td>
+            <td class="tg-0lax">{{data.firstAppraiser | decryption}}</td>
+            <td class="tg-0lax">{{data.secondAppraiser | decryption}}</td>
+            <td class="tg-0lax">{{data.thirdAppraiser | decryption}}</td>
+            <td class="tg-0lax">{{data.midTermFinalScore}}</td>
+            <td class="tg-0lax">{{data.midTermFinalRating }}</td>
+            <td class="tg-0lax">{{data.endTermFinalScore}}</td>
+            <td class="tg-0lax">{{data.endTermFinalRating }}</td>
+            <td class="tg-0lax">{{data.finalScore }}</td>
+            <td class="tg-0lax"><span>{{data.finalGrade}}</span></td>
+          </tr>
+        </tbody>
+        </table>
+
+        <table class="tg consolidateTable" *ngIf="reportType==6 || reportType==7">
+          <tbody>
+            <tr class="th-subclas">
+              <td class="tg-0lax static-column td-fixed-margin1" rowspan="2">{{'appraisalReport.appraisalGroup' | translate}}</td>
+              <td class="tg-0lax" rowspan="2">{{'appraisalReport.Department' | translate}}</td>
+              <td class="tg-0lax" rowspan="2">{{'appraisalReport.Section' | translate}}</td>
+              <td class="tg-0lax static-column td-fixed-margin2" rowspan="2">{{'appraisalReport.empCode' | translate}}</td>
+              <td class="tg-0lax static-column td-fixed-margin3" rowspan="2">{{'appraisalReport.employeeName' | translate}}</td>
+              <td class="tg-0lax" rowspan="2">{{'appraisalReport.gradeCategory' | translate}}</td>
+              <td class="tg-0lax" rowspan="2">{{'appraisalReport.gradeCode' | translate}}</td>
+              <td class="tg-0lax" rowspan="2">{{'appraisalReport.Designation' | translate}}</td>
+              <td class="tg-0lax" rowspan="2">{{'appraisalReport.DOJ' | translate}}</td>
+              <td class="tg-0lax" rowspan="2">{{'appraisalReport.PrecedingRating1' | translate}}</td> 
+              <td class="tg-0lax" rowspan="2">{{'appraisalReport.PrecedingRating2' | translate}}</td>
+              <td class="tg-0lax" rowspan="2">{{'appraisalReport.PrecedingRating3' | translate}}</td>
+            </tr>
+        
+           
+           
+          <tr class="td-data"  *ngFor="let data of reportData; let i=index">
+              <td class="tg-0lax static-column td-fixed-margin4">{{data.appraisalGroup | decryption}}</td>
+              <td class="tg-0lax">{{data.dept | decryption}}</td>
+              <td class="tg-0lax">{{data.section | decryption}}</td>
+              <td class="tg-0lax static-column td-fixed-margin5">{{data.empCode | decryption}}</td>
+              <td class="tg-0lax static-column td-fixed-margin6">{{data.empName | decryption}}</td>
+              <td class="tg-0lax">{{data.gradeCategory | decryption}}</td>
+              <td class="tg-0lax">{{data.gradeCode | decryption}}</td>
+              <td class="tg-0lax">{{data.designation | decryption}} </td>
+              <td class="tg-0lax">{{data.doj |  date :pasonaService.dateFormat}}</td>
+              <td class="tg-0lax">{{data.precedingYearAppraisalRatingN1 | decryption}}</td>
+              <td class="tg-0lax">{{data.precedingYearAppraisalRatingN2 | decryption}}</td>
+              <td class="tg-0lax">{{data.precedingYearAppraisalRatingN3 | decryption}}</td>
+            </tr>
+          </tbody>
+          </table>
+    
+          <table class="tg consolidateTable" *ngIf="reportType==8 || reportType==11">
+            <tbody>
+              <tr class="th-subclas">
+                <td class="tg-0lax static-column td-fixed-margin1" rowspan="2">{{'appraisalReport.appraisalGroup' | translate}}</td>
+                <td class="tg-0lax" rowspan="2">{{'appraisalReport.Department' | translate}}</td>
+                <td class="tg-0lax" rowspan="2">{{'appraisalReport.Section' | translate}}</td>
+                <td class="tg-0lax static-column td-fixed-margin2" rowspan="2">{{'appraisalReport.empCode' | translate}}</td>
+                <td class="tg-0lax static-column td-fixed-margin3" rowspan="2">{{'appraisalReport.employeeName' | translate}}</td>
+                <td class="tg-0lax" rowspan="2">{{'appraisalReport.gradeCategory' | translate}}</td>
+                 <td class="tg-0lax" rowspan="2">{{'appraisalReport.gradeCode' | translate}}</td>
+                <td class="tg-0lax" rowspan="2">{{'appraisalReport.Designation' | translate}}</td>
+                <td class="tg-0lax" rowspan="2">{{'appraisalReport.DOJ' | translate}}</td>
+                <td class="tg-0lax" rowspan="2">{{'appraisalReport.firstAppraiser' | translate}}</td>
+                <td class="tg-0lax" rowspan="2">{{'appraisalReport.secondAppraiser' | translate}}</td>
+                <td class="tg-0lax" rowspan="2">{{'appraisalReport.thirdAppraiser' | translate}}</td>
+                <td class="tg-0lax" *ngIf="reportType==8" rowspan="2">{{'appraisalReport.objectiveSettingStatus' | translate}}</td>
+                <td class="tg-0lax" *ngIf="reportType==11" rowspan="2">{{'appraisalReport.status' | translate}} </td>
+              </tr>
+             <tr></tr>
+            <tr class="td-data"  *ngFor="let data of reportData; let i=index">
+                <td class="tg-0lax static-column td-fixed-margin4">{{data.appraisalGroup | decryption}}</td>
+                <td class="tg-0lax">{{data.dept | decryption}}</td>
+                <td class="tg-0lax">{{data.section | decryption}}</td>
+                <td class="tg-0lax static-column td-fixed-margin5">{{data.empCode | decryption}}</td>
+                <td class="tg-0lax static-column td-fixed-margin6">{{data.empName | decryption}}</td>
+                <td class="tg-0lax">{{data.gradeCategory | decryption}}</td>
+                <td class="tg-0lax">{{data.gradeCode | decryption}}</td>
+                <td class="tg-0lax">{{data.designation | decryption}} </td>
+                <td class="tg-0lax">{{data.doj |  date :pasonaService.dateFormat}}</td>
+                <td class="tg-0lax">{{data.firstAppraiser | decryption}}</td>
+                <td class="tg-0lax">{{data.secondAppraiser | decryption}}</td>
+                <td class="tg-0lax">{{data.thirdAppraiser | decryption}}</td>
+                <td *ngIf="reportType==8" class="tg-0lax">{{data.objectiveSettingStatus}}</td>
+                <td *ngIf="reportType==11" class="tg-0lax">{{data.objectiveSettingStatus}}</td>
+              </tr>
+            </tbody>
+            </table>
+
+            <table class="tg consolidateTable" *ngIf="reportType==10">
+              <tbody>
+                <tr class="th-subclas">
+                  <td class="tg-0lax static-column td-fixed-margin1" rowspan="2">{{'appraisalReport.appraisalGroup' | translate}} </td>
+                  <td class="tg-0lax" rowspan="2">{{'appraisalReport.Department' | translate}}</td>
+                  <td class="tg-0lax" rowspan="2">{{'appraisalReport.Section' | translate}}</td>
+                  <td class="tg-0lax static-column td-fixed-margin2" rowspan="2">{{'appraisalReport.empCode' | translate}}</td>
+                  <td class="tg-0lax static-column td-fixed-margin3" rowspan="2"> {{'appraisalReport.employeeName' | translate}}</td>
+                  <td class="tg-0lax" rowspan="2">{{'appraisalReport.gradeCategory' | translate}}</td>
+                  <td class="tg-0lax" rowspan="2">{{'appraisalReport.gradeCode' | translate}}</td>
+                  <td class="tg-0lax" rowspan="2">{{'appraisalReport.Designation' | translate}}</td>
+                  <td class="tg-0lax" rowspan="2">{{'appraisalReport.DOJ' | translate}}</td>
+                </tr>
+               <tr></tr>
+              
+              <tr class="td-data"  *ngFor="let data of reportData; let i=index">
+                  <td class="tg-0lax static-column td-fixed-margin4">{{data.appraisalGroup | decryption}}</td>
+                  <td class="tg-0lax">{{data.dept | decryption}}</td>
+                  <td class="tg-0lax">{{data.section | decryption}}</td>
+                  <td class="tg-0lax static-column td-fixed-margin5">{{data.empCode | decryption}}</td>
+                  <td class="tg-0lax static-column td-fixed-margin6">{{data.empName | decryption}}</td>
+                  <td class="tg-0lax">{{data.gradeCategory | decryption}}</td>
+                  <td class="tg-0lax">{{data.gradeCode | decryption}}</td>
+                  <td class="tg-0lax">{{data.designation | decryption}} </td>
+                  <td class="tg-0lax">{{data.doj |  date :pasonaService.dateFormat}}</td>
+                </tr>
+              </tbody>
+              </table>
+             
+              <table class="tg consolidateTable" *ngIf="reportType==12 || reportType==13">
+                <tbody>
+                  <tr class="th-subclas">
+                    <td class="tg-0lax static-column td-fixed-margin1" rowspan="2">{{'appraisalReport.appraisalGroup' | translate}}</td>
+                    <td class="tg-0lax" rowspan="2">{{'appraisalReport.Department' | translate}}</td>
+                    <td class="tg-0lax" rowspan="2">{{'appraisalReport.Section' | translate}}</td>
+                    <td class="tg-0lax static-column td-fixed-margin2" rowspan="2">{{'appraisalReport.empCode' | translate}}</td>
+                    <td class="tg-0lax static-column td-fixed-margin3" rowspan="2">{{'appraisalReport.employeeName' | translate}}</td>
+                    <td class="tg-0lax" rowspan="2">{{'appraisalReport.gradeCategory' | translate}}</td>
+                     <td class="tg-0lax" rowspan="2">{{'appraisalReport.gradeCode' | translate}}</td>
+                    <td class="tg-0lax" rowspan="2">{{'appraisalReport.Designation' | translate}}</td>
+                    <td class="tg-0lax" rowspan="2">{{'appraisalReport.DOJ' | translate}}</td>
+                    <td class="tg-0lax" rowspan="2">{{'appraisalReport.firstAppraiser'| translate}}</td>
+                    <td class="tg-0lax" rowspan="2">{{'appraisalReport.secondAppraiser' | translate}}</td>
+                    <td class="tg-0lax" rowspan="2">{{'appraisalReport.thirdAppraiser' | translate}}</td>
+                    <td class="tg-0lax" rowspan="2">{{'appraisalReport.objectiveType' | translate}}</td>
+                    <td class="tg-0lax" rowspan="2">{{'appraisalReport.objective' | translate}}</td>
+                    <td class="tg-0lax" rowspan="2">{{'appraisalReport.fromDate' | translate}}</td>
+                    <td class="tg-0lax" rowspan="2">{{'appraisalReport.toDate' | translate}}</td>
+                    <td class="tg-0lax" rowspan="2">{{'appraisalReport.difficultyLevel' | translate}}</td>
+                    <td class="tg-0lax" rowspan="2">{{'appraisalReport.weightage' | translate}} </td>
+                     <td class="tg-0lax" rowspan="2">{{'appraisalReport.objectiveStatus' | translate}}</td>
+                  </tr>
+                 <tr></tr>
+                <tr class="td-data"  *ngFor="let data of reportData; let i=index">
+                    <td class="tg-0lax static-column td-fixed-margin4">{{data.appraisalGroup | decryption}}</td>
+                    <td class="tg-0lax">{{data.dept | decryption}}</td>
+                    <td class="tg-0lax">{{data.section | decryption}}</td>
+                    <td class="tg-0lax static-column td-fixed-margin5">{{data.empCode | decryption}}</td>
+                    <td class="tg-0lax static-column td-fixed-margin6">{{data.empName | decryption}}</td>
+                    <td class="tg-0lax">{{data.gradeCategory | decryption}}</td>
+                    <td class="tg-0lax">{{data.gradeCode | decryption}}</td>
+                    <td class="tg-0lax">{{data.designation | decryption}} </td>
+                    <td class="tg-0lax">{{data.doj |  date :pasonaService.dateFormat}}</td>
+                    <td class="tg-0lax">{{data.firstAppraiser | decryption}}</td>
+                    <td class="tg-0lax">{{data.secondAppraiser | decryption}}</td>
+                    <td class="tg-0lax">{{data.thirdAppraiser | decryption}}</td>
+                    <td class="tg-0lax">{{data.objectiveType}}</td>
+                    <td class="tg-0lax"  style="max-width:300px;white-space: nowrap !important;text-overflow: ellipsis !important;" matTooltip="{{data.objective | decryption}}">{{data.objective | decryption}}</td>
+                    <td class="tg-0lax">{{data.fromDate}}</td>
+                    <td class="tg-0lax">{{data.toDate}}</td>
+                    <td class="tg-0lax">{{data.difficultyLevel}}</td>
+                    <td class="tg-0lax">{{data.weightage}}</td>
+                    <td class="tg-0lax">{{data.objectieStatus}}</td>
+                  </tr>
+                </tbody>
+                </table>
+
+                <table class="tg consolidateTable" *ngIf="reportType==14 || reportType==15 || reportType==16">
+                  <tbody>
+                    <tr class="th-subclas">
+                      <td class="tg-0lax static-column td-fixed-margin1" rowspan="2">{{'appraisalReport.appraisalGroup' | translate}}</td>
+                      <td class="tg-0lax" rowspan="2">{{'appraisalReport.Department' | translate}}</td>
+                      <td class="tg-0lax" rowspan="2">{{'appraisalReport.Section' | translate}}</td>
+                      <td class="tg-0lax static-column td-fixed-margin2" rowspan="2">{{'appraisalReport.empCode' | translate}}</td>
+                      <td class="tg-0lax static-column td-fixed-margin3" rowspan="2">{{'appraisalReport.employeeName' | translate}}</td>
+                      <td class="tg-0lax" rowspan="2">{{'appraisalReport.gradeCategory' | translate}}</td>
+                      <td class="tg-0lax" rowspan="2">{{'appraisalReport.gradeCode' | translate}}</td>
+                      <td class="tg-0lax" rowspan="2">{{'appraisalReport.Designation' | translate}}</td>
+                      <td class="tg-0lax" rowspan="2">{{'appraisalReport.DOJ' | translate}}</td>
+                      <td class="tg-0lax" rowspan="2">{{'appraisalReport.firstAppraiser' | translate}}</td>
+                      <td class="tg-0lax" rowspan="2">{{'appraisalReport.secondAppraiser' | translate}}</td>
+                      <td class="tg-0lax" rowspan="2">{{'appraisalReport.thirdAppraiser' | translate}}</td>
+                      <td class="tg-0lax" rowspan="2">{{'appraisalReport.workObjectiveScore' | translate}} </td>
+                      <td class="tg-0lax" rowspan="2">{{'appraisalReport.competencyScore' | translate}}</td>
+                      <td class="tg-0lax" rowspan="2">{{'appraisalReport.companyPerformanceScore' | translate}}</td>
+                      <td class="tg-0lax" rowspan="2">{{'appraisalReport.totalScore' | translate}}</td>
+                      <td class="tg-0lax" rowspan="2">{{'appraisalReport.rankOrder' | translate}}</td>
+                      <td class="tg-0lax" rowspan="2" *ngIf="selection.term==1">{{'appraisalReport.rankOrder' | translate}}</td>
+                      <td class="tg-0lax" rowspan="2" *ngIf="selection.term==1">{{'appraisalReport.midTermPrimaryRating' | translate}}</td>
+                      <td class="tg-0lax" rowspan="2" *ngIf="reportType==16 && selection.term==1">{{'appraisalReport.MidTermIndicativeRating' | translate}}</td>
+                      <td class="tg-0lax" rowspan="2" *ngIf="selection.term==2">{{'appraisalReport.endTermIndicativeRating' | translate}}</td>
+                      <td class="tg-0lax" rowspan="2" *ngIf="selection.term==2">{{'appraisalReport.endTermIndicativeRating' | translate}}</td>
+                      <td class="tg-0lax" rowspan="2" *ngIf="reportType==16 && selection.term==2"> {{'appraisalReport.endTermPrimaryRating' | translate}}</td>
+                    </tr>
+                   <tr></tr>
+                  
+
+                  <tr class="td-data"  *ngFor="let data of reportData; let i=index">
+                      <td class="tg-0lax static-column td-fixed-margin4">{{data.appraisalGroup | decryption}}</td>
+                      <td class="tg-0lax">{{data.dept | decryption}}</td>
+                      <td class="tg-0lax">{{data.section | decryption}}</td>
+                      <td class="tg-0lax static-column td-fixed-margin5">{{data.empCode | decryption}}</td>
+                      <td class="tg-0lax static-column td-fixed-margin6">{{data.empName | decryption}}</td>
+                      <td class="tg-0lax">{{data.gradeCategory | decryption}}</td>
+                      <td class="tg-0lax">{{data.gradeCode | decryption}}</td>
+                      <td class="tg-0lax">{{data.designation | decryption}} </td>
+                      <td class="tg-0lax">{{data.doj |  date :pasonaService.dateFormat}}</td>
+                      <td class="tg-0lax">{{data.firstAppraiser | decryption}}</td>
+                      <td class="tg-0lax">{{data.secondAppraiser | decryption}}</td>
+                      <td class="tg-0lax">{{data.thirdAppraiser | decryption}}</td>
+                      <td class="tg-0lax">{{data.workObjectiveScore}}</td>
+                      <td class="tg-0lax"  style="max-width:300px;white-space: nowrap !important;text-overflow: ellipsis !important;" matTooltip="{{data.objective | decryption}}">{{data.competencyScore | decryption}}</td>
+                      <td class="tg-0lax">{{data.companyPerformanceScore}}</td>
+                      <td class="tg-0lax">{{data.totalScore}}</td>
+                      <td class="tg-0lax">{{data.rankOrder}}</td>
+                      <td class="tg-0lax" *ngIf="selection.term==1">{{data.midTermIndicativeRating}}</td>
+                      <td class="tg-0lax" *ngIf="selection.term==1">{{data.midTermPrimaryRating}}</td>
+                      <td class="tg-0lax" *ngIf="reportType==16 && selection.term==1">{{data.midTermFinalRating}}</td>
+                      <td class="tg-0lax" *ngIf="selection.term==2">{{data.endTermIndicativeRating}}</td>
+                      <td class="tg-0lax" *ngIf="selection.term==2">{{data.endTermPrimaryRating}}</td>
+                      <td class="tg-0lax" *ngIf="reportType==16 && selection.term==2">{{data.endTermFinalRating}}</td>
+                    </tr>
+                  </tbody>
+                  </table>
+
+                  <table class="tg consolidateTable" *ngIf="reportType==21">
+                    <tbody>
+                      <tr class="th-subclas">
+                        <td class="tg-0lax static-column td-fixed-margin1" rowspan="2">{{'appraisalReport.appraisalGroup' | translate}}</td>
+                        <td class="tg-0lax" rowspan="2">{{'appraisalReport.Department' | translate}}</td>
+                        <td class="tg-0lax" rowspan="2">{{'appraisalReport.Section' | translate}}</td>
+                        <td class="tg-0lax static-column td-fixed-margin2" rowspan="2">{{'appraisalReport.empCode' | translate}}</td>
+                        <td class="tg-0lax static-column td-fixed-margin3" rowspan="2">{{'appraisalReport.employeeName' | translate}}</td>
+                        <td class="tg-0lax" rowspan="2">{{'appraisalReport.gradeCategory' | translate}}</td>
+                         <td class="tg-0lax" rowspan="2">{{'appraisalReport.gradeCode' | translate}}</td>
+                        <td class="tg-0lax" rowspan="2">{{'appraisalReport.Designation' | translate}}</td>
+                        <td class="tg-0lax" rowspan="2">{{'appraisalReport.DOJ' | translate}}</td>
+                        <td class="tg-0lax" rowspan="2">{{'appraisalReport.firstAppraiser' | translate}}</td>
+                        <td class="tg-0lax" rowspan="2">{{'appraisalReport.secondAppraiser' | translate}}</td>
+                        <td class="tg-0lax" rowspan="2">{{'appraisalReport.thirdAppraiser' | translate}}</td>
+                        <td class="tg-0lax" rowspan="2">{{'appraisalReport.firstAppraiserTrainingNeeds' | translate}}</td>
+                        <td class="tg-0lax" rowspan="2">{{'appraisalReport.secondAppraiserTrainingNeeds' | translate}}</td>
+                        <td class="tg-0lax" rowspan="2">{{'appraisalReport.thirdAppraiserTrainingNeeds' | translate}}</td>
+                      </tr>
+                     <tr></tr>
+                    <tr class="td-data"  *ngFor="let data of reportData; let i=index">
+                        <td class="tg-0lax static-column td-fixed-margin4">{{data.appraisalGroup | decryption}}</td>
+                        <td class="tg-0lax">{{data.dept | decryption}}</td>
+                        <td class="tg-0lax">{{data.section | decryption}}</td>
+                        <td class="tg-0lax static-column td-fixed-margin5">{{data.empCode | decryption}}</td>
+                        <td class="tg-0lax static-column td-fixed-margin6">{{data.empName | decryption}}</td>
+                        <td class="tg-0lax">{{data.gradeCategory | decryption}}</td>
+                        <td class="tg-0lax">{{data.gradeCode | decryption}}</td>
+                        <td class="tg-0lax">{{data.designation | decryption}} </td>
+                        <td class="tg-0lax">{{data.doj |  date :pasonaService.dateFormat}}</td>
+                        <td class="tg-0lax">{{data.firstAppraiser | decryption}}</td>
+                        <td class="tg-0lax">{{data.secondAppraiser | decryption}}</td>
+                        <td class="tg-0lax">{{data.thirdAppraiser | decryption}}</td>
+                        <td class="tg-0lax">{{data.firstApprTrainingNeeds | decryption}}</td>
+                        <td class="tg-0lax">{{data.secondApprTrainingNeeds | decryption }}</td>
+                        <td class="tg-0lax">{{data.thirdApprTrainingNeeds | decryption}}</td>
+                      </tr>
+                    </tbody>
+                    </table>
+                    //start
+                    <table class="tg consolidateTable" *ngIf="reportType==18">
+                      <tbody>
+                        <tr class="th-subclas">
+                          <td class="tg-0lax static-column td-fixed-margin1" rowspan="2">{{'appraisalReport.appraisalGroup' | translate}} </td>
+                          <td class="tg-0lax" rowspan="2">{{'appraisalReport.Department' | translate}}</td>
+                          <td class="tg-0lax" rowspan="2">{{'appraisalReport.Section' | translate}}</td>
+                          <td class="tg-0lax static-column td-fixed-margin2" rowspan="2">{{'appraisalReport.empCode' | translate}}</td>
+                          <td class="tg-0lax static-column td-fixed-margin3" rowspan="2">{{'appraisalReport.employeeName' | translate}}</td>
+                          <td class="tg-0lax" rowspan="2">{{'appraisalReport.gradeCategory' | translate}}</td>
+                           <td class="tg-0lax" rowspan="2">{{'appraisalReport.gradeCode' | translate}}</td>
+                          <td class="tg-0lax" rowspan="2">{{'appraisalReport.Designation' | translate}}</td>
+                          <td class="tg-0lax" rowspan="2">{{'appraisalReport.DOJ' | translate}}</td>
+                          <td class="tg-0lax" rowspan="2">{{'appraisalReport.firstAppraiser'| translate}}</td>
+                          <td class="tg-0lax" rowspan="2">{{'appraisalReport.secondAppraiser'| translate}}</td>
+                          <td class="tg-0lax" rowspan="2">{{'appraisalReport.thirdAppraiser'| translate}}</td>
+                          <td class="tg-0lax" rowspan="2">{{'appraisalReport.midTermFinalRating'| translate}}</td>
+                          <td class="tg-0lax" rowspan="2">{{'appraisalReport.endTermFinalRating'| translate}}</td>
+                          <td class="tg-0lax" rowspan="2">{{'appraisalReport.finalScore'| translate}}</td>
+                          <td class="tg-0lax" rowspan="2">{{'appraisalReport.finalGrade'| translate}}</td>
+                        </tr>
+                       <tr></tr>
+                      <tr class="td-data"  *ngFor="let data of reportData; let i=index">
+                          <td class="tg-0lax static-column td-fixed-margin4">{{data.appraisalGroup | decryption}}</td>
+                          <td class="tg-0lax">{{data.dept | decryption}}</td>
+                          <td class="tg-0lax">{{data.section | decryption}}</td>
+                          <td class="tg-0lax static-column td-fixed-margin5">{{data.empCode | decryption}}</td>
+                          <td class="tg-0lax static-column td-fixed-margin6">{{data.empName | decryption}}</td>
+                          <td class="tg-0lax">{{data.gradeCategory | decryption}}</td>
+                          <td class="tg-0lax">{{data.gradeCode | decryption}}</td>
+                          <td class="tg-0lax">{{data.designation | decryption}} </td>
+                          <td class="tg-0lax">{{data.doj |  date :pasonaService.dateFormat}}</td>
+                          <td class="tg-0lax">{{data.firstAppraiser | decryption}}</td>
+                          <td class="tg-0lax">{{data.secondAppraiser | decryption}}</td>
+                          <td class="tg-0lax">{{data.thirdAppraiser | decryption}}</td>
+                          <td class="tg-0lax">{{data.midTermFinalRating }}</td>
+                          <td class="tg-0lax">{{data.endTermFinalRating }}</td>
+                          <td class="tg-0lax">{{data.finalScore }}</td>
+                          <td class="tg-0lax">{{data.finalGrade }}</td>
+                        </tr>
+                      </tbody>
+                      </table>
+  
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center center" class="no-data-available" [ngClass]="(reportData.length === 0)?'visible-no-data-available':''">  
+    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+    <!--   
+  
+         -->
+    </div>
+  </div>

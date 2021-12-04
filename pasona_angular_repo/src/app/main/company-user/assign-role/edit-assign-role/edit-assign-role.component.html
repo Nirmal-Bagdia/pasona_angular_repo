@@ -1,0 +1,87 @@
+<div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-100" fxLayout="row" fxLayoutAlign="start center">
+        <div fxLayout="row" fxLayoutAlign="center start">
+            <button mat-icon-button class="mr-0 backbutton" [routerLink]="urlCurrent">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <div class="h1 head-icon">
+                <mat-icon aria-hidden="true">assignment_ind</mat-icon>{{'NAV.assignRole.edit' | translate}}
+            </div>
+        </div>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+    <div class="content p-24">
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
+            <div class="display-block-role">
+                <!-- <form class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                    name="form" [formGroup]="filterForm" style="padding-bottom: 0 !important;">
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <mat-form-field appearance="outline" fxFlex="33" class="pr-4">
+                            <mat-label >Unit</mat-label>
+                            <mat-select formControlName="unitId"
+                                (selectionChange)="getAllDepartmentDataByUnitId($event.value)">
+                                <mat-option *ngFor="let unit of unitData" [value]="unit.unitId">
+                                    {{unit.unitName}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>Unit is required!</mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="33" class="pr-4">
+                            <mat-label >Department</mat-label>
+                            <mat-select formControlName="depId"
+                                (selectionChange)="getAllSectionDataByDepartmentId($event.value)">
+                                <mat-option *ngFor="let department of departmentData" [value]="department.depId">
+                                    {{department.departmentName}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>Department is required!</mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="34" >
+                            <mat-label >Section</mat-label>
+                            <mat-select formControlName="sectionId">
+                                <mat-option *ngFor="let section of sectionData" [value]="section.sectionId">
+                                    {{section.sectionName}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>Section is required!</mat-error>
+                        </mat-form-field>
+                    </div>
+                </form> -->
+                <form class="mat-card box-shadow-reset mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start"
+                    fxFlex="1 0 auto" name="form" [formGroup]="roleForm">
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" style="margin-top: 20px;">
+                        <div fxFlex="15" class="pr-4 required-astrick">Assign Role</div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" style="padding: 15px;">
+                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                            <mat-label>Employees</mat-label>
+                            <mat-select formControlName="empId" [disabled]="true">
+                                <mat-option *ngFor="let empData of employeeData" [value]="empData.id">
+                                 {{empData.empCode | decryption}}  ({{empData.empName | decryption}})
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>Employee is required.</mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                            <mat-label>Roles</mat-label>
+                            <mat-select formControlName="roleId">
+                                <mat-option [value]="'0'"> --None-- </mat-option>
+                                <mat-option *ngFor="let roleData of rolesData" [value]="roleData.roleId">
+                                    {{roleData.roleName | decryption}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>Role is required.</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto" *ngIf="roleModule.write">
+                        <div class="color-red">Fields marked * are mandatory.</div>
+                        <button mat-raised-button color="accent" (click)="assignRole()">{{'NAV.submit' | translate}}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- / CONTENT -->
+</div>

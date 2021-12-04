@@ -1,0 +1,188 @@
+<div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-100" fxLayout="row" fxLayoutAlign="start center">
+      <div fxLayout="row" fxLayoutAlign="center start">
+        <button mat-icon-button class="mr-0 backbutton" (click)="backToAppraisees()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="h1 head-icon">
+          <mat-icon aria-hidden="true" svgIcon="plan"></mat-icon>{{'NAV.appraisalPlan.finalASheet' | translate}}
+          <div class="state_name-set">{{stateName}}</div>
+        </div>
+      </div>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+    <div class="content p-24">
+      <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
+        <form class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form"
+          [formGroup]="finalApproverForm">
+          <div class="scrollable-div-consolidate">
+            <table class="tg consolidateTable ">
+           <!--  <thead>
+              <tr>
+                <th class="tg-0lax head-th" colspan="12">Input by HR</th>
+                <th class="tg-0lax head-th" colspan="7">Input by HOD </th>
+              </tr>
+            </thead> -->
+            <tbody>
+              <tr class="th-subclas">
+                <td class="tg-0lax static-column td-fixed-margin1" rowspan="2">Appraisal Group </td>
+                <td class="tg-0lax" rowspan="2">Dept.</td>
+                <td class="tg-0lax" rowspan="2">Branch</td>
+             <!--    <td class="tg-0lax" rowspan="2">Sl. No</td> -->
+                <td class="tg-0lax static-column td-fixed-margin2" rowspan="2">Emp ID</td>
+                <td class="tg-0lax static-column td-fixed-margin3" rowspan="2">Employee Name</td>
+                <td class="tg-0lax" rowspan="2">Grade</td>
+                <td class="tg-0lax" rowspan="2">Designation</td>
+                <td class="tg-0lax" rowspan="2">DOJ</td>
+                <td class="tg-0lax " colspan="3">Appraiser Names</td>
+                <td class="tg-0lax" colspan="5">Mid-term</td>
+                <td class="tg-0lax" colspan="3">Mid-term Consolidator</td>
+                <td class="tg-0lax" colspan="3">Mid-term Final Approver</td>
+                <td class="tg-0lax" colspan="5" *ngIf="consolidateData[0]?.endTermProcessStatus==1">End-term</td>
+                <td class="tg-0lax" colspan="3"  *ngIf="consolidateData[0]?.endTermProcessStatus==1">End-term Consolidator</td>
+                <td class="tg-0lax" colspan="3"  *ngIf="consolidateData[0]?.endTermProcessStatus==1">End-term Final Approver</td>
+              </tr>
+              <tr class="th-subclas">
+                <td class="tg-0lax" >1st Appraiser</td>
+                <td class="tg-0lax">2nd Appraiser</td>
+                <td class="tg-0lax ">3rd Appraiser</td>
+                <td class="tg-0lax">Objective Score</td>
+                <td class="tg-0lax">Competency Score</td>
+                <td class="tg-0lax">Company Performance Score </td>
+                <td class="tg-0lax" >Total Score</td>
+                <td class="tg-0lax">Total Score Out Of 100</td>
+                <td class="tg-0lax" >Rank Order</td>
+                <td class="tg-0lax">Indicative Rating </td>
+                <td class="tg-0lax">Consolidator Remark</td>
+                <td class="tg-0lax">Primary Rating</td>
+                <td class="tg-0lax">Final Rating</td>
+                <td class="tg-0lax">Remark</td>
+                <td class="tg-0lax" *ngIf="consolidateData[0]?.endTermProcessStatus==1">Objective Score</td>
+                <td class="tg-0lax" *ngIf="consolidateData[0]?.endTermProcessStatus==1">Competency Score</td>
+                <td class="tg-0lax" *ngIf="consolidateData[0]?.endTermProcessStatus==1">Company Performance Score </td>
+                <td class="tg-0lax" *ngIf="consolidateData[0]?.endTermProcessStatus==1">Total Score</td>
+                <td class="tg-0lax" *ngIf="consolidateData[0]?.endTermProcessStatus==1">Total Score Out Of 100</td>
+                <td class="tg-0lax"  *ngIf="consolidateData[0]?.endTermProcessStatus==1">Rank Order</td>
+                <td class="tg-0lax"  *ngIf="consolidateData[0]?.endTermProcessStatus==1">Indicative Rating </td>
+                <td class="tg-0lax"  *ngIf="consolidateData[0]?.endTermProcessStatus==1">Consolidator Remark</td>
+                <td class="tg-0lax"  *ngIf="consolidateData[0]?.endTermProcessStatus==1">Primary Rating</td>
+                <td class="tg-0lax"  *ngIf="consolidateData[0]?.endTermProcessStatus==1">Final Rating</td>
+                <td class="tg-0lax"  *ngIf="consolidateData[0]?.endTermProcessStatus==1">Remark</td>
+              </tr>
+              <ng-container formArrayName="ratingConsolidatorSheet" >
+            <tr class="td-data"  *ngFor="let data of finalApproverForm.get('ratingConsolidatorSheet')?.controls; let i=index">
+                <ng-container [formGroupName]="i">
+                <td class="tg-0lax static-column td-fixed-margin4">{{consolidateData[i].groupName | decryption}}</td>
+                <td class="tg-0lax">{{consolidateData[i].departmentName | decryption}}</td>
+                <td class="tg-0lax">{{consolidateData[i].sectionName | decryption}}</td>
+               <!--  <td class="tg-0lax ">1</td> -->
+                <td class="tg-0lax static-column td-fixed-margin5">{{consolidateData[i].empCode | decryption}}</td>
+                <td class="tg-0lax static-column td-fixed-margin6">{{consolidateData[i].empName | decryption}}</td>
+                <td class="tg-0lax">{{consolidateData[i].grade | decryption}}</td>
+                <td class="tg-0lax">{{consolidateData[i].designation | decryption}} </td>
+                <td class="tg-0lax">{{consolidateData[i].dateOfJoining |  date :pasonaService.dateFormat}}</td>
+                <td class="tg-0lax">{{consolidateData[i].firstAppraiserName | decryption}}</td>
+                <td class="tg-0lax">{{consolidateData[i].secondAppraiserName | decryption}}</td>
+                <td class="tg-0lax">{{consolidateData[i].thirdAppraiserName | decryption}}</td>
+                <td class="tg-0lax">{{consolidateData[i].performanceObjectiveScore + consolidateData[i].developmentObjectiveScore}}</td>
+                <td class="tg-0lax">{{consolidateData[i].competencyScore }}</td>
+                <td class="tg-0lax">{{consolidateData[i].companyParameterScore }}</td>
+                <td class="tg-0lax">{{consolidateData[i].total }}</td>
+                <td class="tg-0lax">{{consolidateData[i].outOfHundredMidterm }}</td>
+                <td class="tg-0lax">
+                  <span>{{consolidateData[i].rankOrder}}</span>
+                </td>
+                <td class="tg-0lax">
+                  <span>{{consolidateData[i].indicativeRating}}</span>
+              </td>
+                <td class="tg-0lax">
+                  <span>{{consolidateData[i].remark | decryption}}</span>
+                  
+                </td>
+                <td class="tg-0lax">
+                  <span >{{consolidateData[i].midTermPrimaryRating}}</span>
+                </td>
+                <td class="tg-0lax">
+                    <span *ngIf="consolidateData[i].submitStatus">{{consolidateData[i].midTermFinalRating}}</span>
+                  <mat-form-field appearance="outline" class="consolidator-rating" *ngIf="!consolidateData[i].submitStatus">
+                   <mat-label class="required-astrick">Rating</mat-label>
+                   <mat-select formControlName="midTermFinalRating" > <!-- formControlName="midTermAppraiseeRating" -->
+                   <mat-option *ngFor="let rating of ratingData" value="{{rating}}">
+                   {{rating}}
+                   </mat-option>
+                   </mat-select>
+                 <!--   <mat-error *ngIf="para.get('midTermAppraiseeRating').hasError('required')">
+                   Rating is required.
+                   </mat-error> -->
+                   </mat-form-field></td>
+                  <td class="tg-0lax">
+                    <span *ngIf="consolidateData[i].submitStatus">{{consolidateData[i].midTermFinalRemark | decryption}}</span>
+                      <mat-form-field appearance="outline" class="consolidator-remarks" *ngIf="!consolidateData[i].submitStatus">
+                          <mat-label>Remarks</mat-label>
+                      <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" maxlength="200"
+                      cdkAutosizeMinRows="1" cdkAutosizeMaxRows="2" formControlName="midTermFinalRemark"
+                     ></textarea>
+                  </mat-form-field>
+                  </td>
+                  <td class="tg-0lax" *ngIf="consolidateData[0]?.endTermProcessStatus==1">{{consolidateData[i].endTermPerformanceObjectiveScore + consolidateData[i].endTermDevelopmentObjectiveScore}}</td>
+                <td class="tg-0lax" *ngIf="consolidateData[0]?.endTermProcessStatus==1">{{consolidateData[i].endTermCompetencyScore }}</td>
+                <td class="tg-0lax" *ngIf="consolidateData[0]?.endTermProcessStatus==1">{{consolidateData[i].endTermCompanyParameterScore }}</td>
+                <td class="tg-0lax" *ngIf="consolidateData[0]?.endTermProcessStatus==1">{{consolidateData[i].endTermTotal }}</td>
+                <td class="tg-0lax" *ngIf="consolidateData[0]?.endTermProcessStatus==1">{{consolidateData[i].outOfHundredEndterm }}</td>
+                  <td class="tg-0lax"  *ngIf="consolidateData[0]?.endTermProcessStatus==1">
+                    <span>{{consolidateData[i].endTermRankOrder}}</span>
+                  </td>
+                  <td class="tg-0lax"  *ngIf="consolidateData[0]?.endTermProcessStatus==1">
+                    <span>{{consolidateData[i].endTermIndicativeRating}}</span>
+                </td>
+                  <td class="tg-0lax"  *ngIf="consolidateData[0]?.endTermProcessStatus==1">
+                    <span>{{consolidateData[i].endTermRemark | decryption}}</span>
+                  </td>
+                  <td class="tg-0lax"  *ngIf="consolidateData[0]?.endTermProcessStatus==1">
+                    <span >{{consolidateData[i].endTermPrimaryRating}}</span>
+                  </td>
+                  <td class="tg-0lax"  *ngIf="consolidateData[0]?.endTermProcessStatus==1">
+                      <span *ngIf="consolidateData[i].endTermSubmitStatus">{{consolidateData[i].endTermFinalRating}}</span>
+                    <mat-form-field appearance="outline" class="consolidator-rating" *ngIf="!consolidateData[i].endTermSubmitStatus">
+                     <mat-label class="required-astrick">Rating</mat-label>
+                     <mat-select formControlName="endTermFinalRating" > <!-- formControlName="midTermAppraiseeRating" -->
+                     <mat-option *ngFor="let rating of ratingData" value="{{rating}}">
+                     {{rating}}
+                     </mat-option>
+                     </mat-select>
+                   <!--   <mat-error *ngIf="para.get('midTermAppraiseeRating').hasError('required')">
+                     Rating is required.
+                     </mat-error> -->
+                     </mat-form-field></td>
+                    <td class="tg-0lax"  *ngIf="consolidateData[0]?.endTermProcessStatus==1">
+                      <span *ngIf="consolidateData[i].endTermSubmitStatus">{{consolidateData[i].endTermFinalRemark | decryption}}</span>
+                        <mat-form-field appearance="outline" class="consolidator-remarks" *ngIf="!consolidateData[i].endTermSubmitStatus">
+                            <mat-label>Remarks</mat-label>
+                        <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" maxlength="200"
+                        cdkAutosizeMinRows="1" cdkAutosizeMaxRows="2" formControlName="endTermFinalRemark"
+                       ></textarea>
+                    </mat-form-field>
+                    </td>
+            </ng-container>
+              </tr>
+              </ng-container>
+            </tbody>
+            </table>
+        </div>
+        <mat-paginator #paginator [length]="resultsLength" [pageSize]="selection.pSize" [pageSizeOptions]="[25]" (page)="getPaginatorData($event)">
+        </mat-paginator>
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto" class="mt-20" *ngIf="overAllSubmitStatus==0">
+            <div class="color-red">Fields marked * are mandatory.</div>
+            <button mat-raised-button color="accent" (click)="submitSheet()">{{'NAV.submit' | translate}}</button>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto" class="mt-20" *ngIf="overAllSubmitStatus==1 && endTermOverAllSubmitStatus==0">
+          <div class="color-red">Fields marked * are mandatory.</div>
+          <button mat-raised-button color="accent" (click)="submitSheetEndterm()">{{'NAV.submit' | translate}}</button>
+      </div>
+       </form>
+      </div>
+    </div>
+    <!-- / CONTENT -->
+  </div>

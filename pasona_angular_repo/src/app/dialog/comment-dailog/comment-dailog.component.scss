@@ -1,0 +1,25 @@
+.heading-dailog
+{
+    background: #CC0000 !important;
+    padding: 10px;
+    color: #fff;
+    font-size: 18px;
+    margin-left: -24px;
+    margin-right: -24px;
+    margin-top: -24px;
+}
+.mat-dialog-actions {
+    padding: 8px 0;
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 52px;
+    align-items: center;
+    justify-content: flex-end ;
+    margin-bottom: -16px !important;
+    /* margin-bottom: -9px; */
+}
+.set-display-block
+{
+    display: block !important;
+    padding: 0 30px 0 30px;
+}

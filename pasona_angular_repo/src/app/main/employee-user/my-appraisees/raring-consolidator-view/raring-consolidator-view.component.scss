@@ -1,0 +1,122 @@
+.tg {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.tg td {
+    border-color: #cccaca;
+    border-style: solid;
+    border-width: 1px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    overflow: hidden;
+    padding: 10px 5px;
+    word-break: normal;
+    min-width: 131px;
+    max-width: 131px;
+    text-overflow: initial !important; 
+    white-space: normal !important;
+}
+
+.tg th {
+    border-color: #cccaca;
+    border-style: solid;
+    border-width: 1px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    overflow: hidden;
+    padding: 10px 5px;
+    word-break: normal;
+    min-width: 131px;
+    max-width: 131px;
+    text-overflow: initial !important; 
+    white-space: normal !important;
+}
+
+.tg .tg-0lax {
+    text-align: left;
+    vertical-align: middle;
+}
+
+th.tg-0lax.head-th {
+    text-align: center;
+    font-weight: bold;
+    text-transform: capitalize;
+    background: #c00;
+    color: #fff;
+    border-color: #9a9090;
+}
+
+tr.th-subclas {
+    background: #f5f5f5;
+}
+
+tr.th-subclas td {
+    text-align: center !important;
+    border-color: #cccaca;
+}
+
+tr.th-subclas td {
+    text-align: center !important;
+    border-color: #cccaca;
+    line-height: 18px;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+tr.td-data td {
+    text-align: center !important;
+}
+
+.scrollable-div-consolidate {
+    overflow-x: auto;
+}
+
+table.consolidateTable{
+    /*  width: 100%;  */
+    table-layout: initial !important; 
+   /*   overflow-x: auto;  */
+}
+
+.consolidator-rating.mat-form-field-appearance-outline .mat-form-field-wrapper {
+    width: 145px;
+    margin: 0.6em 0 !important;
+    padding-bottom: 0px !important;
+}
+.consolidator-remarks.mat-form-field-appearance-outline .mat-form-field-wrapper {
+    width: 280px;
+    margin: 0.6em 0 !important;
+    padding-bottom: 0px !important;
+}
+
+.static-column
+{
+    z-index: 10000;
+    position:sticky;
+}
+
+  .td-fixed-margin1 {
+    background-color:#f5f5f5 ;
+    left: 0px;
+  }
+  .td-fixed-margin2 {
+    background-color:#f5f5f5 ;
+    left: 130px;
+  }
+  .td-fixed-margin3 {
+    background-color:#f5f5f5 ;
+    left: 260px;
+  }
+  .td-fixed-margin4 {
+   
+    background-color: #fff;
+    left: 0px;
+  }
+  .td-fixed-margin5 {
+    background-color: #fff;
+    left: 130px;
+  }.td-fixed-margin6 {
+    background-color: #fff;
+    left: 260px;
+  }

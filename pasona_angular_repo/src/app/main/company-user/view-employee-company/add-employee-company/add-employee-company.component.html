@@ -1,0 +1,428 @@
+<div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-100" fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxLayout="row" fxLayoutAlign="center start">
+            <button mat-icon-button class="mr-0 backbutton" [routerLink]="urlCurrent">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <div class="h1 head-icon">
+                <mat-icon aria-hidden="true">person</mat-icon>{{'NAV.employee.add' | translate}}
+            </div>
+        </div>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+    <div class="content p-24">
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
+            <form class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                name="form" [formGroup]="employeeForm" (ngSubmit)="createEmployee()">
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" style="margin-bottom: 1.2em;">
+                    <div appearance="outline" fxFlex="50" class="pr-4">{{'NAV.employeeForm.companyHead' | translate}}
+                    </div>
+                    <mat-radio-group aria-label="Select an option" formControlName="isMd" fxFlex="50"
+                        [disabled]="employeeForm.get('isHod').value=='1' || employeeForm.get('isUnitHead').value=='1'">
+                        <mat-radio-button value="0">{{'NAV.employeeForm.no' | translate}}</mat-radio-button>
+                        <!-- (change)="radioChange($event)" -->
+                        <mat-radio-button style="margin-left: 10px;" value="1">{{'NAV.employeeForm.yes' | translate}}</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4 select-to-input">
+                        <mat-label class="required-astrick">{{'NAV.employeeForm.company' | translate}}</mat-label>
+                        <mat-select formControlName="companyId"
+                            (selectionChange)="getAllUnitDataByCompanyId($event.value)" [disabled]="true">
+                            <mat-option *ngFor="let company of companyData" [value]="company.companyId">
+                                {{company.companyName | decryption}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>{{'NAV.employeeFormValidation.companyRequired' | translate}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4"
+                        [ngClass]="{'select-to-input': userData?.userType==3}">
+                        <mat-label class="required-astrick">{{'NAV.employeeForm.unit' | translate}}</mat-label>
+                        <mat-select formControlName="unitId"
+                            (selectionChange)="getAllDepartmentDataByUnitId($event.value)">
+                            <mat-option *ngFor="let unit of unitData" [value]="unit.unitId">
+                                {{unit.unitName | decryption}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>{{'NAV.employeeFormValidation.unitRequired' | translate}}</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" style="margin-bottom: 1.2em;">
+                    <div appearance="outline" fxFlex="50" class="pr-4">{{'NAV.employeeForm.unitHead' | translate}}
+                    </div>
+                    <mat-radio-group aria-label="Select an option" formControlName="isUnitHead" fxFlex="50"
+                        [disabled]="employeeForm.get('isHod').value=='1' || employeeForm.get('isMd').value=='1'">
+                        <mat-radio-button value="0">{{'NAV.employeeForm.no' | translate}}</mat-radio-button><!-- (change)="radioChange($event)" -->
+                        <mat-radio-button style="margin-left: 10px;" value="1">{{'NAV.employeeForm.yes' | translate}}</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label class="required-astrick">{{'NAV.employeeForm.department' | translate}}</mat-label>
+                        <mat-select formControlName="depId"
+                            (selectionChange)="getAllSectionDataByDepartmentId($event.value)">
+                            <mat-option *ngFor="let department of departmentData" [value]="department.depId">
+                                {{department.departmentName | decryption}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>{{'NAV.employeeFormValidation.departmentRequired' | translate}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                        <mat-label class="required-astrick">{{'NAV.employeeForm.section' | translate}}</mat-label>
+                        <mat-select formControlName="sectionId">
+                            <mat-option *ngFor="let section of sectionData" [value]="section.sectionId">
+                                {{section.sectionName | decryption}}
+                            </mat-option>
+
+                        </mat-select>
+                        <mat-error>{{'NAV.employeeFormValidation.sectionRequired' | translate}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" style="margin-bottom: 1.2em;">
+                    <div appearance="outline" fxFlex="50" class="pr-4">{{'NAV.employeeForm.employeeHod' | translate}}
+                    </div>
+                    <mat-radio-group aria-label="Select an option" formControlName="isHod" fxFlex="50"
+                        [disabled]="employeeForm.get('isUnitHead').value=='1' || employeeForm.get('isMd').value=='1'">
+                        <mat-radio-button value="0">{{'NAV.employeeForm.no' | translate}}</mat-radio-button><!-- (change)="radioChange($event)" -->
+                        <mat-radio-button style="margin-left: 10px;" value="1">{{'NAV.employeeForm.yes' | translate}}</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label class="required-astrick">{{'NAV.employeeForm.employeeName' | translate}}</mat-label>
+                        <input matInput formControlName="empName">
+                        <mat-error *ngIf="f.empName.hasError('required')">
+                            {{'NAV.employeeFormValidation.nameRequired' | translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.empName.hasError('pattern')">
+                            {{'NAV.employeeFormValidation.specialChar' | translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.empName.hasError('maxlength') && f.empName.value!=''">
+                            {{'NAV.employeeFormValidation.nameMax' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                        <mat-label class="required-astrick">{{'NAV.employeeForm.email' | translate}}</mat-label>
+                        <input matInput formControlName="email">
+                        <mat-error *ngIf="f.email.hasError('required')">
+                            {{'NAV.employeeFormValidation.emailRequired' | translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.email.hasError('invalidEmail')">
+                            {{'NAV.employeeFormValidation.invalidEmail' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <!--  <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label class="required-astrick">User Name</mat-label>
+                        <input matInput formControlName="userName">
+                        <mat-error *ngIf="f.userName.hasError('required')">
+                            User Name is required.
+                        </mat-error>
+                        <mat-error *ngIf="f.userName.hasError('maxlength') && f.userName.value!=''">
+                            User Name length should be less or equal 20.
+                        </mat-error>
+                        <mat-error *ngIf="f.userName.hasError('minlength') && f.userName.value!=''">
+                            User Name minimum length should be equal 10.
+                        </mat-error>
+                        <mat-error *ngIf="f.userName.hasError('alphanumeric')">
+                            Only alphanumeric is allowed.
+                        </mat-error>
+                    </mat-form-field> -->
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label class="required-astrick">{{'NAV.employeeForm.employeeCode' | translate}}</mat-label>
+                        <input matInput formControlName="empCode">
+                        <mat-error *ngIf="f.empCode.hasError('required')">
+                            {{'NAV.employeeFormValidation.employeeCodeRequired' | translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.empCode.hasError('maxlength') && f.empCode.value!=''">
+                            {{'NAV.employeeFormValidation.employeeCodeMax' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                        <mat-label class="required-astrick">{{'NAV.employeeForm.role' | translate}}</mat-label>
+                        <mat-select formControlName="roleId">
+                            <mat-option *ngFor="let roleData of rolesData" [value]="roleData.roleId">
+                                {{roleData.roleName | decryption}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error> {{'NAV.employeeFormValidation.roleRequired' | translate}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4 label-set-mob">
+                        <mat-label class="required-astrick">{{'NAV.employeeForm.mobileNo' | translate}}</mat-label>
+                        <!--   <input matInput formControlName="contactNo"> -->
+                        <input matInput formControlName="contactNo" ng2TelInput [ng2TelInputOptions]="mobileFlag"
+                            (countryChange)="onCountryChange($event)" />
+                        <mat-error *ngIf="f.contactNo.hasError('required')"> {{'NAV.employeeFormValidation.numberRequired' | translate}}</mat-error>
+                        <mat-error *ngIf="f.contactNo.hasError('maxlength') && !f.contactNo.hasError('invalidNumber')">
+                            {{'NAV.employeeFormValidation.numberMax' | translate}}</mat-error>
+                        <mat-error *ngIf="f.contactNo.hasError('minlength') && !f.contactNo.hasError('invalidNumber')">
+                            {{'NAV.employeeFormValidation.numberMin' | translate}}</mat-error>
+                        <mat-error *ngIf="f.contactNo.hasError('invalidNumber') && f.contactNo.value!=''">  {{'NAV.employeeFormValidation.numberOnly' | translate}}</mat-error>
+                    </mat-form-field>
+                
+                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                        <mat-label class="required-astrick">{{'NAV.employeeForm.dob' | translate}}</mat-label>
+                        <input matInput [matDatepicker]="picker1" [min]="minDate" [max]="maxDate"
+                            formControlName="dateOfBirth" readonly>
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                        <mat-error *ngIf="f.dateOfBirth.hasError('required')">
+                            {{'NAV.employeeFormValidation.dob' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!--  <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="100" class="">
+                        <mat-label class="required-astrick">Employee Code</mat-label>
+                        <input matInput formControlName="empCode">
+                        <mat-error *ngIf="f.empCode.hasError('required')">
+                            Employee Code is required.
+                        </mat-error>
+                        <mat-error *ngIf="f.empCode.hasError('maxlength') && f.empCode.value!=''">
+                            Employee Code length should be less or equal 10.
+                        </mat-error>
+                    </mat-form-field>
+                </div> -->
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label>{{'NAV.employeeForm.nationality' | translate}}</mat-label>
+                        <mat-select formControlName="nationality">
+                            <mat-option *ngFor="let nData of nationalityData" [value]="nData.nationality">
+                                {{nData.nationality}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>{{'NAV.employeeFormValidation.nationalityRequired' | translate}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                        <mat-label>{{'NAV.employeeForm.employmentType' | translate}}</mat-label>
+                        <mat-select formControlName="employmentType">
+                            <mat-option *ngFor="let empTData of empTypeData" [value]="empTData.id">
+                                {{empTData.employmentType | decryption}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>{{'NAV.employeeFormValidation.employmentTypeRequired' | translate}}</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label>{{'NAV.employeeForm.gradeCategory' | translate}}</mat-label>
+                        <mat-select formControlName="grade">
+                            <mat-option *ngFor="let gradeData of gradeData" [value]="gradeData.gradeId">
+                                {{gradeData.categoryName | decryption}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>{{'NAV.employeeFormValidation.gradeCategoryRequired' | translate}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                        <mat-label>{{'NAV.employeeForm.gradeCode' | translate}}</mat-label>
+                        <mat-select formControlName="gradeCode">
+                            <mat-option *ngFor="let grade of gradeCode" [value]="grade.gradeCodeId">
+                                {{grade.gradeCodeName | decryption}}
+                            </mat-option>
+                        </mat-select>
+                        <!-- <input matInput formControlName="gradeCode"> -->
+                        <mat-error *ngIf="f.gradeCode.hasError('required')">
+                            {{'NAV.employeeFormValidation.gradeCodeRequired' | translate}}
+                        </mat-error>
+                        <!--   <mat-error *ngIf="f.gradeCode.hasError('alphanumeric')">
+                            Only alphanumeric is allowed.
+                        </mat-error>
+                        <mat-error *ngIf="f.gradeCode.hasError('maxlength') && f.gradeCode.value!=''">
+                            Grade Code length should be less or equal 5.
+                        </mat-error> -->
+                    </mat-form-field>
+
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label class="required-astrick">{{'NAV.employeeForm.designation' | translate}}</mat-label>
+                        <input matInput formControlName="designation">
+                        <mat-error *ngIf="f.designation.hasError('required')">
+                            {{'NAV.employeeFormValidation.designationRequired' | translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.designation.hasError('maxlength') && f.designation.value!=''">
+                            {{'NAV.employeeFormValidation.designationMax' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                        <mat-label>{{'NAV.employeeForm.lpd' | translate}}</mat-label>
+                        <input matInput [matDatepicker]="picker3" formControlName="dateOfLastPromotion" readonly>
+                        <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                        <mat-datepicker #picker3></mat-datepicker>
+                        <!-- <mat-error *ngIf="f.dateOfJoining.hasError('required')">
+                            Last Promotion Date is required.
+                        </mat-error> -->
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label class="required-astrick">{{'NAV.employeeForm.gender' | translate}}</mat-label>
+                        <mat-select formControlName="gender">
+                            <mat-option [value]="'male'"> Male</mat-option>
+                            <mat-option [value]="'female'">Female</mat-option>
+                            <mat-option [value]="'others'">Others</mat-option>
+                        </mat-select>
+                        <mat-error>
+                            {{'NAV.employeeFormValidation.genderRequired' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                        <mat-label class="required-astrick">{{'NAV.employeeForm.dateOfJoining' | translate}}</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="dateOfJoining" readonly>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error *ngIf="f.dateOfJoining.hasError('required')">
+                            {{'NAV.employeeFormValidation.dateOfjoining' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label>{{'NAV.employeeForm.employeeCategory' | translate}}</mat-label>
+                        <input matInput formControlName="employeeCategory">
+                        <mat-error *ngIf="f.employeeCategory.hasError('required')">
+                            {{'NAV.employeeFormValidation.employeeCategory' | translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.employeeCategory.hasError('alphanumeric')">
+                            {{'NAV.employeeFormValidation.alphaNumberic' | translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.employeeCategory.hasError('maxlength') && f.employeeCategory.value!=''">
+                            {{'NAV.employeeFormValidation.employeeCategoryMax' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                        <mat-label>{{'NAV.employeeForm.appraisalGroup' | translate}}</mat-label>
+                        <mat-select formControlName="groupId">
+                            <mat-option [value]="''"> None </mat-option>
+                            <mat-option *ngFor="let grpData of groupData" [value]="grpData.groupId">
+                                {{grpData.groupName | decryption}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>  {{'NAV.employeeFormValidation.appraisalRequired' | translate}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="100" class="pr-0">
+                        <mat-label>{{'NAV.employeeForm.highestQualification' | translate}}</mat-label>
+                        <input matInput formControlName="highestQualification">
+                        <mat-error *ngIf="f.highestQualification.hasError('required')">
+                            {{'NAV.employeeFormValidation.highestQualification' | translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.highestQualification.hasError('alphanumeric')">
+                            {{'NAV.employeeFormValidation.alphaNumberic' | translate}}
+                        </mat-error>
+                        <mat-error
+                            *ngIf="f.highestQualification.hasError('maxlength') && f.highestQualification.value!=''">
+                            {{'NAV.employeeFormValidation.highestQualificationMax' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                    <!--   <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                        <mat-label>Job Title</mat-label>
+                        <mat-select formControlName="jobTitleId">
+                            <mat-option *ngFor="let job of jobTitleData" [value]="job.jobTitleId">
+                                {{job.jobTitleName | decryption}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>Job Title is required.</mat-error>
+                    </mat-form-field> -->
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label>{{'NAV.employeeForm.2ndhighestQualification' | translate}}</mat-label>
+                        <input matInput formControlName="secondHighestQualification">
+                        <mat-error *ngIf="f.secondHighestQualification.hasError('required')">
+                            {{'NAV.employeeFormValidation.highestQualification' | translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.secondHighestQualification.hasError('alphanumeric')">
+                            {{'NAV.employeeFormValidation.alphaNumberic' | translate}}
+                        </mat-error>
+                        <mat-error
+                            *ngIf="f.secondHighestQualification.hasError('maxlength') && f.secondHighestQualification.value!=''">
+                            {{'NAV.employeeFormValidation.highestQualificationMax' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                        <mat-label>{{'NAV.employeeForm.experienceBeforeJoining' | translate}}</mat-label>
+                        <input matInput formControlName="experienceYears">
+                        <mat-error *ngIf="f.experienceYears.hasError('required')">
+                            {{'NAV.employeeFormValidation.joiningYearRequired' | translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.experienceYears.hasError('alphanumeric')">
+                            {{'NAV.employeeFormValidation.validData' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label>{{'NAV.employeeForm.appraisalRating1' | translate}}</mat-label>
+                        <input matInput formControlName="precedingYearAppraisalRatingN1">
+                        <mat-error *ngIf="f.precedingYearAppraisalRatingN1.hasError('alphanumeric')">
+                           {{'NAV.employeeFormValidation.special' | translate}}
+                        </mat-error>
+                        <mat-error
+                            *ngIf="f.precedingYearAppraisalRatingN1.hasError('maxlength') && f.precedingYearAppraisalRatingN1.value!=''">
+                            {{'NAV.employeeFormValidation.length' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                        <mat-label>{{'NAV.employeeForm.appraisalRating2' | translate}}</mat-label>
+                        <input matInput formControlName="precedingYearAppraisalRatingN2">
+                        <mat-error *ngIf="f.precedingYearAppraisalRatingN2.hasError('alphanumeric')">
+                            {{'NAV.employeeFormValidation.alphaNumberic' | translate}}
+                        </mat-error>
+                        <mat-error
+                            *ngIf="f.precedingYearAppraisalRatingN2.hasError('maxlength') && f.precedingYearAppraisalRatingN3.value!=''">
+                            {{'NAV.employeeFormValidation.length' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label>{{'NAV.employeeForm.appraisalRating3' | translate}}</mat-label>
+                        <input matInput formControlName="precedingYearAppraisalRatingN3">
+                        <mat-error *ngIf="f.precedingYearAppraisalRatingN3.hasError('alphanumeric')">
+                            {{'NAV.employeeFormValidation.alphaNumberic' | translate}}
+                        </mat-error>
+                        <mat-error
+                            *ngIf="f.precedingYearAppraisalRatingN3.hasError('maxlength') && f.precedingYearAppraisalRatingN3.value!=''">
+                            {{'NAV.employeeFormValidation.length' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                        <mat-label>{{'NAV.employeeForm.appraisalRating4' | translate}}</mat-label>
+                        <input matInput formControlName="precedingYearAppraisalRatingN4">
+                        <mat-error *ngIf="f.precedingYearAppraisalRatingN4.hasError('alphanumeric')">
+                            {{'NAV.employeeFormValidation.alphaNumberic' | translate}}
+                        </mat-error>
+                        <mat-error
+                            *ngIf="f.precedingYearAppraisalRatingN4.hasError('maxlength') && f.precedingYearAppraisalRatingN4.value!=''">
+                            {{'NAV.employeeFormValidation.length' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                        <mat-label>{{'NAV.employeeForm.address' | translate}}</mat-label>
+                        <textarea matInput formControlName="address"></textarea>
+                        <mat-error>{{'NAV.employeeFormValidation.addressRequired' | translate}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto">
+                    <div class="color-red">{{'NAV.note' | translate}}</div>
+                    <button mat-raised-button color="accent">{{'NAV.submit' | translate}}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- / CONTENT -->
+</div>

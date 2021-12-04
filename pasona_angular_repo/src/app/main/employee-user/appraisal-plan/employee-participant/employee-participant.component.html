@@ -1,0 +1,103 @@
+<div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+  <!-- HEADER -->
+  <div class="header accent p-24 h-100" fxLayout="row" fxLayoutAlign="space-between center">
+    <div fxLayout="row" fxLayoutAlign="center start">
+      <button mat-icon-button class="mr-0 backbutton" (click)="backToEmployee()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div class="h1 head-icon">
+        <mat-icon aria-hidden="true" svgIcon="plan"></mat-icon>{{'NAV.appraisalPlan.listEmp' | translate}}
+        <div class="state_name-set">{{stateName}}</div>
+      </div>
+    </div>
+    <a *ngIf="employeeData[0]?.groupAppraiserStatus==0" mat-raised-button class="reference-button mt-16 mt-sm-0"
+      (click)="addAppraiserPopup('Add',employeeData,'','multiple')">
+      <mat-icon class="mr-8">add</mat-icon>
+      <span>{{'NAV.appraisalPlan.addGAppraiser' | translate}}</span>
+    </a>
+  </div>
+  <!-- / HEADER -->
+  <!-- CONTENT -->
+  <div class="content p-24">
+    <div fxLayout="row" fxLayoutAlign="end center">
+      <div fxFlex="80"></div>
+      <mat-form-field fxFlex="20">
+        <mat-label>Status</mat-label>
+        <mat-select [(ngModel)]="selection.type" (selectionChange)="applyFilter()">
+          <mat-option value="">--{{'NAV.employeeParticipant.none' | translate}}--</mat-option>
+          <mat-option value="0">{{'NAV.employeeParticipant.pendingEmployee' | translate}}</mat-option>
+          <mat-option value="1">{{'NAV.employeeParticipant.pendingFirstAppraiser' | translate}}</mat-option>
+          <mat-option value="2">{{'NAV.employeeParticipant.pendingSecondAppraiser' | translate}} </mat-option>
+          <mat-option value="3">{{'NAV.employeeParticipant.pendingThirdAppraiser' | translate}}</mat-option>
+          <mat-option value="4" *ngIf="activeStep==0">{{'NAV.employeeParticipant.pendingObjectiveApprover' | translate}}</mat-option>
+          <mat-option value="4" *ngIf="activeStep==1">{{'NAV.employeeParticipant.pendingRatingConsolidator' | translate}}</mat-option>
+          <mat-option value="5" *ngIf="activeStep==1">{{'NAV.employeeParticipant.pendingFinalApprover' | translate}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div> <!-- *ngIf="this.employeeData[0]?.setObjStatus!=100" -->
+    <table mat-table [dataSource]="employeeData" class="mat-elevation-z8 employee-part-table">
+      <ng-container matColumnDef="sNo">
+        <th mat-header-cell *matHeaderCellDef> {{'viewPartiTable.sNo' | translate}} </th>
+        <td mat-cell *matCellDef="let element; let i = index;">{{ (i+1) + (paginator.pageIndex * paginator.pageSize) }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>{{'viewPartiTable.name' | translate}}</th>
+        <td mat-cell *matCellDef="let element" appEllipsifyMe="{{element.empCode | decryption}}
+        ({{element.name | decryption}})"> {{element.empCode | decryption}}
+          ({{element.name | decryption}}) </td>
+      </ng-container>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>{{'viewPartiTable.apprStatus' | translate}}</th>
+        <td mat-cell *matCellDef="let element" [appEllipsifyMe]="element.objectApprovalStatusText">
+          <div *ngIf="activeStep==1" [ngClass]="(element.midTermStatus==0)?'pending':'complete'">
+            {{element.objectApprovalStatusText}}</div>
+            <div *ngIf="activeStep==2" [ngClass]="(element.endTermStatus==0)?'pending':'complete'">
+              {{element.objectApprovalStatusText}}</div>
+          <div *ngIf="activeStep==0" [ngClass]="(element.status==0)?'pending':'complete'">
+            {{element.objectApprovalStatusText}}</div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>{{'viewPartiTable.action' | translate}}</th>
+        <td mat-cell *matCellDef="let element">
+          <button *ngIf="element.setAppraiserStatus==0" mat-button class="add-appraiser-btn" color="accent"
+            (click)="addAppraiserPopup('Add',element,'','single')" matTooltip="Add Appraiser">
+            <mat-icon class="edit-color">add</mat-icon> {{'NAV.employeeParticipant.addAppraiser' | translate}} 
+          </button>
+          <button *ngIf="element.setAppraiserStatus==1 && activeStep==1" mat-button class="add-appraiser-btn"
+            color="accent" [disabled]="this.employeeData[0]?.midTermReviewStatus==100" (click)="addAppraiserPopup('Edit',element,'','single')" matTooltip="Edit Appraiser">
+            <mat-icon class="edit-color">add</mat-icon> {{'NAV.employeeParticipant.editAppraiser' | translate}} 
+          </button>
+          <button *ngIf="element.setAppraiserStatus==1 && activeStep==2" mat-button class="add-appraiser-btn"
+          color="accent" [disabled]="this.employeeData[0]?.endTermReviewStatus==100" (click)="addAppraiserPopup('Edit',element,'','single')" matTooltip="Edit Appraiser">
+          <mat-icon class="edit-color">add</mat-icon> {{'NAV.employeeParticipant.editAppraiser' | translate}} 
+        </button>
+          <button *ngIf="element.setAppraiserStatus==1 && activeStep==0" mat-button class="add-appraiser-btn"
+            color="accent" (click)="addAppraiserPopup('Edit',element,'','single')" matTooltip="Edit Appraiser"
+            [disabled]="this.employeeData[0]?.setObjStatus==100">
+            <mat-icon class="edit-color">add</mat-icon>{{'NAV.employeeParticipant.editAppraiser' | translate}} 
+          </button>
+        </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="alert">
+        <th mat-header-cell *matHeaderCellDef>{{'viewPartiTable.alert' | translate}}</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-button class="edit-del" [disabled]="element.setAppraiserStatus==0"
+            (click)="sendMessagePopUp(element.name,'message',element.appraisalPlanDetailId,'single',element)"
+            matTooltip="Send">
+            <mat-icon class="edit-color">send</mat-icon>
+          </button>
+        </td> 
+
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator #paginator [length]="resultsLength" [pageSize]="selection.pSize" [pageSizeOptions]="[5, 10, 25, 100]"
+      (page)="getPaginatorData($event)">
+    </mat-paginator>
+  </div>
+</div>

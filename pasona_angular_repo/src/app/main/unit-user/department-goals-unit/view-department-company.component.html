@@ -1,0 +1,47 @@
+<div class="page-layout simple fullwidth angular-material-elements">
+  <!-- HEADER -->
+  <div class="header accent p-24 h-100" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+    fxLayoutAlign.gt-xs="space-between center">
+    <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="column" fxLayoutAlign.gt-xs="center start">
+      <div class="h2 head-icon">
+        <mat-icon aria-hidden="true">file_copy</mat-icon>{{'NAV.departmentObj.dept' | translate}}
+      </div>
+    </div>
+  </div>
+  <!-- / HEADER -->
+  <!-- CONTENT -->
+  <div class="content p-24">
+    <div fxLayout="row" fxLayoutAlign="end center">
+      <mat-form-field class="set-search-box-matField">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search" class="search_input">
+        <mat-icon class="edit-color search-icon">search</mat-icon>
+      </mat-form-field>
+    </div>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="sNo">
+        <th mat-header-cell *matHeaderCellDef>{{'deptTable.sNo' | translate}}        </th>
+        <td mat-cell *matCellDef="let element; let i = index;">{{ (i+1) + (paginator.pageIndex * paginator.pageSize) }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="departmentName">
+        <th mat-header-cell *matHeaderCellDef>{{'deptTable.deptName' | translate}} </th>
+        <td mat-cell *matCellDef="let element" [appEllipsifyMe]="element.departmentName"> {{element.departmentName}} </td>
+      </ng-container>
+      <ng-container matColumnDef="unit">
+        <th mat-header-cell *matHeaderCellDef>{{'deptTable.unit' | translate}} </th>
+        <td mat-cell *matCellDef="let element" [appEllipsifyMe]="element.unitName"> {{element.unitName}} </td>
+      </ng-container>
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>{{'deptTable.action' | translate}}  </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-button class="edit-del" (click)="viewGoals(element.depId)" matTooltip="View Goals">
+            <mat-icon class="edit-color">remove_red_eye</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>

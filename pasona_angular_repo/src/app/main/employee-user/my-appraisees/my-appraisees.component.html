@@ -1,0 +1,87 @@
+<div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+  <!-- HEADER -->
+  <div class="header accent p-24 h-100" fxLayout="row" fxLayoutAlign="space-between center">
+    <div fxLayout="row" fxLayoutAlign="center start">
+      <button mat-icon-button class="mr-0 backbutton" (click)="backToEmployee()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div class="h1 head-icon">
+        <mat-icon aria-hidden="true">supervised_user_circle</mat-icon>{{'NAV.myAppraisees.view' | translate}}
+        <div class="state_name-set">{{stateName}}</div>
+      </div>
+
+    </div>
+    <div>
+      <a *ngIf="consolidationStatus==1" mat-raised-button class="reference-button mt-16 mt-sm-0"
+        (click)="consolidateSheetView()">
+        <mat-icon class="mr-8">add</mat-icon>
+        <span>{{'NAV.appraisalPlan.consolidate' | translate}}</span>
+      </a>
+      <a *ngIf="finalApproverStatus==1" mat-raised-button class="reference-button mt-16 mt-sm-0 ml-10"
+        (click)="finalApproverView()">
+        <mat-icon class="mr-8">add</mat-icon>
+        <span>{{'NAV.appraisalPlan.finalApprover' | translate}}</span>
+      </a>
+    </div>
+  </div>
+  <!-- / HEADER -->
+  <!-- CONTENT -->
+  <div class="content p-24">
+    <div fxLayout="row" fxLayoutAlign="end center">
+      <mat-form-field class="set-search-box-matField">
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search" class="search_input">
+        <mat-icon class="edit-color search-icon">search</mat-icon>
+      </mat-form-field>
+    </div>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 my-appraisee-table">
+      <ng-container matColumnDef="sNo">
+        <th mat-header-cell *matHeaderCellDef>{{'appraiseeTable.sNo' | translate}} </th>
+        <td mat-cell *matCellDef="let element; let i = index;">{{ (i+1) + (paginator.pageIndex * paginator.pageSize) }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>{{'appraiseeTable.name' | translate}}</th>
+        <td mat-cell *matCellDef="let element" [appEllipsifyMe]="element.empName"> {{element.empName}} </td>
+      </ng-container>
+      <ng-container matColumnDef="department">
+        <th mat-header-cell *matHeaderCellDef>{{'appraiseeTable.deptName' | translate}} </th>
+        <td mat-cell *matCellDef="let element" [appEllipsifyMe]="element.departmentName"> {{element.departmentName}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="section">
+        <th mat-header-cell *matHeaderCellDef>{{'appraiseeTable.section' | translate}} </th>
+        <td mat-cell *matCellDef="let element" [appEllipsifyMe]="element.sectionName"> {{element.sectionName}} </td>
+      </ng-container>
+      <ng-container matColumnDef="group">
+        <th mat-header-cell *matHeaderCellDef>{{'appraiseeTable.group' | translate}}</th>
+        <td mat-cell *matCellDef="let element" [appEllipsifyMe]="element.groupName"> {{element.groupName}} </td>
+      </ng-container>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>{{'appraiseeTable.status' | translate}}</th>
+        <td mat-cell *matCellDef="let element">
+          <span [ngClass]="(element.status==0)?'pending':'complete'">{{(element.status==0)? 'Pending' :
+            'Completed'}}</span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>{{'appraiseeTable.action' | translate}}</th>
+        <td mat-cell *matCellDef="let element">
+          <button [disabled]="element.submitStatus==0" mat-button class="edit-del" matTooltip="View"
+            (click)="viewObjective(element.empObjId)">
+            <mat-icon class="edit-color">remove_red_eye</mat-icon>
+          </button>
+          <button mat-button class="edit-del" matTooltip="Meeting History" (click)="historyFileReview(element.empObjId)"
+            style="margin-left: 10px;">
+            <mat-icon class="edit-color">history</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <div fxLayout="row" fxLayoutAlign="center center" class="no-data-available"
+      [ngClass]="(dataSource.data.length === 0)?'visible-no-data-available':''">
+    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>

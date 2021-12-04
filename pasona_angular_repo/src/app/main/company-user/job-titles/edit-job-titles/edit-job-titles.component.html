@@ -1,0 +1,89 @@
+<div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-100" fxLayout="row" fxLayoutAlign="start center">
+        <div fxLayout="row" fxLayoutAlign="center start">
+            <button mat-icon-button class="mr-0 backbutton" [routerLink]="urlCurrent">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <div class="h1 head-icon">
+                <mat-icon aria-hidden="true">work</mat-icon>{{'NAV.jobTitle.edit' | translate}}
+            </div>
+        </div>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+    <div class="content p-24">
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
+            <div class="display-block-role">
+                <form class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                    name="form" [formGroup]="jobTitleForm" >
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                            <mat-label>{{'NAV.promotionForm.designationFrom' | translate}}</mat-label>
+                            <input matInput formControlName="designationFrom">
+                            <mat-error *ngIf="f.designationFrom.hasError('required')">
+                                {{'NAV.promotionValidation.designationFromRequired' | translate}}
+                            </mat-error>
+                            <mat-error *ngIf="f.designationFrom.hasError('pattern')">
+                                {{'NAV.promotionValidation.special' | translate}}
+                            </mat-error>
+                            <mat-error *ngIf="f.designationFrom.hasError('maxlength') && f.designationFrom.value!=''">
+                                {{'NAV.promotionValidation.max' | translate}}
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                            <mat-label>{{'NAV.promotionForm.designationTo' | translate}}</mat-label>
+                            <input matInput formControlName="designationTo">
+                            <mat-error *ngIf="f.designationTo.hasError('required')">
+                                {{'NAV.promotionValidation.designationToRequired' | translate}}
+                            </mat-error>
+                            <mat-error *ngIf="f.designationTo.hasError('pattern')">
+                                {{'NAV.promotionValidation.special' | translate}}
+                            </mat-error>
+                            <mat-error *ngIf="f.designationTo.hasError('maxlength') && f.designationTo.value!=''">
+                                {{'NAV.promotionValidation.max' | translate}}
+                            </mat-error>
+                        </mat-form-field>
+                      
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                            <mat-label class="required-astrick">{{'NAV.promotionForm.minPoint' | translate}}</mat-label>
+                            <input matInput type="number" formControlName="minimumCapPoint" min="0" max="1000">
+                            <mat-error *ngIf="f.minimumCapPoint.hasError('required')">{{'NAV.promotionValidation.minPointRequired' | translate}}</mat-error>
+                           <!--  <mat-error *ngIf="f.minimumCapPoint.hasError('invalidNumber') && f.minimumCapPoint.value!=''"> Numbers
+                                accepted only.</mat-error> -->
+                                <mat-error *ngIf="f.minimumCapPoint.hasError('min')">{{'NAV.promotionValidation.minMax' | translate}}</mat-error>
+                                <mat-error *ngIf="f.minimumCapPoint.hasError('max')">{{'NAV.promotionValidation.minMax' | translate}}</mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                            <mat-label class="required-astrick">{{'NAV.promotionForm.rating' | translate}}</mat-label>
+                            <input matInput formControlName="precedingYearRating" maxlength="3">
+                            <mat-error *ngIf="f.precedingYearRating.hasError('required')">{{'NAV.promotionValidation.ratingRequired' | translate}}</mat-error>
+                     <!--        <mat-error *ngIf="f.precedingYearRating.hasError('alphanumeric') && f.precedingYearRating.value!=''"> 
+                                Only alphanumeric is allowed.</mat-error> -->
+                        </mat-form-field>
+
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                            <mat-label class="required-astrick">{{'NAV.promotionForm.gradePresent' | translate}}</mat-label>
+                            <input matInput type="number" formControlName="noOfYearsInPresentGrade" min="0" max="100">
+                            <mat-error *ngIf="f.noOfYearsInPresentGrade.hasError('required')">{{'NAV.promotionValidation.gradePresentRequired' | translate}}</mat-error>
+                            <mat-error *ngIf="f.noOfYearsInPresentGrade.hasError('min')">{{'NAV.promotionValidation.minMax' | translate}}</mat-error>
+                            <mat-error *ngIf="f.noOfYearsInPresentGrade.hasError('max')">{{'NAV.promotionValidation.minMax' | translate}}</mat-error>
+                         <!--    <mat-error *ngIf="f.noOfYearsInPresentGrade.hasError('invalidNumber') && f.noOfYearsInPresentGrade.value!=''"> Numbers
+                                accepted only.</mat-error> -->
+                        </mat-form-field>
+
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto" *ngIf="roleModule.write">
+                        <div class="color-red">{{'NAV.note' | translate}}</div>
+                        <button mat-raised-button color="accent" (click)="editJobTitle()">{{'NAV.submit' | translate}}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- / CONTENT -->
+</div>

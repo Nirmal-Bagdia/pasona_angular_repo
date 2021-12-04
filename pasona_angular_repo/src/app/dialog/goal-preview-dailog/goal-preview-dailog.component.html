@@ -1,0 +1,11 @@
+<div style="position: relative;height: 100%;">
+    <h1 class="delete-dialog heading-dailog" mat-dialog-title>{{'NAV.employeeObj.smartObj' | translate}}</h1>
+    <mat-icon class="edit-color cancel-icon-dialog" (click)="onNoClick()">close</mat-icon>
+    <div mat-dialog-content class="set-display-block" style="height: 81vh;max-height: 81vh;max-width: 90vw;">
+        <iframe src="assets/goal.pdf" class="iframe-set">
+        </iframe>
+    </div>
+    <div mat-dialog-actions style="height: 0px !important;">
+        <button mat-button (click)="onNoClick()" class="cancel-btn-dailog">Close</button>
+    </div>
+</div>

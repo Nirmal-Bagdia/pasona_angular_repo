@@ -1,0 +1,80 @@
+<div class="page-layout simple fullwidth angular-material-elements">
+  <!-- HEADER -->
+  <div class="header accent p-24 h-100" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="row"
+    fxLayoutAlign.gt-xs="space-between center">
+    <div fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-xs="column" fxLayoutAlign.gt-xs="center start">
+      <div class="h2 head-icon">
+        <mat-icon aria-hidden="true">business</mat-icon>{{'NAV.company.view' | translate}}
+      </div>
+    </div>
+    <a mat-raised-button class="reference-button mt-16 mt-sm-0" [routerLink]="'/admin/addCompany'">
+      <mat-icon class="mr-8">add</mat-icon>
+      <span>{{'NAV.company.add' | translate}}</span>
+    </a>
+  </div>
+  <!-- / HEADER -->
+
+  <!-- CONTENT -->
+  <div class="content p-24">
+    <div fxLayout="row" fxLayoutAlign="end center">
+      <mat-form-field class="set-search-box-matField">
+        <input matInput [(ngModel)]="selection.companyName" name="search" placeholder="Search" class="search_input" (change)="applyFilter($event.target.value)"> <!-- (keyup)="applyFilter($event.target.value)" -->
+        <mat-icon class="edit-color search-icon" (click)="applyFilter($event.target.value)" style="cursor: pointer;">search</mat-icon>
+      </mat-form-field>
+    </div>
+    <table mat-table [dataSource]="companyData" class="mat-elevation-z8">
+      <ng-container matColumnDef="sNo">
+        <th mat-header-cell *matHeaderCellDef> {{'companyTable.sNo' | translate}} </th>
+        <td mat-cell *matCellDef="let element; let i = index;"> {{ (i+1) + (paginator.pageIndex * paginator.pageSize) }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="cName">
+        <th mat-header-cell *matHeaderCellDef>{{'companyTable.companyName' | translate}} </th>
+        <td mat-cell *matCellDef="let element" [appEllipsifyMe]="element.companyName | decryption"> {{element.companyName | decryption}} </td>
+      </ng-container>
+      <ng-container matColumnDef="cEmail">
+        <th mat-header-cell *matHeaderCellDef>{{'companyTable.email' | translate}}</th>
+        <td mat-cell *matCellDef="let element" [appEllipsifyMe]="element.email | decryption"> {{element.email | decryption}} </td>
+      </ng-container>
+      <ng-container matColumnDef="cType">
+        <th mat-header-cell *matHeaderCellDef>{{'companyTable.companyType' | translate}}</th>
+        <td mat-cell *matCellDef="let element" [appEllipsifyMe]="element.typeName"> {{element.typeName}} </td>
+      </ng-container>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>{{'companyTable.status' | translate}}</th>
+        <td mat-cell *matCellDef="let element">
+          <div class="status-1" *ngIf="element.status=='1'">
+            <mat-icon class=" stus secondary-text s-20 mat-icon notranslate material-icons mat-icon-no-color" role="img"
+              aria-hidden="true">adjust</mat-icon>
+            <div class="act" style="margin-top: 2px;">Active</div>
+          </div>
+          <div class="status-1" *ngIf="element.status=='0'">
+            <mat-icon class=" stus1 secondary-text s-20 mat-icon notranslate material-icons mat-icon-no-color"
+              role="img" aria-hidden="true">adjust</mat-icon>
+            <div class="act" style="margin-top: 2px;">Inactive</div>
+          </div>
+      </ng-container>
+      <ng-container matColumnDef="creationDate">
+        <th mat-header-cell *matHeaderCellDef>{{'companyTable.creationDate' | translate}}</th>
+        <td mat-cell *matCellDef="let element" [appEllipsifyMe]="element.dateOfCreation | date :pasonaService.dateFormat"> {{element.dateOfCreation | date :pasonaService.dateFormat}} </td>
+      </ng-container>
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>{{'companyTable.action' | translate}}</th>
+        <td mat-cell *matCellDef="let element">
+          <button class="edit-del" mat-button (click)="editCompany(element.companyId)" matTooltip="Edit">
+            <mat-icon class="edit-color">edit</mat-icon>
+          </button>
+          <button class="edit-del" mat-button (click)="deleteCompanyPopUp(element.companyId)" matTooltip="Delete">
+            <mat-icon class="del-color">delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <div fxLayout="row" fxLayoutAlign="center center" class="no-data-available" [ngClass]="(companyData.length === 0)?'visible-no-data-available':''">  
+    </div>
+    <mat-paginator #paginator [length]="resultsLength" [pageSize]="selection.pSize" [pageSizeOptions]="[5, 10, 25, 100]" (page)="getPaginatorData($event)">
+    </mat-paginator>
+  </div>
+</div>

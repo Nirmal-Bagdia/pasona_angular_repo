@@ -1,0 +1,57 @@
+<div style="position: relative;">
+    <h1 class="delete-dialog heading-dailog" mat-dialog-title>{{'NAV.sendAlert' | translate}} <span
+            *ngIf="type!='allmsg'">( {{type | decryption}}
+            )</span> </h1>
+    <mat-icon class="edit-color cancel-icon-dialog" (click)="onNoClick()">close</mat-icon>
+    <div mat-dialog-content class="set-display-block">
+        <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" [formGroup]="messageForm">
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                    <mat-label class="required-astrick">Message</mat-label>
+                    <textarea matInput formControlName="description"></textarea>
+                    <mat-error *ngIf="f1.description.hasError('required')">
+                        Message is required.
+                    </mat-error>
+                    <mat-error *ngIf="f1.description.hasError('maxlength')">
+                        Message length should be less than or equal to 250.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="type!='allmsg'">
+                <mat-form-field appearance="outline" fxFlex="100" class="pl-4" *ngIf="alertChoice!='single'">
+                    <mat-label class="required-astrick">Employees</mat-label>
+                    <mat-select formControlName="to" multiple>
+                        <!-- <mat-option *ngFor="let emp of  employeeData" [value]="emp.empId" disabled="true"> -->
+                        <mat-option *ngFor="let emp of employeeData" [value]="emp.empId">
+                            {{emp.name | decryption}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>Employee is required!</mat-error>
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" style="margin-bottom: 1.2em;"
+                *ngIf="data.attach=='start'">
+                <div fxFlex="50" class="pr-4">
+                    <input type="file" formControlName="files" id="photoInput" #photoInput
+                        (change)="preview($event.target.files)" accept=".xlsx">
+                    <div class="image-file-set" style="cursor: pointer;" (click)="photoInput.click()">
+                        <mat-icon class="upload-icon1">attach_file</mat-icon>
+                        <span>Attach (.xlsx) File </span>
+                    </div>
+                </div>
+                <div fxFlex="50" class="pl-4" style="overflow: auto;">
+                    {{messageForm.get('files').value}}
+                </div>
+            </div>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto">
+            <div class="color-red">Fields marked * are mandatory.</div>
+            <div>
+                <button mat-raised-button color="accent" (click)='sendAlert()'>{{'NAV.send' | translate}}</button>
+                <button mat-button (click)="onNoClick()" class="cancel-btn-dailog">{{'NAV.cancel' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

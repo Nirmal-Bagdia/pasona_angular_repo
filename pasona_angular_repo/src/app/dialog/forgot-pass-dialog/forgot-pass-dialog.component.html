@@ -1,0 +1,33 @@
+<div style="position: relative;">
+    <h1 class="delete-dialog heading-dailog" mat-dialog-title><span class="ml-5">Recover your password</span></h1>
+    <mat-icon class="edit-color cancel-icon-dialog" (click)="onNoClick()">close</mat-icon>
+    <div mat-dialog-content class="set-display-block">
+                    <form name="forgotPasswordForm" [formGroup]="forgotPasswordForm" novalidate>
+                        <mat-form-field appearance="outline" class="width-100">
+                            <mat-label class="required-astrick">User Name</mat-label>
+                            <input matInput formControlName="userName">
+                            <mat-icon matSuffix class="secondary-text">person</mat-icon>
+                            <mat-error *ngIf="f.userName.hasError('required')">
+                                User Name is required.
+                            </mat-error>
+                          <!--   <mat-error *ngIf="f.userName.hasError('maxlength') && f.userName.value!=''">
+                                User Name length should be less or equal 20.
+                            </mat-error>
+                            <mat-error *ngIf="f.userName.hasError('minlength') && f.userName.value!=''">
+                                User Name minimum length should be equal .
+                            </mat-error> -->
+                           <!--  <mat-error *ngIf="f.userName.hasError('alphanumeric')">
+                                Only alphanumeric is allowed.
+                            </mat-error> -->
+                        </mat-form-field>
+        
+                    </form>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button class="submit-button" color="accent" (click)="forgotPass()"
+        aria-label="SEND RESET LINK" [disabled]="forgotPasswordForm.invalid">
+    Submit
+</button>
+    <!--   <button mat-button  class="cancel-btn-dailog">{{'NAV.ok' | translate}}</button> -->
+    </div>
+  </div>

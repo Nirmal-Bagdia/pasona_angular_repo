@@ -1,0 +1,86 @@
+<div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-100" fxLayout="row" fxLayoutAlign="start center">
+        <div fxLayout="row" fxLayoutAlign="center start">
+            <button mat-icon-button class="mr-0 backbutton" [routerLink]="urlCurrent">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <div class="h1 head-icon">
+                <mat-icon aria-hidden="true">perm_data_setting</mat-icon>{{'NAV.role.add' | translate}}
+            </div>
+        </div>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+    <div class="content p-24">
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
+            <div class="display-block-role">
+                <form class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                    name="form" [formGroup]="roleForm" style="padding-bottom: 0 !important;">
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <mat-form-field appearance="outline" fxFlex="100" class="pl-4">
+                            <mat-label class="required-astrick">{{'NAV.appraisalRoleForm.roleName' | translate}}</mat-label>
+                            <input matInput formControlName="roleName">
+                            <mat-error *ngIf="f.roleName.hasError('required')">
+                                {{'NAV.appraisalRoleFormValidation.nameValidation' | translate}}
+                            </mat-error>
+                            <mat-error *ngIf="f.roleName.hasError('maxlength') && f.roleName.value!=''">
+                                {{'NAV.appraisalRoleFormValidation.max' | translate}}
+                            </mat-error>
+                            <!-- <mat-error *ngIf="f.roleName.hasError('alphanumeric')">
+                                Special characters are not allowed.
+                            </mat-error> -->
+                        </mat-form-field>
+                    </div>
+                </form>
+                <form class="mat-card box-shadow-reset mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start"
+                    fxFlex="1 0 auto" name="form">
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <div fxFlex="15" class="pr-4 required-astrick">{{'NAV.appraisalRoleForm.assignModule' | translate}}</div>
+                        <!-- <div fxFlex="25" class="pr-4">
+                            <mat-checkbox (change)="selectAll($event)" aria-label="check">Select All</mat-checkbox>
+                        </div> -->
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" style="padding: 15px;">
+                        <div fxFlex="25" class="pr-4">
+                            <mat-checkbox [(ngModel)]="selectAllModule" (change)="selectAll($event)" aria-label="check"
+                                name="check">{{'NAV.appraisalRoleForm.selectAll' | translate}}</mat-checkbox>
+                        </div>
+                        <div fxFlex="15" class="pr-4">
+                            <!-- <mat-checkbox (change)="selectAll($event)" aria-label="check">Select All</mat-checkbox> -->
+                        </div>
+                        <!-- <div fxFlex="15" class="pr-4">
+                            <mat-checkbox [(ngModel)]="selectAllWriteOpt" (change)="selectAllWrite($event)" aria-label="check11" name="check11" [disabled]="moduleids.length==0">Select All</mat-checkbox>
+                        </div> -->
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" style="padding: 15px;"
+                        *ngFor="let rmodule of moduleData;let i=index;">
+                        <div fxFlex="25" class="pr-4">
+                            <mat-checkbox (change)="setSelected(rmodule,$event,i)" aria-label="aa{{i}}" name="aa{{i}}"
+                                [checked]="rmodule.checked" [disabled]="rmodule.disabled">{{rmodule.name}}
+                            </mat-checkbox>
+                        </div>
+                        
+                        <div fxFlex="15" class="pr-4">
+                            <mat-checkbox [(ngModel)]="rmodule.readOperation" name="read" [disabled]="true">{{'NAV.appraisalRoleForm.read' | translate}}
+                            </mat-checkbox>
+                        </div>
+                        <div fxFlex="15" class="pr-4">
+                            <mat-checkbox [(ngModel)]="rmodule.writeOperation" name="writeaa{{i}}"
+                                [disabled]="!rmodule.checked || rmodule.moduleId==10 || rmodule.moduleId==14"
+                                (change)="setSelectedWrite(rmodule,$event,i)">{{'NAV.appraisalRoleForm.write' | translate}}</mat-checkbox>
+                        </div>
+                        <div fxFlex="45" class="pl-4"></div>
+                    </div>
+                    <div *ngIf="errorShow" class="color-red-validate">{{'NAV.appraisalRoleFormValidation.select' | translate}}</div>
+                    <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto">
+                        <div class="color-red">{{'NAV.note' | translate}}</div>
+                        <button mat-raised-button color="accent" (click)="createRole()">{{'NAV.submit' |
+                            translate}}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- / CONTENT -->
+</div>

@@ -1,0 +1,100 @@
+<div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-100" fxLayout="row" fxLayoutAlign="space-between center">
+      <div fxLayout="row" fxLayoutAlign="center start">
+        <div class="h1 head-icon">
+          <mat-icon aria-hidden="true">category</mat-icon>{{'NAV.grade.view' | translate}}
+        </div>
+      </div>
+      <a *ngIf="roleModule.write" mat-raised-button class="reference-button mt-16 mt-sm-0"
+        (click)="addGradePopUP('Add','',grade,'')">
+        <mat-icon class="mr-8">add</mat-icon>
+        <span *ngIf="grade==0">{{'NAV.grade.add' | translate}}</span>
+        <span *ngIf="grade==1">{{'NAV.grade.add1' | translate}}</span>
+      </a>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+    <div class="content p-24">
+      <div fxLayout="row" fxLayoutAlign="end center">
+        <mat-form-field class="set-search-box-matField">
+          <input matInput [(ngModel)]="searchData" (keyup)="applyFilter($event.target.value)" placeholder="Search" class="search_input">
+          <mat-icon class="edit-color search-icon">search</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="group-setting-subbox mb-20 mat-card">
+      <mat-tab-group class="group_setting_tab" (selectedTabChange)="tabChange($event)">
+        <mat-tab label="Grade Category" >
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 parameterTable">
+        <ng-container matColumnDef="sNo">
+          <th mat-header-cell *matHeaderCellDef>{{'gradeCateTable.sNo' | translate}}</th>
+          <td mat-cell *matCellDef="let element; let i = index;">{{i+1}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>{{'gradeCateTable.gradeCate' | translate}}</th>
+          <td mat-cell *matCellDef="let element" [appEllipsifyMe]="element.name" > {{element.categoryName}} </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>{{'gradeCateTable.action' | translate}}</th>
+          <td mat-cell *matCellDef="let element">
+            <button *ngIf="roleModule.write" mat-button class="edit-del"
+              (click)="addGradePopUP('Edit',element.gradeId,grade,'')" matTooltip="Edit">
+              <mat-icon class="edit-color">edit</mat-icon>
+            </button>
+            <button *ngIf="roleModule.write" mat-button class="edit-del"
+              (click)="deleteGradePopUP(element.gradeId,'Grade Category')" matTooltip="Delete">
+              <mat-icon class="del-color" style="color: #cc0000;">delete</mat-icon>
+            </button>
+            
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <div fxLayout="row" fxLayoutAlign="center center" class="no-data-available"
+        [ngClass]="(dataSource.data.length === 0)?'visible-no-data-available':''">
+      </div>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      </mat-tab>
+      <mat-tab label="Grade Code" >
+        <table mat-table [dataSource]="dataSource1" class="mat-elevation-z8 parameterTable">
+          <ng-container matColumnDef="sNo">
+            <th mat-header-cell *matHeaderCellDef> {{'gradeCodeTable.sNo' | translate}}</th>
+            <td mat-cell *matCellDef="let element; let i = index;">{{i+1}}
+            </td>
+            
+          </ng-container>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>{{'gradeCodeTable.gradeCate' | translate}}</th>
+            <td mat-cell *matCellDef="let element" [appEllipsifyMe]="element.name" > {{element.gradeCodeName}} </td>
+          </ng-container>
+          
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>{{'gradeCodeTable.action' | translate}}</th>
+            <td mat-cell *matCellDef="let element">
+              <button *ngIf="roleModule.write" mat-button class="edit-del"
+                (click)="addGradePopUP('Edit',element.gradeCodeId,grade,'')" matTooltip="Edit">
+                <mat-icon class="edit-color">edit</mat-icon>
+              </button>
+              
+              <button *ngIf="roleModule.write" mat-button class="edit-del"
+                (click)="deleteGradePopUP(element.gradeCodeId,'Grade Code')" matTooltip="Delete">
+                <mat-icon class="del-color" style="color: #cc0000;">delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <div fxLayout="row" fxLayoutAlign="center center" class="no-data-available"
+        [ngClass]="(dataSource1.data.length === 0)?'visible-no-data-available':''">
+      </div>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        </mat-tab>
+       
+      </mat-tab-group>
+    </div>
+    </div>
+  </div>

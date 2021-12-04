@@ -1,0 +1,13 @@
+<div style="position: relative;">
+  <h1 class="delete-dialog heading-dailog" mat-dialog-title><span class="ml-5">{{'NAV.info' | translate}}</span></h1>
+  <mat-icon class="edit-color cancel-icon-dialog" (click)="onNoClick()">close</mat-icon>
+  <div mat-dialog-content class="set-display-block">
+    <div class="display-flex-set">
+      <mat-icon class="mr-4">info</mat-icon>
+      <p class="mt-4 ml-4">{{message}}</p>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()" class="cancel-btn-dailog">{{'NAV.ok' | translate}}</button>
+  </div>
+</div>

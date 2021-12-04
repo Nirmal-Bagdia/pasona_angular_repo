@@ -1,0 +1,38 @@
+.heading-dailog
+{
+    background: #CC0000 !important;
+    padding: 10px;
+    color: #fff;
+    font-size: 18px;
+    margin-left: -24px;
+    margin-right: -24px;
+    margin-top: -24px;
+}
+.mat-dialog-actions {
+    padding: 8px 0;
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 52px;
+    align-items: center;
+    justify-content: flex-end ;
+    margin-bottom: -16px !important;
+    /* margin-bottom: -9px; */
+}
+.set-display-block
+{
+    display: block !important;
+    min-height: 40vh;
+}
+.margin-set-head
+{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.mat-dialog-content.appraisalplanDialog {
+    max-height: 72vh !important;
+}
+.offlinetable td.mat-cell:last-of-type,
+.offlinetable th.mat-header-cell:last-of-type {
+    padding-right: 0px !important;
+    width: auto !important;
+}

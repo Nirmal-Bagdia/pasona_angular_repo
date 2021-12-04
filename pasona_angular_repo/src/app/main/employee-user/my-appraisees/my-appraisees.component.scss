@@ -1,0 +1,17 @@
+table {
+    width: 100%;
+  }
+  
+ 
+  
+  .mat-icon.search-icon {
+    position: absolute;
+    right: 0px;
+    top: 0;
+  }
+  
+  .my-appraisee-table td.mat-cell:last-of-type,
+  .my-appraisee-table th.mat-header-cell:last-of-type {
+    padding-right: 0px !important;
+    width: auto !important;
+  }

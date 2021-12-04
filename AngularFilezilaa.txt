@@ -1,0 +1,11 @@
+FileZilla Credentials
+
+Main IP: 103.108.220.177
+username: root 
+pass: 5#z;o1ZOEakH44
+port:22
+
+Anguar Build path
+/opt/tomcat/webapps/pasona/WEB-INF/classes/static
+Anguar BUILD COMMAND: 
+node --max_old_space_size=6048 ./node_modules/@angular/cli/bin/ng build --prod

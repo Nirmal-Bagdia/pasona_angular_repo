@@ -1,0 +1,65 @@
+<div style="position: relative;">
+  <h1 class="delete-dialog heading-dailog" mat-dialog-title>{{'NAV.appraisalGroup.relatveGSetting' | translate}}</h1>
+  <mat-icon class="edit-color cancel-icon-dialog" (click)="onNoClick()">close</mat-icon>
+  <div mat-dialog-content class="set-display-block padding-hight">
+    <form [formGroup]="groupForm" >
+      <div fxLayout="row" fxFlex="1 0 auto" class="width-100">
+        <div class="list-relative-container" fxFlex="50" class="pr-20">
+          <h2>{{'NAV.relativeGroupForm.relativeGroup' | translate}}</h2>
+          <!-- cdkDropListSortingDisabled -->
+          <ng-container *ngFor="let item of groupData;let ind=index">
+            <mat-form-field appearance="outline" class="width-100" *ngIf="((groupIds.indexOf(item.groupId)==-1) &&  groups().at(ind).value.relativeGroupId.length==0) || groups().at(ind).value.relativeGroupId.length!=0">
+              <!-- *ngIf="groupIds.indexOf(item.groupId)==-1 || ((groupIds.indexOf(item.groupId)==-1) &&  groups().at(ind).value.relativeGroupId.length!=0)" -->
+              <mat-label class="required-astrick">{{'NAV.relativeGroupForm.relativeGroup' | translate}}</mat-label>
+              <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="2" readonly> {{item.groupName}}</textarea>
+            </mat-form-field>
+          </ng-container>
+        </div>
+    
+
+        <div class="list-relative-container" fxFlex="50" formArrayName="groups" class="width-100">
+          <h2>{{'NAV.relativeGroupForm.selectRelativeGroups' | translate}}</h2>
+          <!--   {{groupIds | json}} -->
+          <ng-container *ngFor="let group of groups().controls; let pointIndex=index">
+            <div [formGroupName]="pointIndex" class="set-display-block">
+              <!--  -->
+              <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="width-100 ">
+              <mat-form-field appearance="outline" fxFlex="50" class="pr-4" *ngIf="((groupIds.indexOf(group.get('groupId').value)==-1) &&  groups().at(pointIndex).value.relativeGroupId.length==0) || groups().at(pointIndex).value.relativeGroupId.length!=0">
+                <mat-label >{{'NAV.relativeGroupForm.relativeGroup' | translate}}</mat-label>
+                <mat-select  formControlName="relativeGroupId" multiple (selectionChange)="validateConsolidator($event.value,pointIndex)">
+                  <!-- formControlName="midTermAppraiseeRating" -->
+                  <mat-option *ngFor="let item of groupData;let i=index" [value]="item.groupId" #id1
+                    (click)="idsStore(id1.selected,item.groupId,group.get('groupId').value,i,pointIndex)"
+                    [style.display]="((groupIds.indexOf(item.groupId)!=-1 && id1.selected==false) || (item.groupId)==group.get('groupId')?.value ) ? 'none': 'flex'">
+                    {{item.groupName}}
+                  </mat-option>
+                </mat-select>
+                <!-- [style.display]="((item.groupId)==group.get('groupId')?.value) ? 'none': 'flex'"-->
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex="50" class="pl-4" *ngIf="((groupIds.indexOf(group.get('groupId').value)==-1) &&  groups().at(pointIndex).value.relativeGroupId.length==0) || groups().at(pointIndex).value.relativeGroupId.length!=0">
+                <mat-label class="required-astrick">{{'NAV.relativeGroupForm.ratingConsolidator' | translate}}</mat-label>
+                <mat-select formControlName="ratingConsolidator">
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="ratingConsoFilterCtrl" placeholderLabel="Search"
+                            noEntriesFoundLabel="No matching data found"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let empData of filterdratingConso | async" [value]="empData.id">
+                        {{empData.empCode | decryption}} ({{empData.empName | decryption}})
+                    </mat-option>
+                </mat-select> <!--  [disabled]="appraisalForm.get('empId').value.indexOf(empData.id)>-1" -->
+                <mat-error>{{'NAV.relativeFormValidation.ratingConsolidatorRequired' | translate}}</mat-error>
+            </mat-form-field>
+            </div>
+          </div>
+          </ng-container>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button color="accent" (click)="submitRelativeGroup()">{{'NAV.submit' | translate}}</button>
+    <button *ngIf="type=='Edit'" mat-raised-button color="accent">{{'NAV.submit' | translate}}</button>
+    <button mat-button (click)="onNoClick()" class="cancel-btn-dailog">{{'NAV.cancel' | translate}}</button>
+  </div>
+</div>

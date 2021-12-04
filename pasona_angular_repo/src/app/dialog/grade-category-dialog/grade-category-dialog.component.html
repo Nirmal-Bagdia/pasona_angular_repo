@@ -1,0 +1,49 @@
+<div style="position: relative;">
+    <h1 *ngIf="data.pType==0" class="delete-dialog heading-dailog" mat-dialog-title> {{(type=='Add') ? ('NAV.grade.add' | translate) : ('NAV.grade.edit' | translate)}} </h1>
+    <h1 *ngIf="data.pType==1" class="delete-dialog heading-dailog" mat-dialog-title> {{(type=='Add') ? ('NAV.grade.add1' | translate) : ('NAV.grade.edit1' | translate)}} </h1>
+    <mat-icon class="edit-color cancel-icon-dialog" (click)="onNoClick()">close</mat-icon>
+    <div mat-dialog-content class="set-display-block">
+        <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" [formGroup]="gradeForm">
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field appearance="outline" fxFlex="100" class="pr-4" *ngIf="data.pType==0">
+                    <mat-label class="required-astrick">{{'NAV.gradeCategoryForm.gradeCategory' | translate}}</mat-label>
+                    <input matInput formControlName="categoryName">
+                    <mat-error *ngIf="f.categoryName.hasError('required')">
+                        {{'NAV.gradeCategoryValidation.gradeCategoryRequired' | translate}}
+                    </mat-error>
+                    <mat-error *ngIf="f.categoryName.hasError('alphanumeric')">
+                        {{'NAV.gradeCategoryValidation.aplha' | translate}}
+                    </mat-error>
+                    <mat-error *ngIf="f.categoryName.hasError('maxlength') && f.categoryName.value!=''">
+                        {{'NAV.gradeCategoryValidation.gradeCategoryMax' | translate}}
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="100" class="pr-4" *ngIf="data.pType==1">
+                    <mat-label class="required-astrick">{{'NAV.gradeCategoryForm.gradeCode' | translate}}</mat-label>
+                    <input matInput formControlName="gradeCodeName">
+                    <mat-error *ngIf="f.gradeCodeName.hasError('required')">
+                        {{'NAV.gradeCategoryValidation.gradeCodeRequired' | translate}}
+                    </mat-error>
+                    <mat-error *ngIf="f.gradeCodeName.hasError('alphanumeric')">
+                        {{'NAV.gradeCategoryValidation.aplha' | translate}}
+                    </mat-error>
+                    <mat-error *ngIf="f.gradeCodeName.hasError('maxlength') && f.gradeCodeName.value!=''">
+                        {{'NAV.gradeCategoryValidation.gradeCategoryMax' | translate}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </form>
+    </div>
+
+    <div mat-dialog-actions>
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto">
+            <div class="color-red">{{'NAV.note' | translate}}</div>
+            <div>
+                <button *ngIf="type=='Add'" mat-raised-button color="accent" (click)='addGrade()'>{{'NAV.add' | translate}}</button>
+                <button *ngIf="type=='Edit'" mat-raised-button color="accent" (click)='editGrade()'>{{'NAV.update' | translate}}</button>
+                <button mat-button (click)="onNoClick()" class="cancel-btn-dailog">{{'NAV.cancel' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+

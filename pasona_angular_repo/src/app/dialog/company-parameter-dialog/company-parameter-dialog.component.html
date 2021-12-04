@@ -1,0 +1,82 @@
+<div style="position: relative;" *ngIf="popUpType=='parameter'">
+    <h1 class="delete-dialog heading-dailog" mat-dialog-title> {{(type=='Add') ? ('NAV.companyParameter.add' | translate) : ('NAV.companyParameter.edit' | translate)}} </h1>
+    <mat-icon class="edit-color cancel-icon-dialog" (click)="onNoClick()">close</mat-icon>
+    <div mat-dialog-content class="set-display-block">
+        <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" [formGroup]="appraisalForm">
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                    <mat-label class="required-astrick">{{'NAV.companyParameterForm.groupName' | translate}}</mat-label>
+                    <input matInput formControlName="name" [readonly]="type=='Edit'">
+                    <mat-error *ngIf="f.name.hasError('required')">
+                        {{'NAV.parameterFormValidation.groupNameRequired' | translate}}
+                    </mat-error>
+                    <mat-error *ngIf="f.name.hasError('maxlength')">
+                        {{'NAV.parameterFormValidation.maxGroupName' | translate}}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="" formArrayName="parameters">
+                <div *ngFor="let item of parameterLists.controls; let pointIndex=index" [formGroupName]="pointIndex">
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <mat-form-field appearance="outline" fxFlex="auto" class="pr-4">
+                            <mat-label class="required-astrick">{{'NAV.companyParameterForm.name' | translate}}</mat-label>
+                            <input matInput formControlName="parameterName">
+                            <mat-error *ngIf="item.get('parameterName').hasError('required')">
+                                {{'NAV.parameterFormValidation.nameRequired' | translate}}
+                            </mat-error>
+                            <mat-error *ngIf="item.get('parameterName').hasError('maxlength')">
+                                {{'NAV.parameterFormValidation.nameMax' | translate}}
+                            </mat-error>
+                        </mat-form-field>
+                      <!--   <mat-form-field appearance="outline" fxFlex="45" class="pl-4">
+                            <mat-label class="required-astrick">Weightage (%)</mat-label>
+                            <mat-select formControlName="parameterWeightage"
+                                (selectionChange)="errorCheckingWeightage(pointIndex)">
+                                <mat-option *ngFor="let comple of arrayOne(100);let i=index;" [value]="i+1">
+                                    {{i+1}} %
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>Weightage is required!</mat-error>
+                        </mat-form-field> -->
+                        <div style="margin-top: -20px;" fxFlex="10" class="pl-4" *ngIf="canAdd==0">
+                            <button mat-button class="delete-btn-form"
+                                (click)="deleteParameterList(pointIndex,item.get('parameterId').value)"
+                                [disabled]="appraisalForm.get('parameters').value.length==1">
+                                <mat-icon class="mr-8">remove</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button  *ngIf="canAdd==0" mat-button style="width: 20px;" (click)="addParameterList()"
+                [disabled]="appraisalForm.get('parameters').invalid ">
+                <mat-icon class="mr-8">add_circle_outline</mat-icon>
+            </button>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto">
+            <div class="color-red">{{'NAV.note' | translate}}</div>
+            <div>
+                <button *ngIf="type=='Add'" mat-raised-button color="accent" (click)='createParameter()'>{{'NAV.add' | translate}}</button>
+                <button *ngIf="type=='Edit'" mat-raised-button color="accent" (click)='editParameter()'>{{'NAV.update' | translate}}</button>
+                <button mat-button (click)="onNoClick()" class="cancel-btn-dailog">{{'NAV.cancel' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style="position: relative;" *ngIf="popUpType=='parameterList'">
+    <h1 class="delete-dialog heading-dailog" mat-dialog-title>{{type}}</h1>
+    <mat-icon class="edit-color cancel-icon-dialog" (click)="onNoClick()">close</mat-icon>
+    <div mat-dialog-content class="set-display-block">
+        <ul>
+            <li *ngFor="let data of parameterListData">
+                {{data?.parameterName ? (data?.parameterName | decryption) :(data | decryption)}}
+            </li>
+        </ul>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button (click)="onNoClick()" class="cancel-btn-dailog">{{'NAV.close' | translate}}</button>
+    </div>
+</div>

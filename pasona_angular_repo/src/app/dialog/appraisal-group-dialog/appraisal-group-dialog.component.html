@@ -1,0 +1,79 @@
+<div style="position: relative;">
+    <h1 class="delete-dialog heading-dailog" mat-dialog-title>{{'NAV.appraisalGroup.group' | translate}}</h1> <!-- {{type}} Appraisee To --> 
+    <mat-icon class="edit-color cancel-icon-dialog" (click)="onNoClick()">close</mat-icon>
+    <div mat-dialog-content class="set-display-block">
+        <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" [formGroup]="filterForm">
+            <div fxLayout="row" fxLayoutAlign="end center" fxFlex="1 0 auto" > <!-- *ngIf="unitData.length!=0" -->
+                <mat-form-field appearance="outline" fxFlex="100" class="pl-4">
+                    <mat-label>{{'NAV.appraisalGroupDialog.unit' | translate}}</mat-label>
+                    <mat-select
+                        (selectionChange)="getAllDepartmentData();getAllEmployee();"
+                        formControlName="unitId">
+                        <mat-option [value]="''">--{{'NAV.appraisalGroupDialog.none' | translate}}--</mat-option>
+                        <mat-option *ngFor="let unit of unitData" [value]="unit.unitId">
+                            {{unit.unitName | decryption}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            
+            <div fxLayout="row" fxLayoutAlign="end center" fxFlex="1 0 auto">
+                <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                    <mat-label>{{'NAV.appraisalGroupDialog.department' | translate}}</mat-label>
+                    <mat-select
+                        (selectionChange)="getAllSectionDataByDepartmentIdFilter($event.value);getAllEmployee();"
+                        formControlName="depId">
+                        <mat-option [value]="''">--{{'NAV.appraisalGroupDialog.none' | translate}}--</mat-option>
+                        <mat-option *ngFor="let department of departmentData" [value]="department.depId">
+                            {{department.departmentName | decryption}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            
+                <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                   <mat-label>{{'NAV.appraisalGroupDialog.section' | translate}}</mat-label>
+                    <mat-select (selectionChange)="getAllEmployee();" formControlName="sectionId">
+                        <mat-option [value]="''">--{{'NAV.appraisalGroupDialog.none' | translate}}--</mat-option>
+                        <mat-option *ngFor="let section of sectionData" [value]="section.sectionId">
+                            {{section.sectionName | decryption}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </form>
+        
+    
+        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="heading-set-obj" style="margin-bottom: 20px;">
+            {{'NAV.appraisalGroupDialog.assignEmployee' | translate}}
+        </div> 
+        <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form" [formGroup]="appraisalForm">
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field appearance="outline" fxFlex="100" class="pl-4">
+                    <mat-label class="required-astrick"> {{'NAV.appraisalGroupDialog.employees' | translate}}</mat-label>
+                    <mat-select formControlName="empId" multiple >
+                         <!-- (selectionChange)="changeSlection($event)" -->
+                        <mat-option>
+                            <ngx-mat-select-search [formControl]="empMultiFilterCtrl" placeholderLabel="Search"
+                                noEntriesFoundLabel="no matching data found"></ngx-mat-select-search>
+                        </mat-option>
+                        <mat-option *ngFor="let empData of filterdEmpMulti | async" [value]="empData.id" (click)="changeSlection(empData.id)">
+                             {{empData.empCode | decryption}} ( {{empData.empName | decryption}} )
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>{{'NAV.appraisalGroupDialog.firstAppraiser' | translate}}</mat-error>
+                </mat-form-field>
+            </div>
+        </form>
+    </div>
+
+    <div mat-dialog-actions>
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto">
+            <div class="color-red">{{'NAV.note' | translate}}</div>
+            <div>
+                <button *ngIf="type=='Add'" mat-raised-button color="accent" (click)='addEmployeeToGroup()'>{{'NAV.add' | translate}}</button>
+                <button *ngIf="type=='Edit'" mat-raised-button color="accent" (click)='editEmployeeToGroup()'>{{'NAV.update' | translate}}</button>
+                <button mat-button (click)="onNoClick()" class="cancel-btn-dailog">{{'NAV.cancel' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,360 @@
+<div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-100" fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxLayout="row" fxLayoutAlign="center start">
+            <button mat-icon-button class="mr-0 backbutton" [routerLink]="['/employee/empGoals',appraisalPlanId]">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <div class="h1 head-icon">
+                <mat-icon aria-hidden="true" svgIcon="goal"></mat-icon>{{'NAV.employeeObj.add' | translate}}
+            </div>
+
+        </div>
+        <a mat-raised-button class="reference-button mt-16 mt-sm-0" (click)="smartGoals()">
+            <mat-icon class="mr-8" aria-hidden="true" svgIcon="goal"></mat-icon>
+            <span>{{'NAV.employeeObj.smartObj' | translate}}</span>
+        </a>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+    <div class="content p-24">
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
+            <form class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                name="form" [formGroup]="goalsForm" #formDirective="ngForm">
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <div fxFlex="50" class="pr-4">{{'NAV.goalsForm.from' | translate}}</div>
+                    <div fxFlex="50" class="pl-4">{{'NAV.goalsForm.to' | translate}}</div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="25" class="pr-4 select-to-input">
+                        <mat-label class="required-astrick">{{'NAV.goalsForm.month' | translate}}</mat-label>
+                        <mat-select formControlName="fromMonth" (selectionChange)="errorChecking('fm')" disabled="true">
+                            <mat-option *ngFor="let month of monthData" [value]="month.id">
+                                {{month.name}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>{{'NAV.goalSValidation.monthRequired' | translate}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="25" class="pr-4 select-to-input">
+                        <mat-label class="required-astrick">{{'NAV.goalsForm.year' | translate}}</mat-label>
+                        <mat-select formControlName="fromYear" (selectionChange)="errorChecking('fy')" disabled="true">
+                            <mat-option *ngFor="let year of yearData" [value]="year">
+                                {{year}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>{{'NAV.goalSValidation.yearRequired' | translate}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="25" class="pr-4 select-to-input">
+                        <mat-label class="required-astrick">{{'NAV.goalsForm.month' | translate}}</mat-label>
+                        <mat-select formControlName="toMonth" (selectionChange)="errorChecking('tm')" disabled="true">
+                            <!-- (selectionChange)="getAllUnitDataByCompanyId($event.value)" -->
+                            <mat-option *ngFor="let month of monthData" [value]="month.id">
+                                {{month.name}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>{{'NAV.goalSValidation.monthRequired' | translate}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="25" class="pr-4 select-to-input">
+                        <mat-label class="required-astrick">{{'NAV.goalsForm.year' | translate}}</mat-label>
+                        <mat-select formControlName="toYear" (selectionChange)="errorChecking('ty')" disabled="true">
+                            <mat-option *ngFor="let year of yearData" [value]="year">
+                                {{year}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>{{'NAV.goalSValidation.yearRequired' | translate}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                        <mat-label class="required-astrick">{{'NAV.goalsForm.summary' | translate}}</mat-label>
+                        <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+                            cdkAutosizeMaxRows="4" formControlName="summary"></textarea>
+                        <mat-error *ngIf="f.summary.hasError('required')">
+                            {{'NAV.goalSValidation.summary' | translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.summary.hasError('maxlength')">
+                            {{'NAV.goalSValidation.summaryMax' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="input-length-show-div">
+                    {{goalsForm.get('summary').value.length > 500 ? '0' : 500-goalsForm.get('summary').value.length }}
+                </div>
+
+                <mat-tab-group class="goal_add_edit_tab">
+                    <mat-tab label="Objective">
+                        <div class="" formArrayName="objectiveList">
+                            <div *ngFor="let item of objectiveLists.controls; let pointIndex=index"
+                                [formGroupName]="pointIndex" style="display:flex">
+                                <div class="box-view-objective set-display-block">
+                                    <span class="objective-box-set-emp">{{pointIndex+1}}</span>
+                                    <div class="set-header-objective-emp pb-0">
+                                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                            <mat-form-field appearance="outline" fxFlex="15"
+                                                class="pr-4 add-obj-header-wrapper-set">
+                                                <mat-label class="required-astrick">{{'NAV.goalsForm.objectiveType' |
+                                                    translate}}</mat-label>
+                                                <mat-select formControlName="objectiveType"
+                                                    (selectionChange)="errorCheckingWeightage()">
+                                                    <mat-option *ngFor="let objType of objectiveType"
+                                                        value="{{objType.name}}"
+                                                        [ngStyle]="{'display': (objType.show) ? 'block' : 'none'}">
+                                                        {{objType.name}}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <div fxFlex="5" class="pr-4"></div>
+                                            <mat-form-field appearance="outline" fxFlex="15"
+                                                class="pr-4 add-obj-header-wrapper-set datepicker-btn-set">
+                                                <mat-label class="required-astrick">{{'NAV.goalsForm.from' | translate}}
+                                                </mat-label>
+                                                <input matInput [matDatepicker]="picker1" [min]="minDate"
+                                                    [max]="maxDate" formControlName="fromDate" readonly>
+                                                <mat-datepicker-toggle matSuffix [for]="picker1">
+                                                </mat-datepicker-toggle>
+                                                <mat-datepicker #picker1></mat-datepicker>
+                                                <mat-error *ngIf="item.get('fromDate').touched">
+                                                    {{'NAV.goalSValidation.formDate' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="15"
+                                                class="pr-4 add-obj-header-wrapper-set datepicker-btn-set">
+                                                <mat-label class="required-astrick">{{'NAV.goalsForm.to' | translate}}
+                                                </mat-label>
+                                                <input matInput [matDatepicker]="picker2" [min]="minDate"
+                                                    [max]="maxDate" formControlName="toDate" readonly>
+                                                <mat-datepicker-toggle matSuffix [for]="picker2">
+                                                </mat-datepicker-toggle>
+                                                <mat-datepicker #picker2></mat-datepicker>
+                                                <mat-error *ngIf="item.get('toDate').touched">
+                                                    {{'NAV.goalSValidation.toDate' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                            <div fxFlex="5" class="pr-4"></div>
+                                            <mat-form-field appearance="outline" fxFlex="20"
+                                                class="pr-4 add-obj-header-wrapper-set">
+                                                <mat-label class="required-astrick">{{'NAV.goalsForm.weightage' |
+                                                    translate}} (%)</mat-label>
+                                                <mat-select formControlName="weightage"
+                                                    (selectionChange)="errorCheckingWeightage()">
+                                                    <mat-option *ngFor="let weight of arrayOne(100);let i = index"
+                                                        [value]="i+1">
+                                                        {{i+1}} %
+                                                    </mat-option>
+                                                </mat-select>
+                                                <mat-error *ngIf="item.get('weightage').touched">
+                                                    {{'NAV.goalSValidation.weightageRequired' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline" fxFlex="20"
+                                                class="pr-4 add-obj-header-wrapper-set">
+                                                <mat-label class="required-astrick">{{'NAV.goalsForm.difficultyLevel' |
+                                                    translate}}</mat-label>
+                                                <mat-select formControlName="difficultyLevel">
+                                                    <mat-option *ngFor="let diff of arrayOne(10);let i = index"
+                                                        [value]="i+1">
+                                                        {{i+1}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <div fxFlex="5" class="pl-8 outline-set">
+                                                <button mat-button class="delete-btn-form"
+                                                    (click)="deleteObj(pointIndex,item.get('objective').value,item.get('id').value)"
+                                                    [disabled]="goalsForm.get('objectiveList').value.length==1"
+                                                    *ngIf="pointIndex != activeIndex">
+                                                    <mat-icon class="mr-8">remove</mat-icon>
+                                                </button>
+                                                <button mat-button class="delete-btn-form"
+                                                    (click)="deleteObjective(pointIndex,item.get('id').value)"
+                                                    [disabled]="goalsForm.get('objectiveList').value.length==1 "
+                                                    *ngIf="pointIndex == activeIndex">
+                                                    <mat-icon class="mr-8">delete</mat-icon>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                        <div fxFlex="100" class="pr-4 objective-div">
+                                            <mat-form-field appearance="outline">
+                                                <mat-label class="required-astrick">{{'NAV.goalsForm.objective' |
+                                                    translate}}</mat-label>
+                                                <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                                    cdkAutosizeMinRows="1" cdkAutosizeMaxRows="4"
+                                                    formControlName="objective"></textarea>
+                                                <mat-error
+                                                    *ngIf="item.get('objective').hasError('required') && item.get('objective').touched">
+                                                    {{'NAV.goalSValidation.objectiveRequired' | translate}}
+                                                </mat-error>
+                                                <mat-error *ngIf="item.get('objective').hasError('maxlength')">
+                                                    {{'NAV.goalSValidation.objectiveMax' | translate}}
+                                                </mat-error>
+
+                                            </mat-form-field>
+                                            <div class="input-length-show-div">
+                                                {{item.get('objective').value?.length > 500 ? '0' :
+                                                500-item.get('objective').value?.length }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                                        <div fxFlex="100" class="pr-4 objective-div">
+                                            <mat-form-field appearance="outline">
+                                                <mat-label class="required-astrick">
+                                                    {{'NAV.goalsForm.measurementCriteria' | translate}}</mat-label>
+                                                <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                                                    cdkAutosizeMinRows="1" cdkAutosizeMaxRows="4"
+                                                    formControlName="measurementCriteria"></textarea>
+                                                <mat-error
+                                                    *ngIf="item.get('measurementCriteria').hasError('required') && item.get('measurementCriteria').touched">
+                                                    {{'NAV.goalSValidation.measurement' | translate}}
+                                                </mat-error>
+                                                <mat-error
+                                                    *ngIf="item.get('measurementCriteria').hasError('maxlength')">
+                                                    {{'NAV.goalSValidation.measurementMax' | translate}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                            <div class="input-length-show-div">
+                                                {{item.get('measurementCriteria').value?.length > 500 ? '0' :
+                                                500-item.get('measurementCriteria').value?.length }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                            <button mat-button class="add-btn-form ml-0" (click)="addObjective()"
+                                [disabled]="goalsForm.get('objectiveList').invalid ">
+                                <mat-icon class="mr-8">add</mat-icon>
+                            </button>
+                        </div>
+                    </mat-tab>
+
+                    <mat-tab label="Personal Competency" *ngIf="defaultCompetency">
+                        <div class="card-scroll-view">
+                            <div class="widget-group  pb-0" fxLayout="row wrap" fxFlex="100">
+                                <!-- blue-grey-fg -->
+                                <ng-container formArrayName="defaultCompetencyParameterWeightage">
+                                    <fuse-widget class="widget " fxLayout="column" fxFlex="100" fxFlex.gt-xs="100"
+                                        fxFlex.gt-md="100"
+                                        *ngFor="let widget of goalsForm.get('defaultCompetencyParameterWeightage').controls; let i=index">
+                                        <!-- Front -->
+                                        <div class="fuse-widget-front" [formGroupName]="i">
+                                            <div class="px-16 py-16 h-52 blue-grey widget-header-color" fxLayout="row"
+                                                fxLayoutAlign="space-between center">
+                                                <div class="h3 overflow-ellipsis "
+                                                    [appEllipsifyMe]="widget.get('name').value | decryption">
+                                                    {{widget.get('name')?.value | decryption}}
+                                                </div>
+                                            </div>
+
+                                            <div class="" fxLayout="column" fxLayoutAlign="center start"
+                                                style="background-color: #f5f5f5;" formArrayName="parameters">
+
+                                                <div class="p-8  goals_widget-height-set-scroll width-100">
+                                                    <div
+                                                        *ngFor="let para of widget.get('parameters').controls;let j=index; ">
+                                                        <div [formGroupName]="j" class="pb-8 set-row-parameter">
+                                                            <div fxLayout="row" fxLayoutAlign="start center"
+                                                                fxFlex="1 0 auto">
+                                                                <div fxFlex="80" class="pr-4 objective-div">
+                                                                    <mat-form-field appearance="outline">
+                                                                        <mat-label class="required-astrick">
+                                                                            {{'NAV.goalsForm.parameter' | translate}}
+                                                                        </mat-label>
+                                                                        <textarea matInput cdkTextareaAutosize
+                                                                            #autosize="cdkTextareaAutosize"
+                                                                            cdkAutosizeMinRows="1"
+                                                                            cdkAutosizeMaxRows="4"
+                                                                            formControlName="parameterName"></textarea>
+                                                                        <mat-error
+                                                                            *ngIf="para.get('parameterName').hasError('required') && para.get('parameterName').touched">
+                                                                            {{'NAV.goalSValidation.parameter' |
+                                                                            translate}}
+                                                                        </mat-error>
+                                                                        <mat-error
+                                                                            *ngIf="para.get('parameterName').hasError('maxlength')">
+                                                                            {{'NAV.goalSValidation.parameterMax' |
+                                                                            translate}}
+                                                                        </mat-error>
+                                                                    </mat-form-field>
+                                                                    <div class="input-length-show-div">
+                                                                        {{para.get('parameterName').value?.length > 500
+                                                                        ? '0' :
+                                                                        500-para.get('parameterName').value?.length }}
+                                                                    </div>
+                                                                </div>
+
+                                                                <mat-form-field appearance="outline" fxFlex="20"
+                                                                    class="pl-4 ">
+                                                                    <mat-label class="required-astrick">
+                                                                        {{'NAV.goalsForm.weightage' | translate}} (%)
+                                                                    </mat-label>
+                                                                    <mat-select formControlName="parameterWeightage"
+                                                                        (selectionChange)="checkTotal100(widget.get('parameters').value,'defaultCompetencyParameterWeightage')">
+                                                                        <mat-option
+                                                                            *ngFor="let weight of arrayOne(101);let i = index"
+                                                                            [value]="i"
+                                                                            [ngStyle]="{'display':(100-(widget.get('totalWeightage').value - para.get('parameterWeightage').value ) < i && (100-(widget.get('totalWeightage').value)<(i))) ? 'none' : 'block'}">
+                                                                            {{i}}%
+                                                                        </mat-option>
+                                                                    </mat-select>
+                                                                </mat-form-field>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="p-4 border-top width-100 pr-8" fxLayout="row"
+                                                    fxLayoutAlign="end center">
+                                                    <span class="h5 secondary-text text-truncate">
+                                                        {{'NAV.goalsForm.totalWeightage' | translate}}
+                                                    </span>
+                                                    <span class="h4 ml-8"
+                                                        [ngClass]="(widget.get('totalWeightage').value==100)?'complete':'pending'">{{widget.get('totalWeightage').value}}%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- / Front -->
+                                    </fuse-widget>
+
+                                </ng-container>
+                                <!-- WIDGET 5 -->
+                            </div>
+                        </div>
+                    </mat-tab>
+
+                </mat-tab-group>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" style="margin-top: 10px;">
+                    <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                        <mat-label>{{'NAV.goalsForm.comment' | translate}}</mat-label>
+                        <textarea matInput formControlName="comment" maxlength="500"></textarea>
+                        <mat-error *ngIf="f.comment.hasError('maxlength')">
+                            {{'NAV.goalSValidation.commentMax' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                    <div class="input-length-show-div">
+                        {{goalsForm.get('comment').value.length > 500 ? '0' : 500-goalsForm.get('comment').value.length
+                        }}
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto">
+                        <div class="color-red">{{'NAV.note' | translate}}</div>
+                        <div>
+                            <button mat-raised-button color="accent" (click)="createGoals()">Save</button>
+                            <button mat-raised-button color="accent" (click)="submitGoals()"
+                                style="margin-left: 10px;">{{'NAV.submit' | translate}}</button>
+                        </div>
+                    </div>
+                    </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- / CONTENT -->
+</div>
+
+<style>
+    textarea.mat-input-element {
+        resize: none !important;
+        min-height: 22px !important;
+    }
+</style>

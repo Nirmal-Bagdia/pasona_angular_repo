@@ -1,0 +1,137 @@
+<div id="forms" class="page-layout simple fullwidth" fxLayout="column">
+    <!-- HEADER -->
+    <div class="header accent p-24 h-100" fxLayout="row" fxLayoutAlign="start center">
+        <div fxLayout="row" fxLayoutAlign="center start">
+            <button mat-icon-button class="mr-0 backbutton" [routerLink]="urlCurrent">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <div class="h1 head-icon">
+                <mat-icon aria-hidden="true">group_work</mat-icon>{{'NAV.unit.add' | translate}}
+            </div>
+        </div>
+    </div>
+    <!-- / HEADER -->
+    <!-- CONTENT -->
+    <div class="content p-24">
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
+            <form class="mat-card mat-elevation-z4 p-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                name="form" [formGroup]="unitForm" (ngSubmit)="createUnit()">
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label class="required-astrick">{{'NAV.unitForm.unitName' | translate}}</mat-label>
+                        <input matInput formControlName="unitName">
+                        <mat-error *ngIf="f.unitName.hasError('required')">
+                            {{'NAV.unitFormValidation.unitRequired' | translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.unitName.hasError('maxlength') && f.unitName.value!=''">
+                            {{'NAV.unitFormValidation.unitLength' | translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.unitName.hasError('alphanumeric')">
+                            {{'NAV.special' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                        <mat-label class="required-astrick">{{'NAV.unitForm.email' | translate}}</mat-label>
+                        <input matInput formControlName="email">
+                        <mat-error *ngIf="f.email.hasError('invalidEmail')">
+                            {{'NAV.unitFormValidation.email' | translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.email.hasError('required')">
+                            {{'NAV.unitFormValidation.emailRequired' | translate}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="100" class="pl-4">
+                        <mat-label class="required-astrick">{{'NAV.unitForm.userName' | translate}}</mat-label>
+                        <input matInput formControlName="userName">
+                        <mat-error *ngIf="f.userName.hasError('required')">
+                            {{'NAV.unitFormValidation.userNameRequired' | translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.userName.hasError('maxlength') && f.userName.value!=''">
+                            {{'NAV.unitFormValidation.max' | translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.userName.hasError('minlength') && f.userName.value!=''">
+                            {{'NAV.unitFormValidation.min' | translate}}
+                        </mat-error>
+                        <mat-error *ngIf="f.userName.hasError('alphanumeric')">
+                            {{'NAV.special' | translate}}
+                        </mat-error>
+                    </mat-form-field>        
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label>{{'NAV.unitForm.employeeName' | translate}}</mat-label>
+                        <input matInput formControlName="admin">
+                        <mat-error *ngIf="f.admin.hasError('required')">Employee Name is required!</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4 label-set-mob">
+                        <mat-label class="required-astrick">{{'NAV.unitForm.number' | translate}}</mat-label>
+                        <!--  <input matInput formControlName="contactNo"> -->
+                        <input matInput formControlName="contactNo" ng2TelInput [ng2TelInputOptions]="mobileFlag"
+                            (countryChange)="onCountryChange($event)" />
+                        <mat-error *ngIf="f.contactNo.hasError('required')">{{'NAV.unitFormValidation.numberRequired' | translate}}</mat-error>
+                        <mat-error *ngIf="f.contactNo.hasError('maxlength') && !f.contactNo.hasError('invalidNumber')">
+                            {{'NAV.unitFormValidation.numberMax' | translate}}</mat-error>
+                        <mat-error *ngIf="f.contactNo.hasError('minlength') && !f.contactNo.hasError('invalidNumber')">
+                            {{'NAV.unitFormValidation.numberMin' | translate}}</mat-error>
+                        <mat-error *ngIf="f.contactNo.hasError('invalidNumber') && f.contactNo.value!=''">
+                            {{'NAV.unitFormValidation.numberOnly' | translate}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label class="required-astrick">{{'NAV.unitForm.country' | translate}}</mat-label>
+                        <mat-select formControlName="country" (selectionChange)="getAllStateByCountry($event)">
+                            <mat-option *ngFor="let country of countryData" [value]="country.id">
+                                {{country.name}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>{{'NAV.unitFormValidation.countryRequired' | translate}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+                        <mat-label class="required-astrick">{{'NAV.unitForm.state' | translate}}</mat-label>
+                        <mat-select formControlName="state" (selectionChange)="getAllCityByStateId($event)">
+                            <mat-option *ngFor="let state of stateData" [value]="state.id">
+                                {{state.name}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>{{'NAV.unitFormValidation.stateRequired' | translate}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label class="required-astrick">{{'NAV.unitForm.city' | translate}}</mat-label>
+                        <mat-select formControlName="city">
+                            <mat-option *ngFor="let city of cityData" [value]="city.id">
+                                {{city.name}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>{{'NAV.unitFormValidation.cityRequired' | translate}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="50" class="pl-4 select-to-input">
+                        <mat-label class="required-astrick">{{'NAV.unitForm.company' | translate}}</mat-label>
+                        <mat-select formControlName="companyId" [disabled]="true">
+                            <mat-option *ngFor="let company of companyData" [value]="company.companyId">
+                                {{company.companyName | decryption}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>{{'NAV.unitFormValidation.companyRequired' | translate}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="100" class="pl-4">
+                        <mat-label class="required-astrick">{{'NAV.unitForm.address' | translate}}</mat-label>
+                        <textarea matInput formControlName="address"></textarea>
+                        <mat-error>{{'NAV.unitFormValidation.addressRequired' | translate}}</mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto">
+                    <div class="color-red">{{'NAV.note'| translate}}</div>
+                    <button mat-raised-button color="accent">{{'NAV.submit' | translate}}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- / CONTENT -->
+</div>

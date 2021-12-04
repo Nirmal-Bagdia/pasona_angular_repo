@@ -1,0 +1,154 @@
+<div  style="position: relative;">
+    <h1 class="delete-dialog heading-dailog" mat-dialog-title>{{ 'NAV.appraisalGroup.groupSetting' | translate}} ({{data.groupName}}) </h1>
+    <mat-icon class="edit-color cancel-icon-dialog" (click)="onNoClick()">close</mat-icon>
+    <div mat-dialog-content class="set-display-block appraisalplanDialog" style="min-width: 60vw;">
+      <form fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+      name="form" [formGroup]="appraisalForm" >
+      <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+        <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+            <mat-label class="required-astrick">Appraisal Plan Name</mat-label>
+            <input matInput formControlName="planName">
+            <mat-error *ngIf="f.planName.hasError('required')">
+                Appraisal Plan Name is required.
+            </mat-error>
+            <mat-error *ngIf="f.planName.hasError('maxlength')">
+                Appraisal Plan Name length should be less than or equal to 100.
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+        <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+            <mat-label class="required-astrick">Purpose of this plan</mat-label>
+            <textarea matInput formControlName="objective" maxlength="250"></textarea>
+            <mat-error *ngIf="f.objective.hasError('required')">
+                Purpose of this plan is required.
+            </mat-error>
+            <mat-error *ngIf="f.objective.hasError('maxlength')">
+                Purpose of this plan length should be less than or equal to 250.
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div class="input-length-show-div">
+        {{appraisalForm.get('objective').value.length > 250 ? '0' : 250-appraisalForm.get('objective').value.length }}
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+        <div fxFlex="33" class="pr-4">
+            <mat-checkbox formControlName="setObjective" name="setobj" [disabled]="true">Set Objective
+            </mat-checkbox>
+        </div>
+        <div fxFlex="33" class="pr-4">
+            <mat-checkbox formControlName="midTermReview" name="Midterm" >Midterm Review
+        </mat-checkbox>
+    </div>
+        <div fxFlex="34" class="pl-4">
+            <mat-checkbox formControlName="evaluation" name="Evalution" [disabled]="true">End-term Evalution
+        </mat-checkbox>
+    </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="mt-20  heading-set-obj" *ngIf="appraisalForm.get('midTermReview').value">
+        <div appearance="outline" fxFlex="75" class="pr-4">Do you want to add self evalution in midterm process ?
+        </div>
+        <mat-radio-group aria-label="Select an option" formControlName="midTermSelfEvaluation" fxFlex="25" >
+            <mat-radio-button value="false">No</mat-radio-button><!-- (change)="radioChange($event)" -->
+            <mat-radio-button style="margin-left: 10px;" value="true">Yes</mat-radio-button>
+        </mat-radio-group>
+    </div>
+    <!-- <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="mt-20  heading-set-obj" *ngIf="appraisalForm.get('midTermReview').value">
+        <div appearance="outline" fxFlex="75" class="pr-4">Do you want to add self evalution in midterm process ?
+        </div>
+        <mat-radio-group aria-label="Select an option" formControlName="midTermSelfEvaluation" fxFlex="25" >
+            <mat-radio-button value="false">Objective Evaluation</mat-radio-button>
+            <mat-radio-button style="margin-left: 10px;" value="true">Competency Evaluation</mat-radio-button>
+            <mat-radio-button style="margin-left: 10px;" value="true">Both</mat-radio-button>
+        </mat-radio-group>
+    </div> -->
+    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="margin-set-head heading-set-obj">
+        Appraisal Period
+    </div>
+
+      <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+        <div fxFlex="50" class="pr-4">From</div>
+        <div fxFlex="50" class="pl-4">To</div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+        <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+            <mat-label class="required-astrick">Month</mat-label>
+            <mat-select formControlName="fromMonth" (selectionChange)="errorChecking('fm')">
+                <mat-option *ngFor="let month of monthData" [value]="month.id">
+                    {{month.name}}
+                </mat-option>
+            </mat-select>
+            <!-- <mat-icon matSuffix class="secondary-text">outlined_flag</mat-icon> -->
+            <mat-error>Month is required!</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+            <mat-label class="required-astrick">Year</mat-label>
+            <mat-select formControlName="fromYear" (selectionChange)="errorChecking('fy')">
+                <mat-option *ngFor="let year of yearData" [value]="year">
+                    {{year}}
+                </mat-option>
+            </mat-select>
+            <!-- <mat-icon matSuffix class="secondary-text">outlined_flag</mat-icon> -->
+            <mat-error>Year is required!</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+            <mat-label class="required-astrick">Month</mat-label>
+            <mat-select formControlName="toMonth" (selectionChange)="errorChecking('tm')"
+                 > <!-- (selectionChange)="getAllUnitDataByCompanyId($event.value)" -->
+                <mat-option *ngFor="let month of monthData" [value]="month.id">
+                    {{month.name}}
+                </mat-option>
+            </mat-select>
+            <!-- <mat-icon matSuffix class="secondary-text">outlined_flag</mat-icon> -->
+            <mat-error>Month is required!</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+            <mat-label class="required-astrick">Year</mat-label>
+            <mat-select formControlName="toYear" (selectionChange)="errorChecking('ty')"
+                >
+                <mat-option *ngFor="let year of yearData" [value]="year">
+                    {{year}}
+                </mat-option>
+            </mat-select>
+            <!-- <mat-icon matSuffix class="secondary-text">outlined_flag</mat-icon> -->
+            <mat-error>Year is required!</mat-error>
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+        <mat-form-field appearance="outline" fxFlex="50" class="pr-4">
+            <mat-label class="required-astrick">Dead Line</mat-label>
+            <input matInput [matDatepicker]="picker1" [min]="minDate" [max]="maxDate" formControlName="deadLine" readonly>
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+            <mat-error>Dead Line is required!</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="50" class="pl-4">
+            <mat-label class="required-astrick">Appraisal Parameter</mat-label>
+            <mat-select formControlName="appraisalParameterId" >
+                <mat-option *ngFor="let ap of appraisalParameterData" [value]="ap.appraisalParameterId">
+                    {{ap.name | decryption}}
+                </mat-option>
+            </mat-select>
+            <!-- <mat-icon matSuffix class="secondary-text">outlined_flag</mat-icon> -->
+            <mat-error>Appraisal Parameter is required!</mat-error>
+        </mat-form-field>
+    </div>
+    </form>
+    </div>
+    <div mat-dialog-actions>
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="1 0 auto">
+            <div class="color-red">Fields marked * are mandatory.</div>
+            <!-- <button mat-raised-button color="accent" (click)="createGoals()">Submit</button> -->
+            <div>
+            <button *ngIf="type=='Add'" mat-raised-button color="accent" (click)='createPlan()'>{{'NAV.create' | translate}}</button>
+            <button *ngIf="type=='Edit'"  mat-raised-button color="accent" (click)='editPlan()'>{{'NAV.update' | translate}}</button>
+             <button mat-button (click)="onNoClick()" class="cancel-btn-dailog">{{'NAV.cancel' | translate}}</button>
+            </div>
+        </div>
+      <!-- <button *ngIf="type!='Company'" mat-button (click)='yes()'>Create</button>
+      <button *ngIf="type=='Company'" mat-button (click)='yesCompany()'>Yes</button>
+      <button mat-button (click)="onNoClick()">Cancel</button> -->
+    </div>
+  </div>
+  
+ 

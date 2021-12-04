@@ -1,0 +1,30 @@
+<div style="position: relative;">
+  <h1 class="delete-dialog heading-dailog" mat-dialog-title>{{'NAV.notes' | translate}}</h1>
+  <mat-icon class="edit-color cancel-icon-dialog" (click)="onNoClick()">close</mat-icon>
+  <div mat-dialog-content class="set-display-block" #scrollMe [scrollTop]="scrollMe.scrollHeight">
+    <div *ngFor="let com of commentDataObjective" class="talk-bubble tri-right left-top tri-right right-top"
+      [ngClass]="(userData?.empCode == com.appraiserId)? 'own-user-list' : 'other-user-list'">
+      <p class="ind-comment-notes">{{com.comment | decryption}}<span>{{com.empName | decryption}}
+          {{com.dateOfCreation | date :pasonaService.dateFormat}}</span></p>
+    </div>
+    <div class="info-div-set-for-comment" *ngIf="commentDataMidTerm.length!=0">
+      <div></div><span>Midterm Process Notes</span>
+    </div>
+    <div *ngFor="let com of commentDataMidTerm" class="talk-bubble tri-right left-top tri-right right-top"
+      [ngClass]="(userData?.empCode == com.appraiserId)? 'own-user-list' : 'other-user-list'">
+      <p class="ind-comment-notes">{{com.comment | decryption}}<span>{{com.empName | decryption}}
+          {{com.dateOfCreation | date :pasonaService.dateFormat}}</span></p>
+    </div>
+    <div class="info-div-set-for-comment" *ngIf="commentDataEvalution.length!=0">
+      <div></div><span>Evalution Process Notes</span>
+    </div>
+    <div *ngFor="let com of commentDataEvalution" class="talk-bubble tri-right left-top tri-right right-top"
+      [ngClass]="(userData?.empCode == com.appraiserId)? 'own-user-list' : 'other-user-list'">
+      <p class="ind-comment-notes">{{com.comment | decryption}}<span>{{com.empName | decryption}}
+          {{com.dateOfCreation | date :pasonaService.dateFormat}}</span></p>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()" class="cancel-btn-dailog">{{'NAV.close' | translate}}</button>
+  </div>
+</div>
